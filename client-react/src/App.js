@@ -20,12 +20,13 @@ class App extends React.Component {
       password: '',
       role: null,
       admin: null,
-      loggedin: false
+      token: null
     }
   }
 
   handleLogin (evt) {
     evt.preventDefault()
+    console.log('Login prevent D')
     const email = document.getElementById('email').value
     const password = document.getElementById('password').value
 
@@ -39,10 +40,12 @@ class App extends React.Component {
     })
       .then(response => response.json())
       .then(data => {
+        console.log('data', data)
+        if (data.errorMsg) { alert('Invalid login credentials') }
         this.setState({
           email: data.email,
           password: data.password,
-          loggedin: true
+          token: data.token
         }, () => { console.log(this.state) })
       })
   }
@@ -69,7 +72,7 @@ class App extends React.Component {
           email: data.email,
           password: data.password,
           role: data.role,
-          loggedin: true,
+          token: data.token,
           admin: true
         }, () => { console.log(this.state) })
       })
@@ -81,13 +84,13 @@ class App extends React.Component {
         <div>
           <Switch>
             <Route path='/login'>
-              <Login handleLogin={this.handleLogin.bind(this)} />
+              {this.state.token ? <Redirect to='/' /> : <Login handleLogin={this.handleLogin.bind(this)} />}
             </Route>
             <Route path='/signUp'>
-              <Signup handleSignup={this.handleSignup.bind(this)} />
+              {this.state.token ? <Redirect to='/' /> : <Signup handleSignup={this.handleSignup.bind(this)} />}
             </Route>
             <Route path='/'>
-              {this.state.loggedin ? <Dashboard /> : <Redirect to='/login' />}
+              {this.state.token ? <Dashboard /> : <Redirect to='/login' />}
             </Route>
           </Switch>
         </div>
