@@ -1,3 +1,4 @@
+/* globals fetch */
 import Login from './Login'
 import Signup from './Signup'
 import Dashboard from './Dashboard'
@@ -21,6 +22,29 @@ class App extends React.Component {
       admin: null,
       loggedin: false
     }
+  }
+
+  handleLogin (evt) {
+    evt.preventDefault()
+    const email = document.getElementById('email').value
+    const password = document.getElementById('password').value
+
+    fetch('/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: email,
+        password: password
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          email: data.email,
+          password: data.password,
+          loggedin: true
+        }, () => { console.log(this.state) })
+      })
   }
 
   handleSignup (evt) {
@@ -57,7 +81,7 @@ class App extends React.Component {
         <div>
           <Switch>
             <Route path='/login'>
-              <Login />
+              <Login handleLogin={this.handleLogin.bind(this)} />
             </Route>
             <Route path='/signUp'>
               <Signup handleSignup={this.handleSignup.bind(this)} />

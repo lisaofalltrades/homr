@@ -18,6 +18,8 @@ router.post('/signUp', (req, res) => {
 router.post('/login', (req, res) => {
   User.findOne({ email: req.body.email }, async (err, user) => {
     if (err) return res.status(500).send(err)
+    if (!user || !user.comparePassword(req.body.password)) return res.status(400).send({ errorMsg: 'invalid login credentials' })
+    console.log('logged in')
   })
 })
 
