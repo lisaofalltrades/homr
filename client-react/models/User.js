@@ -7,6 +7,10 @@ const userSchema = Schema({
     type: String,
     required: false
   },
+  admin: {
+    type: Boolean,
+    required: true
+  },
   email: {
     type: String,
     required: true,
@@ -46,16 +50,18 @@ const userSchema = Schema({
   }
 })
 
-userSchema.statics.signUp = async function (email, password) {
+userSchema.statics.signUp = async function (email, password, role, admin) {
   const user = new this()
   user.email = email
+  user.role = role
+  user.admin = admin
   user.hashPassword(password)
   await user.save()
   return user
 }
 
 userSchema.methods.hashPassword = function (plainText) {
-  this.password = bcrypt.hashSync(plainText, 4) 
+  this.password = bcrypt.hashSync(plainText, 4)
 }
 
 userSchema.methods.sanitize = function () {
