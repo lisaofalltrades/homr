@@ -9,6 +9,7 @@ const AuthController = require('./client-react/controllers/auth')
 // server
 const http = require('http').createServer(app)
 const port = process.env.PORT || 8000
+// process.env.port is for heroku
 
 
 // middleware
@@ -19,6 +20,7 @@ app.use('/', AuthController)
 
 // database
 const connectDatabase = async (databaseName = 'homrDB', hostname = 'localhost') => {
+  // process.env.MONGODB_URI is for heroku
   const database = await mongoose.connect(process.env.MONGODB_URI || `mongodb://${hostname}/${databaseName}`,
     {
       useNewUrlParser: true,
@@ -28,6 +30,11 @@ const connectDatabase = async (databaseName = 'homrDB', hostname = 'localhost') 
   )
   console.log(`Database connected at mongodb://${hostname}/${databaseName}`)
   return database
+}
+
+// bundle when production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client-react/build'))
 }
 
 const startServer = port => {
