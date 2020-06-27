@@ -16,7 +16,10 @@ router.post('/signUp', (req, res) => {
       _id: user._id
     }, 'CHANGE ME!')
 
-    res.send({ token })
+    res.send({
+      token,
+      role: user.role
+     })
 
     res.status(201).send(user.sanitize())
   })
@@ -33,11 +36,25 @@ router.post('/login', (req, res) => {
 
     res.send({
       token: token,
-      admin: user.admin
+      admin: user.admin,
+      role: user.role
     })
 
     console.log('logged in')
   })
 })
+
+
+// UPDATE THIS MONDAY
+// router.post('/profileUpdate', (req, res) => {
+//   User.updateOne({ token: req.body.token}, async (err, user) => {
+//     if (err) return res.status(500).send(err)
+
+//     await User.profileUpdate(req.body.Fname, req.body.Lname, req.body.job_title, req.body.city, req.body.county, req.body.district)
+
+
+//     console.log('logged in')
+//   })
+// })
 
 module.exports = router

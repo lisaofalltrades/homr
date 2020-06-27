@@ -75,6 +75,23 @@ userSchema.methods.comparePassword = function (plainText) {
   return bcrypt.compareSync(plainText, this.password)
 }
 
+// UPDATE THIS MONDAY
+// userSchema.statics.profileUpdate = async function (
+//   first_name,
+//   last_name,
+//   job_title,
+//   city,
+//   county,
+//   district) {
+//   const user = this()
+//   user.email = email
+//   user.role = role
+//   user.admin = admin
+//   user.hashPassword(password)
+//   await user.save()
+//   return user
+// }
+
 const User = mongoose.model('User', userSchema)
 
 module.exports = User
