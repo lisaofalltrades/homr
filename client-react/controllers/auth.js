@@ -14,7 +14,7 @@ router.post('/signUp', (req, res) => {
 
     const token = jwt.sign({
       _id: user._id
-    }, 'CHANGE ME!')
+    }, 'PROCESS')
 
     res.send({
       token,
@@ -32,7 +32,7 @@ router.post('/login', (req, res) => {
 
     const token = jwt.sign({
       _id: user._id
-    }, 'CHANGE ME!')
+    }, 'PROCESS')
 
     res.send({
       token: token,
@@ -43,18 +43,5 @@ router.post('/login', (req, res) => {
     console.log('logged in')
   })
 })
-
-
-// UPDATE THIS MONDAY
-// router.post('/profileUpdate', (req, res) => {
-//   User.updateOne({ token: req.body.token}, async (err, user) => {
-//     if (err) return res.status(500).send(err)
-
-//     await User.profileUpdate(req.body.Fname, req.body.Lname, req.body.job_title, req.body.city, req.body.county, req.body.district)
-
-
-//     console.log('logged in')
-//   })
-// })
 
 module.exports = router

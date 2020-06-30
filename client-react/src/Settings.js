@@ -12,7 +12,7 @@ export default function (props) {
         <input id='county' type='text' placeholder='County' /> <br />
         {props.role === 'fire_chief' ? <input id='district' type='text' placeholder='District' /> : null}
         <br />
-        <button type='submit' onClick={props.handleSignup}>Update</button>
+        <button type='submit' onClick={props.handleProfile}>Update</button>
       </form>
     </div>
   )

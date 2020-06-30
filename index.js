@@ -6,6 +6,8 @@ const morgan = require('morgan')
 const path = require('path')
 const AuthController = require('./client-react/controllers/auth')
 
+const ProtectedRoutes = require('./client-react/controllers/protected')
+
 // server
 const http = require('http').createServer(app)
 const port = process.env.PORT || 8000
@@ -17,6 +19,7 @@ app.use(express.static(path.join(__dirname, 'client-react/build')))
 app.use(express.json())
 app.use(morgan('tiny'))
 app.use('/', AuthController)
+app.use('/', ProtectedRoutes)
 
 // database
 const connectDatabase = async (databaseName = 'homrDB', hostname = 'localhost') => {

@@ -1,6 +1,5 @@
 /* globals fetch */
 import Login from './Login'
-import Signup from './Signup'
 import Dashboard from './Dashboard'
 import Patients from './Patients'
 import Settings from './Settings'
@@ -97,7 +96,7 @@ class App extends React.Component {
     evt.preventDefault()
     const email = document.getElementById('email').value
     const password = document.getElementById('password').value
-    
+
     fetch('/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -122,6 +121,7 @@ class App extends React.Component {
 
   handleProfile (evt) {
     evt.preventDefault()
+    console.log('it worked')
     const Fname = document.getElementById('Fname').value
     const Lname = document.getElementById('Lname').value
     const job_title = document.getElementById('job_title').value
@@ -131,11 +131,14 @@ class App extends React.Component {
 
     fetch('/profileUpdate', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.state.token}`
+      },
       body: JSON.stringify({
         Fname: Fname,
         Lname: Lname,
-        token: this.state.token,
+        // token: this.state.token,
         job_title: job_title,
         city: city,
         county: county,

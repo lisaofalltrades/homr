@@ -76,21 +76,27 @@ userSchema.methods.comparePassword = function (plainText) {
 }
 
 // UPDATE THIS MONDAY
-// userSchema.statics.profileUpdate = async function (
-//   first_name,
-//   last_name,
-//   job_title,
-//   city,
-//   county,
-//   district) {
-//   const user = this()
-//   user.email = email
-//   user.role = role
-//   user.admin = admin
-//   user.hashPassword(password)
-//   await user.save()
-//   return user
-// }
+userSchema.statics.profileUpdate = async function (
+  Fname,
+  Lname,
+  job_title,
+  city,
+  county,
+  district) {
+  const user = this()
+  user.first_name = Fname
+  user.last_name = Lname
+  user.job_title = job_title
+  user.city = city
+  user.county = county
+  user.district = district
+  // user.email = email
+  // user.role = role
+  // user.admin = admin
+  // user.hashPassword(password)
+  await user.save()
+  return user
+}
 
 const User = mongoose.model('User', userSchema)
 
