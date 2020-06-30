@@ -6,6 +6,7 @@ import Patients from './Patients'
 import Settings from './Settings'
 import React from 'react'
 import './App.css'
+import 'semantic-ui-css/semantic.min.css'
 import {
   BrowserRouter as Router,
   Switch,
@@ -63,19 +64,47 @@ class App extends React.Component {
       })
   }
 
+  handleChange (evt) {
+    const ids = [
+      {
+        key: 'Fire Chief',
+        text: 'Fire Chief',
+        value: 'fire_chief'
+      },
+      {
+        key: 'Charity Rep',
+        text: 'Charity Rep',
+        value: 'charity_rep'
+      },
+      {
+        key: 'City Rep',
+        text: 'City Rep',
+        value: 'city_rep'
+      }
+    ]
+    const role = evt.target.innerText
+    console.log(role)
+    let finalId = ''
+    ids.forEach(element => {
+      if (role === element.key) {
+        finalId = element.value
+      }
+    })
+    this.setState({ role: finalId })
+  }
+
   handleSignup (evt) {
     evt.preventDefault()
     const email = document.getElementById('email').value
     const password = document.getElementById('password').value
-    const role = document.getElementById('roles').value
-
+    
     fetch('/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email: email,
         password: password,
-        role: role,
+        role: this.state.role,
         admin: true
       })
     })
@@ -162,11 +191,11 @@ class App extends React.Component {
               {this.state.token ? <Patients /> : <Login handleLogin={this.handleLogin.bind(this)} />}
             </Route>
             <Route path='/login'>
-              {this.state.token ? <Redirect to='/' /> : <Login handleLogin={this.handleLogin.bind(this)} />}
+              {this.state.token ? <Redirect to='/' /> : <Login handleLogin={this.handleLogin.bind(this)} handleSignup={this.handleSignup.bind(this)} handleChange={this.handleChange.bind(this)} />}
             </Route>
-            <Route path='/signUp'>
-              {this.state.token ? <Redirect to='/' /> : <Signup handleSignup={this.handleSignup.bind(this)} />}
-            </Route>
+            {/* <Route path='/signUp'>
+              {this.state.token ? <Redirect to='/' /> : <Signup  />}
+            </Route> */}
             <Route path='/'>
               {this.state.token ? <Dashboard /> : <Redirect to='/login' />}
             </Route>
