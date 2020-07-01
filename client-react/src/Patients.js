@@ -1,5 +1,5 @@
 import React from 'react'
-import { Input, Accordion, Icon } from 'semantic-ui-react'
+import { Input, Accordion, Icon, Button, Form, Dropdown } from 'semantic-ui-react'
 const illnessList = [
   'alcoholism',
   'allergies',
@@ -63,15 +63,44 @@ const illnessList = [
   'Unknown',
   'visually impaired'
 ]
+
+const illnessOptions = illnessList.map((illness) => ({
+  key: illness,
+  text: illness,
+  value: illness
+}))
 export default class PatientInfo extends React.Component {
-  state = { activeIndex: 0 }
+  state = { 
+    activeIndex: 0,
+    redFlags: [],
+    basicInfo: {
+      photoID: null,
+      firstName: '',
+      lastName: '',
+      dob: '',
+      birthPlace: '',
+      licenseNum: '',
+      race: ''
+    },
+    medicalHistory: [],
+    notes: []
+  }
+  componentDidMount() {
+    console.log(illnessOptions)
+  }
   handleClick = (e, titleProps) => {
     const { index } = titleProps
     const { activeIndex } = this.state
     const newIndex = activeIndex === index ? -1 : index
     this.setState({ activeIndex: newIndex })
   }
-  render() (
+
+  handleChange ({value}) {
+    // this.setState({medicalHistory: this.state.medicalHistory.concat(evt.target.innerText)})
+    this.setState({medicalHistory: {value}})
+    console.log(this.state.medicalHistory)
+  }
+  render() {
     const { activeIndex } = this.state
     return (
     <Accordion>
@@ -88,7 +117,7 @@ export default class PatientInfo extends React.Component {
       </Accordion.Content>
       <Accordion.Title
         active={activeIndex === 1}
-        index={0}
+        index={1}
         onClick={this.handleClick}
       >
       <Icon name='dropdown' />
@@ -96,37 +125,48 @@ export default class PatientInfo extends React.Component {
       </Accordion.Title>
       <Accordion.Content active={activeIndex === 1}>
       Patient basic information
+      {/* add the image field here */}
+      <Form>
+      <Input id='firstName' type='text'/>
+      <Input id='lastName' type='text'/>
+      <Input id='dob' type=''/>
+      <Input id='birthPlace' type='text'/>
+      <Input id='licenseNum' type='text'/>
+      <Input id='race' type='text'/>
+      </Form>  
       </Accordion.Content>
       <Accordion.Title
         active={activeIndex === 2}
-        index={0}
+        index={2}
         onClick={this.handleClick}
       >
       <Icon name='dropdown' />
       Medical History
-      <div>
-      <Input list='illnessList' placeholder='Select illness to add...' />
-      <datalist id='illnessList'>
-        {illnessList.map(item => {
-          return <option value={item} />
-        })}
-      </datalist>
-    </div>
       </Accordion.Title>
       <Accordion.Content active={activeIndex === 2}>
       Patient Medical History
+      <div>
+      {/* <Input list='illnessList' placeholder='Select illness to add...' /> */}
+      {/* <datalist id='illnessList'>
+        {illnessList.map(item => {
+          return <option value={item} />
+        })}
+      </datalist> */}
+      <Dropdown id='illnessList' placeholder='Add Illness' fluid multiple search selection clearable value={illnessOptions} options={illnessOptions} onChange= {this.handleChange.bind(this)} />
+      {/* <Button type='submit' content='Add' icon='right arrow' labelPosition='right' onClick={props.handleAddIllness} style={{ border: '1px black solid' }} /> */}
+    </div>
       </Accordion.Content>
       <Accordion.Title
         active={activeIndex === 3}
-        index={0}
+        index={3}
         onClick={this.handleClick}
       >
       <Icon name='dropdown' />
-      Medical History
+      Notes
       </Accordion.Title>
       <Accordion.Content active={activeIndex === 3}>
-      Patient Medical History
+      Patient Notes
       </Accordion.Content>
     </Accordion>
-  ))
+  )}
 }
