@@ -10,7 +10,7 @@ export default function (props) {
         <input id='job_title' type='text' placeholder='Job Title' /> <br />
         <input id='city' type='text' placeholder='City' /> <br />
         <input id='county' type='text' placeholder='County' /> <br />
-        {props.role === 'fire_chief' ? <input id='district' type='text' placeholder='District' /> : null}
+        {props.role === 'fire_chief' ? <input id='district' type='text' placeholder='District' /> : <span id='district' value='' />}
         <br />
         <button type='submit' onClick={props.handleProfile}>Update</button>
       </form>

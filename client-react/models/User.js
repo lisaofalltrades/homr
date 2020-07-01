@@ -56,6 +56,13 @@ userSchema.statics.signUp = async function (email, password, role, admin) {
   user.role = role
   user.admin = admin
   user.hashPassword(password)
+  user.first_name = null
+  user.last_name = null
+  user.job_title = null
+  user.city = null
+  user.county = null
+  user.district = null
+  user.status = null
   await user.save()
   return user
 }
@@ -75,28 +82,32 @@ userSchema.methods.comparePassword = function (plainText) {
   return bcrypt.compareSync(plainText, this.password)
 }
 
-// UPDATE THIS MONDAY
-userSchema.statics.profileUpdate = async function (
-  Fname,
-  Lname,
-  job_title,
-  city,
-  county,
-  district) {
-  const user = this()
-  user.first_name = Fname
-  user.last_name = Lname
-  user.job_title = job_title
-  user.city = city
-  user.county = county
-  user.district = district
-  // user.email = email
-  // user.role = role
-  // user.admin = admin
-  // user.hashPassword(password)
-  await user.save()
-  return user
-}
+// // UPDATE THIS MONDAY
+// userSchema.statics.profileUpdate = async function (
+//   Fname,
+//   Lname,
+//   job_title,
+//   city,
+//   county,
+//   district,
+//   email,
+//   role,
+//   admin,
+//   password) {
+//   const user = this()
+//   user.first_name = Fname
+//   user.last_name = Lname
+//   user.job_title = job_title
+//   user.city = city
+//   user.county = county
+//   user.district = district
+//   user.email = email
+//   user.role = role
+//   user.admin = admin
+//   user.password = password
+//   await user.save()
+//   return user
+// }
 
 const User = mongoose.model('User', userSchema)
 

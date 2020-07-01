@@ -4,6 +4,8 @@ const User = require('../models/User')
 
 // server
 const express = require('express')
+const { Profiler } = require('react')
+const { db } = require('../models/User')
 const router = express.Router()
 
 // provides a short authenticate to other get routes
@@ -31,19 +33,28 @@ const authenticate = (req, res, next) => {
   }
 }
 
-
-// UPDATE THIS Tuesday
 router.post('/profileUpdate', [authenticate], (req, res) => {
   console.log(req.user)
-  const userInfo = User.updateOne({ _id: req.user }, async (err, user) => {
+
+  const objUpdate = {}
+  console.log(req.body, 'req.body is')
+
+  if (req.body.Fname !== '') objUpdate.first_name = req.body.Fname
+  if (req.body.Lname !== '') objUpdate.last_name = req.body.Lname
+  if (req.body.job_title !== '') objUpdate.job_title = req.body.job_title
+  if (req.body.city !== '') objUpdate.city = req.body.city
+  if (req.body.county !== '') objUpdate.county = req.body.county
+  if (req.body.district !== '') objUpdate.district = req.body.district
+
+  console.log(objUpdate)
+  const updates = {
+    $set: objUpdate
+  }
+
+  User.updateOne({ _id: req.user }, updates, (err, res) => {
     if (err) return res.status(500).send(err)
-
-    await User.profileUpdate(req.body.Fname, req.body.Lname, req.body.job_title, req.body.city, req.body.county, req.body.district)
-
-
-  console.log('profile update')
-  // })
+    console.log('profile updated')
+  })
 })
 
 module.exports = router
-

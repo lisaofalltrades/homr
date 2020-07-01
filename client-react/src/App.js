@@ -32,6 +32,10 @@ class App extends React.Component {
     console.log('Login prevent D')
     const email = document.getElementById('email').value
     const password = document.getElementById('password').value
+    this.setState({
+      password: password,
+      email: email
+    })
 
     fetch('/login', {
       method: 'POST',
@@ -138,6 +142,8 @@ class App extends React.Component {
       body: JSON.stringify({
         Fname: Fname,
         Lname: Lname,
+        email: this.state.email,
+        password: this.state.password,
         // token: this.state.token,
         job_title: job_title,
         city: city,

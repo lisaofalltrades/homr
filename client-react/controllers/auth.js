@@ -19,8 +19,7 @@ router.post('/signUp', (req, res) => {
     res.send({
       token,
       role: user.role
-     })
-
+    })
     res.status(201).send(user.sanitize())
   })
 })
