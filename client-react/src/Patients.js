@@ -1,5 +1,6 @@
 import React from 'react'
 import { Input, Accordion, Icon, Button, Form, Dropdown } from 'semantic-ui-react'
+import { token } from 'morgan'
 const illnessList = [
   'alcoholism',
   'allergies',
@@ -70,20 +71,24 @@ const illnessOptions = illnessList.map((illness) => ({
   value: illness
 }))
 export default class PatientInfo extends React.Component {
-  state = { 
-    activeIndex: 0,
-    redFlags: [],
-    basicInfo: {
-      photoID: null,
-      firstName: '',
-      lastName: '',
-      dob: '',
-      birthPlace: '',
-      licenseNum: '',
-      race: ''
-    },
-    medicalHistory: [],
-    notes: []
+  constructor(props){
+    super(props)
+    this.state = { 
+      token: this.props.token,
+      activeIndex: 0,
+      redFlags: [],
+      basicInfo: {
+        photoID: '',
+        firstName: '',
+        lastName: '',
+        dob: '',
+        birthPlace: '',
+        licenseNum: '',
+        race: ''
+      },
+      medicalHistory: [],
+      notes: []
+    }
   }
   componentDidMount() {
     console.log(illnessOptions)
@@ -95,11 +100,61 @@ export default class PatientInfo extends React.Component {
     this.setState({ activeIndex: newIndex })
   }
 
-  handleChange ({value}) {
+  handleChange = (evt, data) => {
+    this.setState({
+      [data.name]: data.value
+    }, console.log(this.state))
+  
+
     // this.setState({medicalHistory: this.state.medicalHistory.concat(evt.target.innerText)})
-    this.setState({medicalHistory: {value}})
+    // this.setState({medicalHistory: {value}})
     console.log(this.state.medicalHistory)
   }
+
+  handleAddPatient() {
+    fetch('/patientAdd', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.state.token}`
+      },
+      body: JSON.stringify({
+        photoID: this.state.basicInfo.photoID,
+        firstName: this.state.basicInfo.firstName,
+        lastName: this.state.basicInfo.lastName,
+        dob: this.state.basicInfo.dob,
+        birthPlace: this.state.basicInfo.birthPlace,
+        licenseNum: this.state.basicInfo.licenseNum,
+        race: this.state.basicInfo.race,
+        medicalHistory: this.state.medicalHistory,
+        notes: null,
+        redFlags: null
+      })
+    })
+      .then(response => response.json())
+  }
+
+  handleSetState(evt) {
+    evt.preventDefault()
+    const firstName = document.getElementById('firstName').value
+    const lastName = document.getElementById('lastName').value
+    const dob = document.getElementById('dob').value
+    const birthPlace = document.getElementById('birthPlace').value
+    const licenseNum = document.getElementById('licenseNum').value
+    const race = document.getElementById('race').value
+    this.setState({
+      basicInfo:{
+        firstName: firstName,
+        lastName: lastName,
+        dob: dob,
+        birthPlace: birthPlace,
+        licenseNum: licenseNum,
+        race: race
+      }
+    }, () => {console.log(this.state, 'line 141')})
+    
+  }
+
   render() {
     const { activeIndex } = this.state
     return (
@@ -126,14 +181,38 @@ export default class PatientInfo extends React.Component {
       <Accordion.Content active={activeIndex === 1}>
       Patient basic information
       {/* add the image field here */}
-      <Form>
-      <Input id='firstName' type='text'/>
-      <Input id='lastName' type='text'/>
-      <Input id='dob' type=''/>
-      <Input id='birthPlace' type='text'/>
-      <Input id='licenseNum' type='text'/>
-      <Input id='race' type='text'/>
-      </Form>  
+      <Form id='basicInfo'>
+        <Form.Field>
+          <label>First Name</label>
+          <input id='firstName' placeholder='First Name' />
+        </Form.Field>
+        <Form.Field>
+          <label>Last Name</label>
+          <input id='lastName' placeholder='Last Name' />
+        </Form.Field>
+        <Form.Field >
+          <label>Date of Birth</label>
+          <input id='dob' placeholder='Date of Birth' />
+        </Form.Field>
+        <Form.Field>
+          <label>Birth Place</label>
+          <input id='birthPlace' placeholder='Birth Place' />
+        </Form.Field>
+        <Form.Field>
+          <label>License Number</label>
+          <input  id='licenseNum' placeholder='License Number' />
+        </Form.Field>
+        <Form.Field>
+          <label>Race</label>
+          <input id='race' placeholder='Race' />
+        </Form.Field>
+        <Button type='submit' 
+        content='Save' 
+        icon='right arrow' 
+        labelPosition='right' 
+        onClick={this.handleSetState.bind(this)}
+        style={{ border: '1px black solid' }} />
+      </Form>
       </Accordion.Content>
       <Accordion.Title
         active={activeIndex === 2}
@@ -152,9 +231,9 @@ export default class PatientInfo extends React.Component {
           return <option value={item} />
         })}
       </datalist> */}
-      <Dropdown id='illnessList' placeholder='Add Illness' fluid multiple search selection clearable value={illnessOptions} options={illnessOptions} onChange= {this.handleChange.bind(this)} />
+        <Dropdown name='medicalHistory' id='illnessList' placeholder='Add Illness' fluid multiple search selection options={illnessOptions} onChange={this.handleChange.bind(this)} />
       {/* <Button type='submit' content='Add' icon='right arrow' labelPosition='right' onClick={props.handleAddIllness} style={{ border: '1px black solid' }} /> */}
-    </div>
+      </div>
       </Accordion.Content>
       <Accordion.Title
         active={activeIndex === 3}
@@ -166,6 +245,23 @@ export default class PatientInfo extends React.Component {
       </Accordion.Title>
       <Accordion.Content active={activeIndex === 3}>
       Patient Notes
+      </Accordion.Content>
+      <Accordion.Title
+        active={activeIndex === 4}
+        index={4}
+        onClick={this.handleClick}
+      >
+      <Icon name='dropdown' />
+      Patient Summary
+      </Accordion.Title>
+      <Accordion.Content active={activeIndex === 4}>
+      Patient Summary
+      <Button type='submit' 
+        content='Add Patient' 
+        icon='right arrow' 
+        labelPosition='right' 
+        onClick={this.handleAddPatient.bind(this)}
+        style={{ border: '1px black solid' }} />
       </Accordion.Content>
     </Accordion>
   )}

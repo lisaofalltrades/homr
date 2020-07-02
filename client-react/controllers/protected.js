@@ -1,6 +1,7 @@
 // modules
 const jwt = require('jsonwebtoken')
 const User = require('../models/User')
+const Patient = require('../models/Patient')
 
 // server
 const express = require('express')
@@ -55,6 +56,17 @@ router.post('/profileUpdate', [authenticate], (req, res) => {
     if (err) return res.status(500).send(err)
     console.log('profile updated')
   })
+})
+
+router.post('/patientAdd', [authenticate], (req, res) => {
+  console.log(req.body)
+  const patient = Patient.register(req.body.photoID, req.body.firstName, req.body.lastName, req.body.dob, req.body.birthPlace, req.body.licenseNum, req.body.race, req.body.medicalHistory, req.body.notes, req.body.redFlags, req.user)
+
+  console.log(patient)
+  patient.save()
+  console.log(patient)
+
+  return res.status(201).send(patient, 'post succesfull')
 })
 
 module.exports = router

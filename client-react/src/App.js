@@ -197,7 +197,7 @@ class App extends React.Component {
               <Redirect to='/login' />
             </Route>
             <Route path='/patientportal'>
-              {this.state.token ? <Patients /> : <Login handleLogin={this.handleLogin.bind(this)} />}
+              {this.state.token ? <Patients token={this.state.token} /> : <Login handleLogin={this.handleLogin.bind(this)} />}
             </Route>
             <Route path='/login'>
               {this.state.token ? <Redirect to='/' /> : <Login handleLogin={this.handleLogin.bind(this)} handleSignup={this.handleSignup.bind(this)} handleChange={this.handleChange.bind(this)} />}
