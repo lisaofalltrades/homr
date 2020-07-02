@@ -4,8 +4,8 @@ const app = express()
 const mongoose = require('mongoose')
 const morgan = require('morgan')
 const path = require('path')
-const AuthController = require('./client-react/controllers/auth')
 
+const AuthController = require('./client-react/controllers/auth')
 const ProtectedRoutes = require('./client-react/controllers/protected')
 
 // server

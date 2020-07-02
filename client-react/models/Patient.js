@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+
 const { Schema } = mongoose
 const { ObjectId } = Schema.Types
 
@@ -63,7 +64,9 @@ patientSchema.statics.register = async function (photoID, firstName, lastName, d
   patient.notes = notes
   patient.redFlags = redFlags
   patient.user = user
+
   await patient.save()
+
   return patient
 }
 

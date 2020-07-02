@@ -58,15 +58,16 @@ router.post('/profileUpdate', [authenticate], (req, res) => {
   })
 })
 
+// this is what Austen re wrote nothing else changed
 router.post('/patientAdd', [authenticate], (req, res) => {
   console.log(req.body)
-  const patient = Patient.register(req.body.photoID, req.body.firstName, req.body.lastName, req.body.dob, req.body.birthPlace, req.body.licenseNum, req.body.race, req.body.medicalHistory, req.body.notes, req.body.redFlags, req.user)
+  Patient.findOne({ firstName: req.body.firstName }, async (err, patientExists) => {
+    if (err) return res.status(500).send(err)
+    if (patientExists) return res.status(400).send({ errorMessage: 'Patient already exists.' })
+    await Patient.register(req.body.photoID, req.body.firstName, req.body.lastName, req.body.dob, req.body.birthPlace, req.body.licenseNum, req.body.race, req.body.medicalHistory, req.body.notes, req.body.redFlags, req.user)
 
-  console.log(patient)
-  patient.save()
-  console.log(patient)
-
-  return res.status(201).send(patient, 'post succesfull')
+    res.send('post succesfull')
+  })
 })
 
 module.exports = router

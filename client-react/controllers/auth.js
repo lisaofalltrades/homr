@@ -36,7 +36,8 @@ router.post('/login', (req, res) => {
     res.send({
       token: token,
       admin: user.admin,
-      role: user.role
+      role: user.role,
+      email: user.email
     })
 
     console.log('logged in')
