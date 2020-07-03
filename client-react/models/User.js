@@ -56,6 +56,13 @@ userSchema.statics.signUp = async function (email, password, role, admin) {
   user.role = role
   user.admin = admin
   user.hashPassword(password)
+  user.first_name = null
+  user.last_name = null
+  user.job_title = null
+  user.city = null
+  user.county = null
+  user.district = null
+  user.status = null
   await user.save()
   return user
 }

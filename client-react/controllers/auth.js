@@ -14,10 +14,12 @@ router.post('/signUp', (req, res) => {
 
     const token = jwt.sign({
       _id: user._id
-    }, 'CHANGE ME!')
+    }, 'PROCESS')
 
-    res.send({ token })
-
+    res.send({
+      token,
+      role: user.role
+    })
     res.status(201).send(user.sanitize())
   })
 })
@@ -29,11 +31,13 @@ router.post('/login', (req, res) => {
 
     const token = jwt.sign({
       _id: user._id
-    }, 'CHANGE ME!')
+    }, 'PROCESS')
 
     res.send({
       token: token,
-      admin: user.admin
+      admin: user.admin,
+      role: user.role,
+      email: user.email
     })
 
     console.log('logged in')
