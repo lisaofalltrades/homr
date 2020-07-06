@@ -1,6 +1,6 @@
 #folders
 node_modules
-
+.env.local
 
 #misc
 .DS_Store
