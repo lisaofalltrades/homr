@@ -206,7 +206,9 @@ class App extends React.Component {
               {this.state.token ? <Redirect to='/' /> : <Signup  />}
             </Route> */}
             <Route path='/'>
-              {this.state.token ? <Dashboard /> : <Redirect to='/login' />}
+              {/* REAPPLY TIERNARY BEFORE PUSHING */}
+              <Dashboard />
+              {/* {this.state.token ? <Dashboard /> : <Redirect to='/login' />} */}
             </Route>
           </Switch>
         </div>
