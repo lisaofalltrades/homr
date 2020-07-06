@@ -25,6 +25,6 @@ export default function Dashboard (props) {
     }
   ]
   return (
-    <Tab panes={panes} menu={{ pointing: true }} style={{ width: '300px', margin: '0 auto' }} />
+    <Tab panes={panes} menu={{ pointing: true }} style={{ width: '900px', margin: '0 auto' }} />
   )
 }
