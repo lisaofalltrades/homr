@@ -70,4 +70,23 @@ router.post('/patientAdd', [authenticate], (req, res) => {
   })
 })
 
+router.post('/patientSearch', [authenticate], (req, res) => {
+  console.log(req.body)
+  if (req.body.searchValue) {
+    var query = { $or:[{ firstName:{ $regex: req.body.searchValue, $options: 'i' } } ,{ lastName:{ $regex: req.body.searchValue, $options: 'i' } }] }
+  }
+
+  Patient.find(query, async (err, data) => {
+    if (err) return res.status(500).send(err)
+    if (data) {
+      res.send({
+        data
+      })
+    } else {
+      res.send(console.log('No results found'))
+    }
+
+  })
+})
+
 module.exports = router
