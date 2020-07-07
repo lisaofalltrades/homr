@@ -56,19 +56,17 @@ export default class PatientSearch extends React.Component {
         .then(data => {
           // const resultsArray = []
           // resultsArray.push(data)
-          console.log(data.data)
+          console.log("DATA.DATA", data.data)
 
           let sourceArray = []
           
-          data.data.forEach(el => ({ 
-            title: el.lastName,
-            description: el.firstName 
-          },
-          sourceArray.push(el),
-          console.log(el)
-          ))
+          data.data.forEach(el => console.log("EACH DATA", el.firstName) )
 
+          data.data.forEach(el => sourceArray.push({
+            title: el.firstName,
+            description: el.lastName }))
 
+          console.log("SOURCE ARRAY line 67", sourceArray)
 
           // data.data.forEach(el => {
           //   source.concat({
