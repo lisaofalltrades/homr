@@ -22,12 +22,12 @@ const noteSchema = Schema({
   },
   patient: {
     type: ObjectId,
-    required: true,
+    required: false,
     ref: 'Patient'
   },
   author: {
     type: ObjectId,
-    required: true,
+    required: false,
     ref: 'User'
   }
 })
@@ -46,6 +46,6 @@ noteSchema.statics.register = async function (date, category, address, descripti
   return note
 }
 
-const note = mongoose.model('note', noteSchema)
+const Note = mongoose.model('Note', noteSchema)
 
-module.exports = note
+module.exports = Note

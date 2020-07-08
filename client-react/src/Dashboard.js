@@ -29,7 +29,7 @@ export default function Dashboard (props) {
       render: () =>
         <Tab.Pane attached={false}>
           <div style={{ 'text-align': 'center' }}>
-            <PatientView />
+            <PatientView token={props.token} />
           </div>
         </Tab.Pane>
     }
