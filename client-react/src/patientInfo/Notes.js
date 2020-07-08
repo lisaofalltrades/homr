@@ -16,9 +16,8 @@ export default function Notes (props) {
       <Form>
         <Form.Group widths='equal'>
           {/* <Form.Input fluid  placeholder='Date' id='date' /> */}
-          <Form.Field>
-            <input label='Date' type='date' />
-          </Form.Field>
+          <Form.Input label='Date' type='date' />
+
           <Form.Select
             fluid
             label='Category'
