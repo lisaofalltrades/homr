@@ -2,6 +2,7 @@ import React from 'react'
 import { Input, Button, Header, Tab, Dropdown } from 'semantic-ui-react'
 import Map from './Map'
 import Metrics from './Metrics'
+import PatientView from './patientInfo/PatientView'
 
 export default function Dashboard (props) {
   const panes = [
@@ -20,6 +21,15 @@ export default function Dashboard (props) {
         <Tab.Pane attached={false}>
           <div style={{ 'text-align': 'center' }}>
             <Map />
+          </div>
+        </Tab.Pane>
+    },
+    {
+      menuItem: 'Patient View',
+      render: () =>
+        <Tab.Pane attached={false}>
+          <div style={{ 'text-align': 'center' }}>
+            <PatientView />
           </div>
         </Tab.Pane>
     }
