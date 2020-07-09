@@ -1,7 +1,7 @@
 import React from 'react'
 import { Accordion, Icon, Button, Form, Dropdown } from 'semantic-ui-react'
 import SearchPatients from './Search'
-import PatientProfile from './PatientProfile'
+import PatientProfile from './PatientSearch'
 
 // Patient Portal
 // -Patient Search
@@ -199,7 +199,7 @@ export default class PatientInfo extends React.Component {
       <Form id='basicInfo'>
         <Form.Field>
           <label>First Name</label>
-          <input id='firstName' placeholder='First Name' />
+          <input id='firstName' placeholder='First Name' value />
         </Form.Field>
         <Form.Field>
           <label>Last Name</label>

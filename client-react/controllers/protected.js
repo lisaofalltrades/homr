@@ -105,4 +105,20 @@ router.post('/patientSearch', [authenticate], (req, res) => {
   })
 })
 
+router.post('/allPatients', [authenticate], (req, res) => {
+  if (req.body.filter) {
+    const filter = req.body.filter
+  }
+  Patient.find({}, async (err, data) => {
+    if (err) return res.status(500).send(err)
+    if (data) {
+      res.send({
+        data
+      })
+    } else {
+      res.send(console.log('No results found'))
+    }
+  })
+})
+
 module.exports = router

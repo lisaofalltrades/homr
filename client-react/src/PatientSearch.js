@@ -1,5 +1,5 @@
 import React from 'react'
-import { List, Icon, Header, Button, Tab, Divider, Grid, Segment, Form, Pagination } from 'semantic-ui-react'
+import { List, Icon, Header, Button, Divider, Grid, Segment, PaginationProps, Pagination } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import SearchPatients from './Search'
 import PatientInfo from './Patients'
@@ -9,8 +9,66 @@ export default class PatientSearch extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      token: this.props.token
+      token: this.props.token,
+      patientsData: [],
+      patients: [],
+      begin: 0,
+      end: 3,
+      activePage: 1,
+      filter: null
     }
+  }
+
+  componentDidMount() {
+    this.setState({patientsData: []})
+    fetch('/allPatients', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.state.token}`
+      },
+      body: JSON.stringify({
+        filter: this.state.filter
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          patientsData: data.data
+        }, () => { console.log(this.state, 'this is loadPatients') })
+      })
+    this.setState({
+      patients: this.state.patientsData.slice(this.state.begin, this.state.end)
+    }, () => { console.log(this.state, 'this is didMount') })
+  }
+
+  handlePageChange(event: React.MouseEvent<HTMLAnchorElement>, data: this) {
+    console.log(data.activePage)
+    this.setState({activePage: data.activePage});
+    this.setState({begin: this.state.activePage * 10 - 10});
+    this.setState({end: this.state.activePage * 10});
+    this.setState({
+      patients: this.state.patientsData.slice(this.state.begin, this.state.end),
+    });
+  }
+
+  loadPatients () {
+    fetch('/allPatients', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.state.token}`
+      },
+      body: JSON.stringify({
+        filter: this.state.filter
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          patientsData: data.data
+        }, () => { console.log(this.state, 'this is loadPatients') })
+      })
   }
 
   render () {
@@ -35,7 +93,7 @@ export default class PatientSearch extends React.Component {
         <br />
         <div id='viewAllPatients'>
           <div id='patientFilter'>
-          Sort by:
+          <Header as='h3'>Display patients by:</Header>
             <Button onClick={this.handleRecentFilter} content='Most Recent' />
             <Button onClick={this.handleFirstNameFilter} content='First Name' />
             <Button onClick={this.handleLastNameFilter} content='Last Name' />
@@ -43,43 +101,31 @@ export default class PatientSearch extends React.Component {
           <br />
           <div id='patientList'>
             <List celled>
-              <List.Item as='Link'>
-                {/* <Image avatar src='https://react.semantic-ui.com/images/avatar/small/helen.jpg' /> */}
-                <List.Content>
-                  <List.Header>lastName, firstName</List.Header>
-                Date of Birth: dob Last Known Location: lastIncidentLocation Red Flags: redFlags
-                </List.Content>
-              </List.Item>
-              <List.Item as='Link'>
-                {/* <Image avatar src='https://react.semantic-ui.com/images/avatar/small/helen.jpg' /> */}
-                <List.Content>
-                  <List.Header>lastName2, firstName2</List.Header>
-                Date of Birth: dob Last Known Location: lastIncidentLocation Red Flags: redFlags
-                </List.Content>
-              </List.Item>
-              <List.Item as='Link'>
-                {/* <Image avatar src='https://react.semantic-ui.com/images/avatar/small/helen.jpg' /> */}
-                <List.Content>
-                  <List.Header>lastName3, firstName3</List.Header>
-                Date of Birth: dob Last Known Location: lastIncidentLocation Red Flags: redFlags
-                </List.Content>
-              </List.Item>
+              {( this.state.patients ).map((patient, i) => {
+                return (
+                  <List.Item as='Link'>
+                    <List.Content>
+                      <List.Header>{patient.lastName}, {patient.firstName}</List.Header>
+                        Date of Birth: {patient.dob} Red Flags: {patient.redFlags}
+                    </List.Content>
+                  </List.Item>
+                )
+              })}
             </List>
           </div>
           <br />
           <div id='listPaginator'>
             <Pagination
               boundaryRange={0}
-              defaultActivePage={1}
-              ellipsisItem={null}
-              firstItem={null}
-              lastItem={null}
+              activePage={this.state.activePage}
               siblingRange={1}
-              totalPages={10}
+              defaultActivePage={1}
+              onPageChange={this.handlePageChange.bind(this)}
+              totalPages={Math.ceil(this.state.patients.length / 10)}
             />
           </div>
         </div>
       </div>
     ) 
-}
+  }
 }

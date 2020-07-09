@@ -3,7 +3,7 @@ import { List, Icon, Header, Button, Tab, Divider, Grid, Segment, Form } from 's
 import { Link } from 'react-router-dom'
 import SearchPatients from './Search'
 import PatientInfo from './Patients'
-import PatientProfile from './PatientProfile'
+import PatientProfile from './PatientSearch'
 
 export default class PatientPortal extends React.Component {
 

@@ -1,8 +1,6 @@
 /* globals fetch */
 import Login from './Login'
-import Dashboard from './Dashboard'
 import Settings from './Settings'
-import PatientInfo from './Patients'
 import React from 'react'
 import './App.css'
 import 'semantic-ui-css/semantic.min.css'
@@ -13,11 +11,9 @@ import {
   Link,
   Redirect
 } from 'react-router-dom'
-import { List, Form, Button, Tab, Icon, Header, Menu } from 'semantic-ui-react'
+import { Tab, Menu } from 'semantic-ui-react'
 import Map from './Map'
-import SearchPatients from './Search'
 import PatientSearch from './PatientSearch'
-import Notes from './patientInfo/Notes'
 import Metrics from './Metrics'
 import UserProfile from './UserProfile'
 import PatientProfile from './PatientProfile'
@@ -246,7 +242,7 @@ class App extends React.Component {
           </Tab.Pane>
       }
     ]
-    
+
     const subpanesPatient = [
       {
         menuItem: 'Patient Search',
@@ -291,7 +287,6 @@ class App extends React.Component {
         </Route>
       </Switch>
     )
-
   }
 }
 
