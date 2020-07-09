@@ -24,6 +24,7 @@ const noteSchema = Schema({
     type: ObjectId,
     required: false,
     ref: 'Patient'
+    // this is the user that is logged in and not the user? why?
   },
   author: {
     type: ObjectId,

@@ -10,6 +10,7 @@ class Notes extends React.Component {
       category: '',
       address: '',
       description: '',
+      patient: '',
       token: props.token,
       options: [
         { key: 'i', text: 'Incident', value: 'incident' },
@@ -30,8 +31,8 @@ class Notes extends React.Component {
 
   handleNewNote () {
     console.log('Adding a new note')
-    console.log('info', this.state.date, this.state.category, this.state.address, this.state.description, this.state.token)
-
+    console.log('info', this.state.date, this.state.category, this.state.address, this.state.description, this.state.token, this.state.patient)
+    // need to get the patient from the other component in order to align with that patient
     fetch('/AddNote', {
       method: 'POST',
       headers: {
@@ -42,7 +43,9 @@ class Notes extends React.Component {
         category: this.state.category,
         date: this.state.date,
         address: this.state.address,
-        description: this.state.description
+        description: this.state.description,
+        patient: this.state.patient
+        // above is a work in progress
       })
     })
       .then(response => response.json())

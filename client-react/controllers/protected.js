@@ -81,7 +81,7 @@ router.post('/AddNote', [authenticate], (req, res) => {
     if (patientExists) return res.status(201).send({ warning: 'Updating existing note' })
     console.log(author, 'this is line 82')
     // need to add patient it is going to
-    await Note.register(req.body.category, req.body.date, req.body.address, req.body.description, req.author)
+    await Note.register(req.body.date, req.body.category, req.body.address, req.body.description, req.patient, req.author)
 
     res.send('post succesfull')
   })
