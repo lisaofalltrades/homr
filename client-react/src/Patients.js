@@ -1,6 +1,19 @@
 import React from 'react'
-import { Input, Accordion, Icon, Button, Form, Dropdown } from 'semantic-ui-react'
+import { Input, Accordion, Icon, Button, Form, Dropdown, Portal, Search } from 'semantic-ui-react'
 import { token } from 'morgan'
+import SearchPatients from './Search'
+
+// Patient Portal
+// -Patient Search
+// --Multi-view - Standard Search
+// --Filters
+// ---Name
+// ---Recent
+// ---Location - Grid Idea A1 - H10
+
+
+
+
 const illnessList = [
   'alcoholism',
   'allergies',
@@ -70,6 +83,7 @@ const illnessOptions = illnessList.map((illness) => ({
   text: illness,
   value: illness
 }))
+
 export default class PatientInfo extends React.Component {
   constructor(props){
     super(props)
@@ -158,7 +172,9 @@ export default class PatientInfo extends React.Component {
   render() {
     const { activeIndex } = this.state
     return (
-    <Accordion>
+      
+      <Accordion>
+      <SearchPatients token={this.state.token} />
       <Accordion.Title
         active={activeIndex === 0}
         index={0}
