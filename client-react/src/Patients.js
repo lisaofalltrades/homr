@@ -1,7 +1,7 @@
 import React from 'react'
-import { Input, Accordion, Icon, Button, Form, Dropdown, Portal, Search } from 'semantic-ui-react'
-import { token } from 'morgan'
+import { Accordion, Icon, Button, Form, Dropdown } from 'semantic-ui-react'
 import SearchPatients from './Search'
+import PatientProfile from './PatientProfile'
 
 // Patient Portal
 // -Patient Search
@@ -10,8 +10,6 @@ import SearchPatients from './Search'
 // ---Name
 // ---Recent
 // ---Location - Grid Idea A1 - H10
-
-
 
 
 const illnessList = [
@@ -174,7 +172,8 @@ export default class PatientInfo extends React.Component {
     return (
       
       <Accordion>
-      <SearchPatients token={this.state.token} />
+      {/* <SearchPatients token={this.state.token} /> */}
+      <PatientProfile token={this.state.token} />
       <Accordion.Title
         active={activeIndex === 0}
         index={0}

@@ -1,14 +1,9 @@
 import React from 'react'
-import { Search, Grid, Header, Segment } from 'semantic-ui-react'
+import { Search, Grid, Header, Segment, Divider, Icon, Button } from 'semantic-ui-react'
 import _ from 'lodash'
+import { Link } from 'react-router-dom'
 
 const initialState = { isLoading: false, results: [], value: ''}
-
-// const source = _.times(5, () => ({
-//   title: this.state.results.title,
-//   // otherInfo: faker.company.catchPhrase(),
-//   // image: faker.internet.avatar()
-// }))
 
 export default class PatientSearch extends React.Component {
 
@@ -38,6 +33,7 @@ export default class PatientSearch extends React.Component {
     // }
   
     handleResultSelect = (e, { result }) => this.setState({ value: result.title })
+    // add functionality to handleResultSelect to setState and then take the value added and pass function to Patient Profile and then setState to change the active Tab index to Patient Profile
   
     handleSearchChange = (e, { value }) => {
       this.setState({ isLoading: true, value })
@@ -59,33 +55,20 @@ export default class PatientSearch extends React.Component {
           console.log("DATA.DATA", data.data)
 
           let sourceArray = []
+          console.log(data.data[0].user, 'this is the ObjectID of the patient')
+
           
           data.data.forEach(el => console.log("EACH DATA", el.firstName) )
-
+          
+          
           data.data.forEach(el => sourceArray.push({
-            title: el.firstName,
-            description: el.lastName }))
-
+            title: el.lastName,
+            description: el.firstName 
+          }))
+          
+          sourceArray[sourceArray.length] = {title: <Link to='addPatient'>Add New</Link>}
+          
           console.log("SOURCE ARRAY line 67", sourceArray)
-
-          // data.data.forEach(el => {
-          //   source.concat({
-          //     title: el.lastName,
-          //     description: el.firstName
-          //   })
-          //   console.log(source)
-          // })
-
-          // try {
-            // source = _.times(1, () => ({
-            //   title: data.data[0].lastName,
-            //   description: data.data[0].firstName
-            // }))
-          // }
-          // catch {
-          //   source = 'No results found.'
-          // }
-
 
           this.setState({
             results: sourceArray
@@ -96,8 +79,8 @@ export default class PatientSearch extends React.Component {
       setTimeout(() => {
         if (this.state.value.length < 1) return this.setState(initialState)
   
-        const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
-        const isMatch = (result) => re.test(result.title)
+        // const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
+        // const isMatch = (result) => re.test(result.title)
   
         this.setState({
           isLoading: false,
@@ -110,32 +93,20 @@ export default class PatientSearch extends React.Component {
       const { isLoading, value, results } = this.state
   
       return (
-        <Grid>
-          <Grid.Column width={6}>
-            <Search
-              loading={isLoading}
-              onResultSelect={this.handleResultSelect}
-              onSearchChange={_.debounce(this.handleSearchChange, 500, {
-                leading: true,
-              })}
-              results={results}
-              value={value}
-              {...this.props}
-            />
-          </Grid.Column>
-          <Grid.Column width={10}>
-            <Segment>
-              <Header>State</Header>
-              <pre style={{ overflowX: 'auto' }}>
-                {JSON.stringify(this.state, null, 2)}
-              </pre>
-              <Header>Options</Header>
-              <pre style={{ overflowX: 'auto' }}>
-                {JSON.stringify(this.state.results, null, 2)}
-              </pre>
-            </Segment>
-          </Grid.Column>
-        </Grid>
+        <div>
+          <Search
+            loading={isLoading}
+            onResultSelect={this.handleResultSelect}
+            onSearchChange={_.debounce(this.handleSearchChange, 500, {
+              leading: true,
+            })}
+            fluid
+            size='huge'
+            results={results}
+            value={value}
+            {...this.props}
+          />
+        </div>
       )
     }
   }
