@@ -84,11 +84,13 @@ router.post('/AddNote', [authenticate], (req, res) => {
     await Note.register(req.body.date, req.body.category, req.body.address, req.body.description, req.patient, req.author)
 
     res.send('post succesfull')
+  })
+})
 
 router.post('/patientSearch', [authenticate], (req, res) => {
   console.log(req.body)
   if (req.body.searchValue) {
-    var query = { $or:[{ firstName:{ $regex: req.body.searchValue, $options: 'i' } } ,{ lastName:{ $regex: req.body.searchValue, $options: 'i' } }] }
+    var query = { $or: [{ firstName: { $regex: req.body.searchValue, $options: 'i' } }, { lastName: { $regex: req.body.searchValue, $options: 'i' } }] }
   }
 
   Patient.find(query, async (err, data) => {
