@@ -1,8 +1,8 @@
 /* globals fetch */
 import Login from './Login'
 import Dashboard from './Dashboard'
-import Patients from './Patients'
 import Settings from './Settings'
+import PatientInfo from './Patients'
 import React from 'react'
 import './App.css'
 import 'semantic-ui-css/semantic.min.css'
@@ -13,6 +13,14 @@ import {
   Link,
   Redirect
 } from 'react-router-dom'
+import { List, Form, Button, Tab, Icon, Header, Menu } from 'semantic-ui-react'
+import Map from './Map'
+import SearchPatients from './Search'
+import PatientSearch from './PatientSearch'
+import Notes from './patientInfo/Notes'
+import Metrics from './Metrics'
+import UserProfile from './UserProfile'
+import PatientProfile from './PatientProfile'
 // import { response } from 'express'
 
 class App extends React.Component {
@@ -174,44 +182,116 @@ class App extends React.Component {
   }
 
   render () {
+    const panes = [
+      {
+        menuItem: 'Dashboard',
+        render: () =>
+          <Tab.Pane attached={true} style={{ 'background-color': 'silver', border: '1px solid black' }}>
+            <Tab panes={subpanesDashboard} menu={{ secondary: true, pointing: true }} style={{ width: '100%', margin: '0 auto' }} />
+          </Tab.Pane>
+      },
+      {
+        menuItem: 'Patient Portal',
+        render: () =>
+          <Tab.Pane attached={true} style={{ 'background-color': 'silver', border: '1px solid black' }}>
+            <Tab panes={subpanesPatient} menu={{ secondary: true, pointing: true }} style={{ width: '100%', margin: '0 auto' }} />
+          </Tab.Pane>
+      },
+      {
+        menuItem: 'Incidents',
+        render: () =>
+          <Tab.Pane attached={true} style={{ 'background-color': 'silver', border: '1px solid black' }}>
+            <Tab panes={subpanesIncidents} menu={{ secondary: true, pointing: true }} style={{ width: '100%', margin: '0 auto' }} />
+          </Tab.Pane>
+      },
+      {
+        menuItem: <Menu.Item key='profile' style={{ 'margin-left': 'auto' }}>My Profile</Menu.Item>,
+        render: () =>
+          <Tab.Pane attached={true} style={{ 'background-color': 'silver', border: '1px solid black',   }}>
+            <Tab panes={subpanesProfile} menu={{ secondary: true, pointing: true }} style={{ width: '100%', margin: '0 auto' }} />
+          </Tab.Pane>
+      }
+    ]
+
+    const subpanesDashboard = [
+      {
+        menuItem: 'Chart View',
+        render: () =>
+          <Tab.Pane attached={true} style={{ 'background-color': 'silver', border: '1px solid black' }}>
+            <Metrics />
+          </Tab.Pane>
+      },
+      {
+        menuItem: 'Detail View',
+        render: () =>
+          <Tab.Pane attached={true} style={{ 'background-color': 'silver', border: '1px solid black' }}>
+            <Metrics />
+          </Tab.Pane>
+      }
+    ]
+
+    const subpanesIncidents = [
+      {
+        menuItem: 'View Map',
+        render: () =>
+          <Tab.Pane attached={true} style={{ 'background-color': 'silver', border: '1px solid black' }}>
+            <Map />
+          </Tab.Pane>
+      },
+      {
+        menuItem: 'View Details',
+        render: () =>
+          <Tab.Pane attached={true} style={{ 'background-color': 'silver', border: '1px solid black' }}>
+            Most Recent Incidents List
+          </Tab.Pane>
+      }
+    ]
+    
+    const subpanesPatient = [
+      {
+        menuItem: 'Patient Search',
+        render: () =>
+          <Tab.Pane attached={true} style={{ 'background-color': 'silver', border: '1px solid black' }}>
+            <PatientSearch token={this.state.token} />
+          </Tab.Pane>
+      },
+      {
+        menuItem: 'Patient Profile',
+        render: () =>
+          <Tab.Pane attached={true} style={{ 'background-color': 'silver', border: '1px solid black' }}>
+            <PatientProfile token={this.state.token} />
+          </Tab.Pane>
+      }
+    ]
+
+    const subpanesProfile = [
+      {
+        menuItem: 'View Profile',
+        render: () =>
+          <Tab.Pane attached={true} style={{ 'background-color': 'silver', border: '1px solid black' }}>
+            <UserProfile />
+          </Tab.Pane>
+      },
+      {
+        menuItem: 'Edit Profile',
+        render: () =>
+          <Tab.Pane attached={true} style={{ 'background-color': 'silver', border: '1px solid black' }}>
+            <Settings role={this.state.role} handleProfile={this.handleProfile.bind(this)} />
+          </Tab.Pane>
+      }
+    ]
+
     return (
-      <Router>
-        <div>
-          <nav id='navBar'>
-            {this.state.token
-              ? <div>
-                <Link to='/'>Home</Link>
-                <Link to='/patientportal'>Patient Portal</Link>
-                <Link to='/logout' onClick={this.handleLogout.bind(this)}>Logout</Link>
-                <Link to='/settings'>Settings</Link>
-              </div>
-              : null}
-          </nav>
-        </div>
-        <div>
-          <Switch>
-            <Route path='/settings'>
-              {this.state.token ? <Settings role={this.state.role} handleProfile={this.handleProfile.bind(this)} /> : <Login handleLogin={this.handleLogin.bind(this)} />}
-            </Route>
-            <Route path='/logout'>
-              <Redirect to='/login' />
-            </Route>
-            <Route path='/patientportal'>
-              {this.state.token ? <Patients token={this.state.token} /> : <Login handleLogin={this.handleLogin.bind(this)} />}
-            </Route>
-            <Route path='/login'>
-              {this.state.token ? <Redirect to='/' /> : <Login handleLogin={this.handleLogin.bind(this)} handleSignup={this.handleSignup.bind(this)} handleChange={this.handleChange.bind(this)} />}
-            </Route>
-            {/* <Route path='/signUp'>
-              {this.state.token ? <Redirect to='/' /> : <Signup  />}
-            </Route> */}
-            <Route path='/'>
-              {this.state.token ? <Dashboard /> : <Redirect to='/login' />}
-            </Route>
-          </Switch>
-        </div>
-      </Router>
+      <Switch>
+        <Route path='/login'>
+          {this.state.token ? <Redirect to='/' /> : <Login handleLogin={this.handleLogin.bind(this)} handleSignup={this.handleSignup.bind(this)} handleChange={this.handleChange.bind(this)} />}
+        </Route>
+        <Route path='/'>
+          {this.state.token ? <Tab panes={panes} style={{ width: '900px', margin: '0 auto' }} /> : <Redirect to='/login' />}
+        </Route>
+      </Switch>
     )
+
   }
 }
 

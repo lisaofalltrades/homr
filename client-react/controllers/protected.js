@@ -2,11 +2,12 @@
 const jwt = require('jsonwebtoken')
 const User = require('../models/User')
 const Patient = require('../models/Patient')
-
+const Note = require('../models/Note')
 // server
 const express = require('express')
 const { Profiler } = require('react')
 const { db } = require('../models/User')
+// const { default: Notes } = require('../src/patientInfo/Notes')
 const router = express.Router()
 
 // provides a short authenticate to other get routes
@@ -21,6 +22,7 @@ const authenticate = (req, res, next) => {
       User.findOne({ _id: payload._id }, (err, userDoc) => { // change for deployment
         if (err) return res.status(500).send(err)
         req.user = userDoc
+        req.author = userDoc
         console.log('authenticate ran')
         return next()
       })
@@ -70,6 +72,21 @@ router.post('/patientAdd', [authenticate], (req, res) => {
   })
 })
 
+router.post('/AddNote', [authenticate], (req, res) => {
+  console.log(req.body, 'add note console log')
+  console.log(req.author, 'author')
+  const author = req.author
+  Note.findOne({ patient: req.body.patient }, async (err, patientExists) => {
+    if (err) return res.status(500).send(err)
+    if (patientExists) return res.status(201).send({ warning: 'Updating existing note' })
+    console.log(author, 'this is line 82')
+    // need to add patient it is going to
+    await Note.register(req.body.date, req.body.category, req.body.address, req.body.description, req.patient, req.author)
+
+    res.send('post succesfull')
+  })
+})
+
 router.post('/patientSearch', [authenticate], (req, res) => {
   console.log(req.body)
   if (req.body.searchValue) {
@@ -85,7 +102,6 @@ router.post('/patientSearch', [authenticate], (req, res) => {
     } else {
       res.send(console.log('No results found'))
     }
-
   })
 })
 
