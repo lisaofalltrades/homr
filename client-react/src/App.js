@@ -33,7 +33,15 @@ class App extends React.Component {
   }
 
   onhandlePatientSelect = (patientVal) => {
-    this.setState({ selectedPatient: patientVal }, () => {console.log(this.state.selectedPatient,'you did it')})
+    this.setState({ selectedPatient: patientVal }, () => {
+      console.log(this.state.selectedPatient,'you did it')
+
+      const patientProfilePane = document.getElementById('patientProfilePane')
+      patientProfilePane.style.display = 'block'
+      if(!this.state.selectedPatient){
+        patientProfilePane.style.display = 'none'
+      }
+    })
   }
 
   handleLogin (evt) {
@@ -257,7 +265,7 @@ class App extends React.Component {
           </Tab.Pane>
       },
       {
-        menuItem: 'Patient Profile',
+        menuItem: <Menu.Item key='profile' id='patientProfilePane' style={{ display: 'none' }}>Patient Profile</Menu.Item>,
         render: () =>
           <Tab.Pane attached style={{ 'background-color': 'silver', border: '1px solid black' }}>
             <PatientProfile token={this.state.token} patientId={this.state.patientId} />
