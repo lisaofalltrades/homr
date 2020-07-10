@@ -1,20 +1,31 @@
 import React from 'react'
 import { Search } from 'semantic-ui-react'
 import _ from 'lodash'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
+import PatientProfile from './PatientProfile'
 
-const initialState = { isLoading: false, results: [], value: '', patientId: [], selectedPatient: ''}
+const initialState = { isLoading: false, results: [], value: '', patientId: [], selectedPatient: '', activeIndex:0, token: ''}
 
 export default class PatientSearch extends React.Component {
 
     state = initialState
+
+    componentDidMount () {
+      // added by austen 7/10
+      this.setState({ token: this.props.token})
+    }
   
     handleResultSelect = (e, { result }) => {
+      // added by austen 7/10
+      const { index } = result
+      const { activeIndex } = this.state
+      const newIndex = activeIndex === index ? -1 : index
+
       console.log(this.state.results.indexOf(result), 'this is the result')
       // this is the patient id of the selected patient
       let selectedId = this.state.patientId[this.state.results.indexOf(result)]
       console.log(selectedId, 'this is the selected id')
-      this.setState({ value: result.title, selectedPatient: selectedId }, () => {
+      this.setState({ value: result.title, selectedPatient: selectedId, activeIndex: newIndex  }, () => {
         this.props.onhandlePatientSelect(this.state.selectedPatient)
       })
     }
@@ -49,7 +60,8 @@ export default class PatientSearch extends React.Component {
           
           data.data.forEach(el => {
             idArray.push({
-              id: el._id
+              // id: el._id
+              id:el
             })
             sourceArray.push({
               title: el.lastName,
@@ -82,22 +94,37 @@ export default class PatientSearch extends React.Component {
     }
   
     render() {
-      const { isLoading, value, results } = this.state
-  
+      const { isLoading, value, results, activeIndex } = this.state
+    
       return (
         <div>
-          <Search
-            loading={isLoading}
-            onResultSelect={this.handleResultSelect}
-            onSearchChange={_.debounce(this.handleSearchChange, 500, {
-              leading: true,
-            })}
-            fluid
-            size='huge'
-            results={results}
-            value={value}
-            {...this.props}
-          />
+          {activeIndex === 0 ? <div>
+            <Search
+              loading={isLoading}
+              onResultSelect={this.handleResultSelect}
+              onSearchChange={_.debounce(this.handleSearchChange, 500, {
+                leading: true,
+              })}
+              fluid
+              size='huge'
+              results={results}
+              value={value}
+              {...this.props}
+              // and down is added by austen 7/10
+              active={activeIndex === 0}
+              index={0}
+            />
+          </div>
+          :
+          <div>
+            <PatientProfile 
+                active={activeIndex === 1}
+                index={1}
+                selectedPatient={this.state.selectedPatient}
+                token={this.props.token}
+            />
+          </div>
+          }
         </div>
       )
     }
