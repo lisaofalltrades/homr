@@ -126,8 +126,8 @@ export default class AddPatient extends React.Component {
         licenseNum: this.state.basicInfo.licenseNum,
         race: this.state.basicInfo.race,
         medicalHistory: this.state.medicalHistory,
-        notes: null,
-        redFlags: null
+        notes: [],
+        redFlags: []
       })
     })
       .then(response => response.json())
