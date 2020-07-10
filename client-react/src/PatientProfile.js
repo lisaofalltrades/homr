@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom'
 import EditPatient from './EditPatient'
 
 const handleEditScreen = () => {
-  let viewPatientInfoDiv = document.getElementById('viewPatientInfo')
-  let editPatientInfoDiv = document.getElementById('editPatientInfo')
+  const viewPatientInfoDiv = document.getElementById('viewPatientInfo')
+  const editPatientInfoDiv = document.getElementById('editPatientInfo')
 
   viewPatientInfoDiv.style.display = 'none'
   editPatientInfoDiv.style.display = 'block'
