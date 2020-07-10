@@ -2,7 +2,7 @@ import React from 'react'
 import { List, Icon, Header, Button, Divider, Grid, Segment, PaginationProps, Pagination } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import SearchPatients from './Search'
-import PatientInfo from './Patients'
+import AddPatient from './AddPatient'
 // import _ from 'lodash'
 
 export default class PatientSearch extends React.Component {
@@ -17,6 +17,15 @@ export default class PatientSearch extends React.Component {
       activePage: 1,
       filter: 'lastName'
     }
+  }
+
+  handleAddScreen () {
+    let addPatientDiv = document.getElementById('addPatient')
+    let searchPatientDiv = document.getElementById('searchPatient')
+
+    searchPatientDiv.style.display = 'none'
+    addPatientDiv.style.display = 'block'
+
   }
 
   componentDidMount() {
@@ -116,6 +125,7 @@ export default class PatientSearch extends React.Component {
   render () {
     return (
       <div>
+      <div id='searchPatient'>
         <div style={{ 'text-align': 'left' }}>
           <Header as='h1'>Patient View</Header>
           <Segment placeholder>
@@ -126,7 +136,7 @@ export default class PatientSearch extends React.Component {
               </Grid.Column>
 
               <Grid.Column verticalAlign='middle'>
-                <Button icon size='massive' labelPosition='right'>Add Patient <Icon name='user' /></Button>
+                <Button onClick={this.handleAddScreen.bind(this)} icon size='massive' labelPosition='right'>Add Patient <Icon name='user' /></Button>
               </Grid.Column>
             </Grid>
             <Divider vertical>Or</Divider>
@@ -167,8 +177,12 @@ export default class PatientSearch extends React.Component {
               defaultActivePage={1}
               onPageChange={this.handlePageChange.bind(this)}
               totalPages={Math.ceil(this.state.patients.length / 10)}
-            />
+              />
           </div>
+        </div>
+      </div>
+        <div id='addPatient' style={{display: 'none'}}>
+          <AddPatient token={this.state.token} />
         </div>
       </div>
     ) 

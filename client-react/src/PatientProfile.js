@@ -1,9 +1,16 @@
 import React from 'react'
-import { Header, List, Icon } from 'semantic-ui-react'
+import { Header, List, Icon, Button } from 'semantic-ui-react'
 import Notes from './patientInfo/Notes'
 import { Link } from 'react-router-dom'
 import EditPatient from './EditPatient'
-import AddPatient from './AddPatient'
+
+const handleEditScreen = () => {
+  let viewPatientInfoDiv = document.getElementById('viewPatientInfo')
+  let editPatientInfoDiv = document.getElementById('editPatientInfo')
+
+  viewPatientInfoDiv.style.display = 'none'
+  editPatientInfoDiv.style.display = 'block'
+}
 
 export default function PatientProfile (props) {
   return (
@@ -80,8 +87,8 @@ export default function PatientProfile (props) {
                 </List.Description>
               </List.Content>
             </List.Item>
-            <List.Item as={Link} to='/addPatient'>
-              Edit Patient
+            <List.Item>
+              <Button onClick={handleEditScreen} content='EditPatient' />
             </List.Item>
           </List>
         </div><br />
@@ -89,12 +96,9 @@ export default function PatientProfile (props) {
           <Notes token={props.token} />
         </div>
       </div><br />
-      <div id='editPatientInfo' style={{display: 'block'}}>
+      <div id='editPatientInfo' style={{display: 'none'}}>
         <EditPatient token={props.token} />
       </div><br />
-      <div id='addPatient' style={{display: 'block'}}>
-        <AddPatient token={props.token} />
-      </div>
     </div>
   )
 }
