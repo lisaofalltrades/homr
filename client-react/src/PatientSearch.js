@@ -132,7 +132,7 @@ export default class PatientSearch extends React.Component {
             <Grid columns={2} stackable textAlign='center'>
               <Grid.Column verticalAlign='middle'>
                 <Header as='h2'>Search for a patient:</Header>
-                <SearchPatients token={this.state.token} />
+                <SearchPatients onhandlePatientSelect={this.props.onhandlePatientSelect} token={this.state.token} />
               </Grid.Column>
 
               <Grid.Column verticalAlign='middle'>
