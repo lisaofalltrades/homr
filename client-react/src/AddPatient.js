@@ -110,12 +110,32 @@ export default class AddPatient extends React.Component {
     console.log(this.state.medicalHistory)
   }
 
-  handleAddPatient() {
-    fetch('/patientAdd', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.state.token}`
+  handleAddPatient(evt) {
+    evt.preventDefault()
+    console.log('hello')
+    const firstName = document.getElementById('firstName').value
+    const lastName = document.getElementById('lastName').value
+    const dob = document.getElementById('dob').value
+    const birthPlace = document.getElementById('birthPlace').value
+    const licenseNum = document.getElementById('licenseNum').value
+    const race = document.getElementById('race').value
+    console.log(firstName)
+    
+    this.setState({
+      basicInfo: {
+        firstName: firstName,
+        lastName: lastName,
+        dob: dob,
+        birthPlace: birthPlace,
+        licenseNum: licenseNum,
+        race: race
+      }
+    }, () => {    
+      fetch('/patientAdd', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${this.state.token}`
       },
       body: JSON.stringify({
         photoID: this.state.basicInfo.photoID,
@@ -130,29 +150,30 @@ export default class AddPatient extends React.Component {
         redFlags: []
       })
     })
-      .then(response => response.json())
+      .then(response => response.json())})
+
   }
 
-  handleSetState(evt) {
-    evt.preventDefault()
-    const firstName = document.getElementById('firstName').value
-    const lastName = document.getElementById('lastName').value
-    const dob = document.getElementById('dob').value
-    const birthPlace = document.getElementById('birthPlace').value
-    const licenseNum = document.getElementById('licenseNum').value
-    const race = document.getElementById('race').value
-    console.log(firstName)
-    this.setState({
-      basicInfo:{
-        firstName: firstName,
-        lastName: lastName,
-        dob: dob,
-        birthPlace: birthPlace,
-        licenseNum: licenseNum,
-        race: race
-      }
-    }, () => {console.log(this.state, 'line 141')})
-  }
+  // handleSetState(evt) {
+  //   // evt.preventDefault()
+  //   const firstName = document.getElementById('firstName').value
+  //   const lastName = document.getElementById('lastName').value
+  //   const dob = document.getElementById('dob').value
+  //   const birthPlace = document.getElementById('birthPlace').value
+  //   const licenseNum = document.getElementById('licenseNum').value
+  //   const race = document.getElementById('race').value
+  //   console.log(firstName)
+  //   this.setState({
+  //     basicInfo:{
+  //       firstName: firstName,
+  //       lastName: lastName,
+  //       dob: dob,
+  //       birthPlace: birthPlace,
+  //       licenseNum: licenseNum,
+  //       race: race
+  //     }
+  //   }, () => {console.log(this.state, 'line 141')})
+  // }
 
   render() {
     return (
@@ -185,17 +206,18 @@ export default class AddPatient extends React.Component {
             <label>Race</label>
             <input id='race' placeholder='Race' />
           </Form.Field>
-          <Button type='submit' 
+          {/* <Button type='submit' 
           content='Save' 
           icon='right arrow' 
           labelPosition='right' 
-          onClick={this.handleSetState.bind(this)}
-          style={{ border: '1px black solid' }} />
+          onClick={()=> {this.handleSetState()}}
+          style={{ border: '1px black solid' }} /> */}
         </Form>
         
         <Header as='h3'>Medical History</Header>
         <div>
-          <Dropdown name='medicalHistory' id='illnessList' placeholder='Add Illness' fluid multiple search selection options={illnessOptions} onChange={this.handleChange.bind(this)} />
+          <Dropdown name='medicalHistory' id='illnessList' placeholder='Add Illness' fluid multiple search selection options={illnessOptions} onChange={this.handleChange.bind(this)} 
+          />
         {/* <Button type='submit' content='Add' icon='right arrow' labelPosition='right' onClick={props.handleAddIllness} style={{ border: '1px black solid' }} /> */}
         </div><br />
         <Button type='submit' 
