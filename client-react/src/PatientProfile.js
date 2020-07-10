@@ -13,10 +13,11 @@ const handleEditScreen = () => {
 }
 
 export default function PatientProfile (props) {
-  // now we have have the idof the patient
+// updated all auto fill fields austen 7/10
+
   return (
     <div style={{ 'text-align': 'left' }}>
-      <Header as='h1'>Patient Name Value Call</Header>
+      <Header as='h1'>{props.selectedPatient.id.firstName}</Header>
       <div id='viewPatientInfo' style={{ display: 'block' }}>
         <div>
           <List>
@@ -25,7 +26,10 @@ export default function PatientProfile (props) {
                 <div style={{ 'background-color': 'red', height: '4em', 'border-radius': '6px', padding: '3px' }}>
                   <List.Header><Icon name='flag' />Red Flags</List.Header>
                   <List.Description>
-                    Druggie
+                    {props.selectedPatient.id.redFlags
+                      ? <ul>
+                        {props.selectedPatient.id.redFlags.map(element => <li key={element}>{element}</li>)}
+                      </ul> : <p>None</p>}
                   </List.Description>
                 </div>
               </List.Content>
@@ -34,7 +38,7 @@ export default function PatientProfile (props) {
               <List.Content>
                 <List.Header>Full Name</List.Header>
                 <List.Description>
-                  Marshall Mathers
+                  {props.selectedPatient.id.firstName} {props.selectedPatient.id.lastName}
                 </List.Description>
               </List.Content>
             </List.Item>
@@ -42,7 +46,7 @@ export default function PatientProfile (props) {
               <List.Content>
                 <List.Header>Date of Birth</List.Header>
                 <List.Description>
-                  6/7/73
+                  {props.selectedPatient.id.dob}
                 </List.Description>
               </List.Content>
             </List.Item>
@@ -50,7 +54,7 @@ export default function PatientProfile (props) {
               <List.Content>
                 <List.Header>Birthplace</List.Header>
                 <List.Description>
-                  Detroit, MI
+                  {props.selectedPatient.id.birthPlace}
                 </List.Description>
               </List.Content>
             </List.Item>
@@ -58,7 +62,7 @@ export default function PatientProfile (props) {
               <List.Content>
                 <List.Header>License Number</List.Header>
                 <List.Description>
-                  A123455
+                  {props.selectedPatient.id.licenseNum}
                 </List.Description>
               </List.Content>
             </List.Item>
@@ -66,7 +70,7 @@ export default function PatientProfile (props) {
               <List.Content>
                 <List.Header>Ethnicity</List.Header>
                 <List.Description>
-                  White/Caucasian
+                  {props.selectedPatient.id.race}
                 </List.Description>
               </List.Content>
             </List.Item>
@@ -74,8 +78,9 @@ export default function PatientProfile (props) {
               <List.Content>
                 <List.Header>Medical History</List.Header>
                 <List.Description>
-                  Dr. Dre: Depression
-                  Self Diagnosed: Rap God
+                  <ul>
+                    {props.selectedPatient.id.medicalHistory.map(element => <li key={element}>{element}</li>)}
+                  </ul>
                 </List.Description>
               </List.Content>
             </List.Item>
@@ -83,8 +88,7 @@ export default function PatientProfile (props) {
               <List.Content>
                 <List.Header>Notes</List.Header>
                 <List.Description>
-                  Hates his mom
-                  Other stuff
+                  {props.selectedPatient.id.notes}
                 </List.Description>
               </List.Content>
             </List.Item>
@@ -94,10 +98,10 @@ export default function PatientProfile (props) {
           </List>
         </div><br />
         <div>
-          <Notes token={props.token} />
+          <Notes token={props.token} patientId={props.selectedPatient.id} />
         </div>
       </div><br />
-      <div id='editPatientInfo' style={{display: 'none'}}>
+      <div id='editPatientInfo' style={{ display: 'none' }}>
         <EditPatient token={props.token} />
       </div><br />
     </div>

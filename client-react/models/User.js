@@ -49,7 +49,7 @@ const userSchema = Schema({
     required: false
   }
 })
-
+ // updated the user.status to empty string austen 7/10
 userSchema.statics.signUp = async function (email, password, role, admin) {
   const user = new this()
   user.email = email
@@ -62,7 +62,7 @@ userSchema.statics.signUp = async function (email, password, role, admin) {
   user.city = null
   user.county = null
   user.district = null
-  user.status = null
+  user.status = ''
   await user.save()
   return user
 }

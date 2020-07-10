@@ -268,7 +268,7 @@ class App extends React.Component {
         menuItem: <Menu.Item key='profile' id='patientProfilePane' style={{ display: 'none' }}>Patient Profile</Menu.Item>,
         render: () =>
           <Tab.Pane attached style={{ 'background-color': 'silver', border: '1px solid black' }}>
-            <PatientProfile token={this.state.token} patientId={this.state.patientId} />
+            <PatientProfile token={this.state.token} selectedPatient={this.state.selectedPatient} />
                {/* this is the last thing worked on 7/9/2020 */}
           </Tab.Pane>
       }
