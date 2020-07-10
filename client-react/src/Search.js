@@ -3,37 +3,22 @@ import { Search } from 'semantic-ui-react'
 import _ from 'lodash'
 import { Link } from 'react-router-dom'
 
-const initialState = { isLoading: false, results: [], value: ''}
+const initialState = { isLoading: false, results: [], value: '', patientId: [], selectedPatient: ''}
 
 export default class PatientSearch extends React.Component {
 
     state = initialState
-
-    // componentDidMount() {
-    //   fetch('/allPatients', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       Authorization: `Bearer ${this.state.token}`
-    //     },
-    //     body: JSON.stringify({
-    //       photoID: this.state.basicInfo.photoID,
-    //       firstName: this.state.basicInfo.firstName,
-    //       lastName: this.state.basicInfo.lastName,
-    //       dob: this.state.basicInfo.dob,
-    //       birthPlace: this.state.basicInfo.birthPlace,
-    //       licenseNum: this.state.basicInfo.licenseNum,
-    //       race: this.state.basicInfo.race,
-    //       medicalHistory: this.state.medicalHistory,
-    //       notes: null,
-    //       redFlags: null
-    //     })
-    //   })
-    //     .then(response => response.json())
-    // }
   
-    handleResultSelect = (e, { result }) => this.setState({ value: result.title })
-    // add functionality to handleResultSelect to setState and then take the value added and pass function to Patient Profile and then setState to change the active Tab index to Patient Profile
+    handleResultSelect = (e, { result }) => {
+      console.log(this.state.results.indexOf(result), 'this is the result')
+      // this is the patient id of the selected patient
+      let selectedId = this.state.patientId[this.state.results.indexOf(result)]
+      console.log(selectedId, 'this is the selected id')
+      this.setState({ value: result.title, selectedPatient: selectedId }, () => {
+        this.props.onhandlePatientSelect(this.state.selectedPatient)
+      })
+    }
+
   
     handleSearchChange = (e, { value }) => {
       this.setState({ isLoading: true, value })
@@ -55,23 +40,30 @@ export default class PatientSearch extends React.Component {
           console.log("DATA.DATA", data.data)
 
           let sourceArray = []
+          let idArray = []
           console.log(data.data[0].user, 'this is the ObjectID of the patient')
-
+          
           
           data.data.forEach(el => console.log("EACH DATA", el.firstName) )
           
           
-          data.data.forEach(el => sourceArray.push({
-            title: el.lastName,
-            description: el.firstName 
-          }))
-          
+          data.data.forEach(el => {
+            idArray.push({
+              id: el._id
+            })
+            sourceArray.push({
+              title: el.lastName,
+              description: el.firstName 
+            })})
+            
+            // console.log(el, 'this is el')
           sourceArray[sourceArray.length] = {title: <Link to='addPatient'>Add New</Link>}
           
           console.log("SOURCE ARRAY line 67", sourceArray)
 
           this.setState({
-            results: sourceArray
+            results: sourceArray,
+            patientId: idArray
           })
           
         }, console.log(this.state.results, 'this is results'))

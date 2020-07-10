@@ -13,6 +13,7 @@ const handleEditScreen = () => {
 }
 
 export default function PatientProfile (props) {
+  // now we have have the idof the patient
   return (
     <div style={{ 'text-align': 'left' }}>
       <Header as='h1'>Patient Name Value Call</Header>
