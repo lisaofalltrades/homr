@@ -2,7 +2,8 @@ import React from 'react'
 import { Header, List, Icon } from 'semantic-ui-react'
 import Notes from './patientInfo/Notes'
 import { Link } from 'react-router-dom'
-
+import EditPatient from './EditPatient'
+import AddPatient from './AddPatient'
 
 export default function PatientProfile (props) {
   return (
@@ -87,10 +88,13 @@ export default function PatientProfile (props) {
         <div>
           <Notes token={props.token} />
         </div>
+      </div><br />
+      <div id='editPatientInfo' style={{display: 'block'}}>
+        <EditPatient token={props.token} />
+      </div><br />
+      <div id='addPatient' style={{display: 'block'}}>
+        <AddPatient token={props.token} />
       </div>
     </div>
-    // { /* <div id='editPatientInfo' style={{display: 'block'}}>
-    //                 <PatientInfo />
-    //               </div> */ }
   )
 }

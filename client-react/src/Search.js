@@ -1,5 +1,5 @@
 import React from 'react'
-import { Search, Grid, Header, Segment, Divider, Icon, Button } from 'semantic-ui-react'
+import { Search } from 'semantic-ui-react'
 import _ from 'lodash'
 import { Link } from 'react-router-dom'
 
