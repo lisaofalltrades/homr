@@ -5,11 +5,8 @@ const mongoose = require('mongoose')
 const morgan = require('morgan')
 const path = require('path')
 
-// controllers
 const AuthController = require('./client-react/controllers/auth')
 const ProtectedRoutes = require('./client-react/controllers/protected')
-
-const faker = require('./faker.js')
 
 // server
 const http = require('http').createServer(app)
@@ -46,13 +43,6 @@ const startServer = port => {
   http.listen(port, async () => {
     await connectDatabase()
     console.log(`Listening on port: ${port}`)
-
-    // if we are not in production
-    if (process.env.NODE_ENV !== 'production') {
-      console.log('Adding fake patients...')
-      // call faker.js .. this needs to happen after connectDatabase()
-      faker
-    }
   })
 }
 
