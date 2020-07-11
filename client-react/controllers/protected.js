@@ -99,7 +99,7 @@ router.post('/AddNote', [authenticate], (req, res) => {
     await Note.register(req.body.date, req.body.category, req.body.address, req.body.description, req.patient, req.author)
 
     // await Patient.updateOne({ _id: req.patient }
-    await Patient.updateOne({ _id: req.body.patient }, newNote, (err, res) => {
+    Patient.updateOne({ _id: req.body.patient }, newNote, (err, res) => {
       if (err) return res.status(500).send(err)
       console.log('notes updated')
     })

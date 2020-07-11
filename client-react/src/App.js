@@ -28,12 +28,18 @@ class App extends React.Component {
       role: null,
       admin: null,
       token: null,
-      selectedPatient: ''
+      selectedPatient: '',
+      profileIndex: 0
     }
   }
 
   onhandlePatientSelect = (patientVal) => {
-    this.setState({ selectedPatient: patientVal }, () => {console.log(this.state.selectedPatient,'you did it')})
+    this.setState({ selectedPatient: patientVal, profileIndex: 1}, () => {console.log(this.state.selectedPatient,'you did it')
+  // const patientProfileTab = document.getElementById('patientProfileTab')
+    // console.log(panes[2])
+  // console.log(patientProfileTab)
+  // patientProfileTab.active = true
+})
   }
 
   handleLogin (evt) {
@@ -195,7 +201,7 @@ class App extends React.Component {
         menuItem: 'Patient Portal',
         render: () =>
           <Tab.Pane attached style={{ 'background-color': 'silver', border: '1px solid black' }}>
-            <Tab panes={subpanesPatient} menu={{ secondary: true, pointing: true }} style={{ width: '100%', margin: '0 auto' }} />
+            <Tab panes={subpanesPatient} activeIndex={this.state.profileIndex} menu={{ secondary: true, pointing: true }} style={{ width: '100%', margin: '0 auto' }} />
           </Tab.Pane>
       },
       {
@@ -259,7 +265,7 @@ class App extends React.Component {
       {
         menuItem: 'Patient Profile',
         render: () =>
-          <Tab.Pane attached style={{ 'background-color': 'silver', border: '1px solid black' }}>
+          <Tab.Pane id='patientProfileTab' attached style={{ 'background-color': 'silver', border: '1px solid black' }}>
             <PatientProfile token={this.state.token} selectedPatient={this.state.selectedPatient} />
                {/* this is the last thing worked on 7/9/2020 */}
           </Tab.Pane>

@@ -88,7 +88,11 @@ export default function PatientProfile (props) {
               <List.Content>
                 <List.Header>Notes</List.Header>
                 <List.Description>
-                  {props.selectedPatient.id.notes}
+                  {props.selectedPatient.id.notes
+                    ? <ul>
+                      {props.selectedPatient.id.notes.map(element => <li key={element}>{element.description}</li>)}
+                    </ul>
+                    : <p>none</p>}
                 </List.Description>
               </List.Content>
             </List.Item>
