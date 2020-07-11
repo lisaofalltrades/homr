@@ -1,4 +1,5 @@
 import React from 'react'
+import PatientProfile from '../PatientProfile'
 import { Input, Accordion, Icon, Button, Form, Dropdown } from 'semantic-ui-react'
 import AppendNotes from './AppendNotes'
 
@@ -50,6 +51,8 @@ class Notes extends React.Component {
       })
     })
       .then(response => response.json())
+      .then(data => console.log(data, 'this is the data on return'))
+      // this is where we ended on friday 7/10
   }
 
   render () {
@@ -101,7 +104,9 @@ class Notes extends React.Component {
           />
 
           <Form.Button
-            onClick={this.handleNewNote.bind(this)}
+            // onClick={this.handleNewNote.bind(this)}
+            // onClick={() => { this.handleNewNote.bind(this); this.props.onhandleUpdateState() }}
+            onClick={() => { this.handleNewNote.bind(this)(); this.props.onhandleUpdateState() }}
           >
             Add Note
           </Form.Button>

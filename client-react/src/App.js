@@ -11,7 +11,7 @@ import {
   Link,
   Redirect
 } from 'react-router-dom'
-import { Tab, Menu } from 'semantic-ui-react'
+import { Tab, Menu, Button } from 'semantic-ui-react'
 import Map from './Map'
 import PatientSearch from './PatientSearch'
 import Metrics from './Metrics'
@@ -33,14 +33,18 @@ class App extends React.Component {
     }
   }
 
+ 
+
   onhandlePatientSelect = (patientVal) => {
     this.setState({ selectedPatient: patientVal, profileIndex: 1}, () => {console.log(this.state.selectedPatient,'you did it')
   // const patientProfileTab = document.getElementById('patientProfileTab')
     // console.log(panes[2])
   // console.log(patientProfileTab)
   // patientProfileTab.active = true
-})
+  })
   }
+
+  handleTabChange = (e, { activeIndex }) => this.setState({ profileIndex: activeIndex })
 
   handleLogin (evt) {
     evt.preventDefault()
@@ -80,6 +84,18 @@ class App extends React.Component {
           role: data.role
         }, () => { console.log(this.state) })
       })
+  }
+
+  handleLogout = () => {
+    this.setState({
+      email: '',
+      password: '',
+      role: null,
+      admin: null,
+      token: null,
+      selectedPatient: '',
+      profileIndex: 0
+    }, () => console.log(this.state, 'it ran'))
   }
 
   handleChange (evt) {
@@ -178,16 +194,6 @@ class App extends React.Component {
       // })
   }
 
-  handleLogout () {
-    this.setState({
-      email: '',
-      password: '',
-      role: null,
-      admin: null,
-      token: null
-    })
-  }
-
   render () {
     const panes = [
       {
@@ -201,7 +207,7 @@ class App extends React.Component {
         menuItem: 'Patient Portal',
         render: () =>
           <Tab.Pane attached style={{ 'background-color': 'silver', border: '1px solid black' }}>
-            <Tab panes={subpanesPatient} activeIndex={this.state.profileIndex} menu={{ secondary: true, pointing: true }} style={{ width: '100%', margin: '0 auto' }} />
+            <Tab panes={subpanesPatient} onTabChange={this.handleTabChange.bind(this)} activeIndex={this.state.profileIndex} menu={{ secondary: true, pointing: true }} style={{ width: '100%', margin: '0 auto' }} />
           </Tab.Pane>
       },
       {
@@ -216,6 +222,13 @@ class App extends React.Component {
         render: () =>
           <Tab.Pane attached style={{ 'background-color': 'silver', border: '1px solid black',   }}>
             <Tab panes={subpanesProfile} menu={{ secondary: true, pointing: true }} style={{ width: '100%', margin: '0 auto' }} />
+          </Tab.Pane>
+      },
+      {
+        menuItem: <Menu.Item onClick={this.handleLogout} key='logout' style={{ 'margin-left': '2px' }}>Logout</Menu.Item>,
+        render: () =>
+          <Tab.Pane attached style={{ 'background-color': 'silver', border: '1px solid black',   }}>
+
           </Tab.Pane>
       }
     ]
