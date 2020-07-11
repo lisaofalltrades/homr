@@ -13,12 +13,17 @@ class Notes extends React.Component {
       description: '',
       patient: props.patientId,
       token: props.token,
+      notes: [],
       options: [
         { key: 'i', text: 'Incident', value: 'incident' },
         { key: 'u', text: 'Update', value: 'update' }
       ]
     }
   }
+
+  // onHandleNoteChange () {
+  //   return (<PatientProfile newNotes={this.state.notes} />)
+  // }
 
   handleonChange (e, data) {
     this.setState({ [e.target.name]: e.target.value })
@@ -51,7 +56,7 @@ class Notes extends React.Component {
       })
     })
       .then(response => response.json())
-      .then(data => console.log(data, 'this is the data on return'))
+      .then(data => { this.setState({ notes: data.notes }, () => console.log(this.state, 'this is the data on return')) })
       // this is where we ended on friday 7/10
   }
 
@@ -63,6 +68,7 @@ class Notes extends React.Component {
     } = this.state
     return (
       <div>
+        <AppendNotes newNotes={this.state.notes} />
         <h1>Add A Note</h1>
         <Form>
           <Form.Group widths='equal'>
@@ -111,8 +117,6 @@ class Notes extends React.Component {
             Add Note
           </Form.Button>
         </Form>
-
-        {/* <AppendNotes /> */}
       </div>
     )
   }

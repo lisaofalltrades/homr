@@ -3,6 +3,7 @@ import { Header, List, Icon, Button } from 'semantic-ui-react'
 import Notes from './patientInfo/Notes'
 import { Link } from 'react-router-dom'
 import EditPatient from './EditPatient'
+import AppendNotes from './patientInfo/AppendNotes'
 
 // const handleEditScreen = () => {
 //   let viewPatientInfoDiv = document.getElementById('viewPatientInfo')
@@ -22,6 +23,8 @@ export default class PatientProfile extends React.Component {
     }
   }
 
+
+
   handleEditScreen = () => {
     let viewPatientInfoDiv = document.getElementById('viewPatientInfo')
     let editPatientInfoDiv = document.getElementById('editPatientInfo')
@@ -31,7 +34,9 @@ export default class PatientProfile extends React.Component {
   }
   
   onhandleUpdateState = () => {
-    setTimeout(this.setState({placeholder: []}), 500)
+    console.log(this.props, 'this is the test ')
+    this.props.selectedPatient.id.notes = null
+    setTimeout(this.setState({placeholder: []}), 800, console.log(this.state.placeholder))
     console.log('the leap of fame ran')
   }
   
@@ -54,6 +59,9 @@ export default class PatientProfile extends React.Component {
                     </List.Description>
                   </div>
                 </List.Content>
+              </List.Item>
+              <List.Item>
+                <Button onClick={this.handleEditScreen} content='EditPatient' />
               </List.Item>
               <List.Item>
                 <List.Content>
@@ -113,15 +121,12 @@ export default class PatientProfile extends React.Component {
                       ? <ul>
                         {this.props.selectedPatient.id.notes.map(element => <li key={element}>{element.description}</li>)}
                       </ul>
-                      : <p>none</p>}
+                      : null }
                   </List.Description>
                 </List.Content>
               </List.Item>
-              <List.Item>
-                <Button onClick={this.handleEditScreen} content='EditPatient' />
-              </List.Item>
             </List>
-          </div><br />
+          </div>
           <div>
             <Notes token={this.props.token} patientId={this.props.selectedPatient.id} onhandleUpdateState={this.onhandleUpdateState}/>
           </div>
