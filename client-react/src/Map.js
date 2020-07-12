@@ -13,7 +13,7 @@ import secret from './secrets'
 const mapContainerStyle = {
   // width: '100vw',
   // height: '100vh'
-  width: '865px',
+  width: '100%',
   height: '65vh'
 }
 

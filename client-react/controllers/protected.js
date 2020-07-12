@@ -76,15 +76,39 @@ router.post('/AddNote', [authenticate], (req, res) => {
   console.log(req.body, 'add note console log')
   console.log(req.author, 'author')
   const author = req.author
-  Note.findOne({ patient: req.body.patient }, async (err, patientExists) => {
-    if (err) return res.status(500).send(err)
-    if (patientExists) return res.status(201).send({ warning: 'Updating existing note' })
-    console.log(author, 'this is line 82')
-    // need to add patient it is going to
+
+  const newNote = {
+    $push: {
+      notes: {
+        date: req.body.date,
+        category: req.body.category,
+        address: req.body.address,
+        description: req.body.description,
+        author: req.author._id
+      }
+    }
+  }
+
+  console.log(newNote, 'this is the new note')
+  // Note.findOne({ patient: req.body.patient }
+  async function Notes () {
+    // if (err) return res.status(500).send(err)
+    // if (patientExists) return res.status(201).send({ warning: 'Updating existing note' })
     await Note.register(req.body.date, req.body.category, req.body.address, req.body.description, req.patient, req.author)
 
-    res.send('post succesfull')
-  })
+    // await Patient.updateOne({ _id: req.patient }
+    Patient.updateOne({ _id: req.body.patient }, newNote, (err, patient) => {
+      if (err) return res.status(500).send(err)
+      // res.send('post succesfull')
+      Patient.findOne({ _id: req.body.patient }, (err, patient) => {
+        if (err) return res.status(500).send(err)
+        // res.send('post succesfull')
+        console.log(patient, 'this is the patients data')
+        res.send(patient)
+      })
+    })
+  }
+  Notes()
 })
 
 router.post('/patientSearch', [authenticate], (req, res) => {
@@ -94,6 +118,19 @@ router.post('/patientSearch', [authenticate], (req, res) => {
   }
 
   Patient.find(query, async (err, data) => {
+    if (err) return res.status(500).send(err)
+    if (data) {
+      res.send({
+        data
+      })
+    } else {
+      res.send(console.log('No results found'))
+    }
+  })
+})
+
+router.post('/allPatients', [authenticate], (req, res) => {
+  Patient.find({}, async (err, data) => {
     if (err) return res.status(500).send(err)
     if (data) {
       res.send({

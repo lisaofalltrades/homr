@@ -1,4 +1,5 @@
 import React from 'react'
+import PatientProfile from '../PatientProfile'
 import { Input, Accordion, Icon, Button, Form, Dropdown } from 'semantic-ui-react'
 import AppendNotes from './AppendNotes'
 
@@ -10,14 +11,19 @@ class Notes extends React.Component {
       category: '',
       address: '',
       description: '',
-      patient: '',
+      patient: props.patientId,
       token: props.token,
+      notes: [],
       options: [
         { key: 'i', text: 'Incident', value: 'incident' },
         { key: 'u', text: 'Update', value: 'update' }
       ]
     }
   }
+
+  // onHandleNoteChange () {
+  //   return (<PatientProfile newNotes={this.state.notes} />)
+  // }
 
   handleonChange (e, data) {
     this.setState({ [e.target.name]: e.target.value })
@@ -31,24 +37,27 @@ class Notes extends React.Component {
 
   handleNewNote () {
     console.log('Adding a new note')
-    console.log('info', this.state.date, this.state.category, this.state.address, this.state.description, this.state.token, this.state.patient)
+    console.log('info', this.state.date, this.state.category, this.state.address, this.state.description, this.state.token, this.state.patient._id, this.state.patient.user)
     // need to get the patient from the other component in order to align with that patient
     fetch('/AddNote', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.state.token}`
+        Authorization: `Bearer ${this.props.token}`
       },
       body: JSON.stringify({
         category: this.state.category,
         date: this.state.date,
         address: this.state.address,
         description: this.state.description,
-        patient: this.state.patient
+        patient: this.state.patient._id,
+        author: this.state.patient.user
         // above is a work in progress
       })
     })
       .then(response => response.json())
+      .then(data => { this.setState({ notes: data.notes }, () => console.log(this.state, 'this is the data on return')) })
+      // this is where we ended on friday 7/10
   }
 
   render () {
@@ -59,6 +68,7 @@ class Notes extends React.Component {
     } = this.state
     return (
       <div>
+        <AppendNotes newNotes={this.state.notes} />
         <h1>Add A Note</h1>
         <Form>
           <Form.Group widths='equal'>
@@ -100,13 +110,13 @@ class Notes extends React.Component {
           />
 
           <Form.Button
-            onClick={this.handleNewNote.bind(this)}
+            // onClick={this.handleNewNote.bind(this)}
+            // onClick={() => { this.handleNewNote.bind(this); this.props.onhandleUpdateState() }}
+            onClick={() => { this.handleNewNote.bind(this)(); this.props.onhandleUpdateState() }}
           >
             Add Note
           </Form.Button>
         </Form>
-
-        <AppendNotes />
       </div>
     )
   }
