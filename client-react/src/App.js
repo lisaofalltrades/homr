@@ -16,6 +16,7 @@ import PatientSearch from './PatientSearch'
 import Metrics from './Metrics'
 import UserProfile from './UserProfile'
 import PatientProfile from './PatientProfile'
+import DataBreakdown from './DataBreakdown'
 // import { response } from 'express'
 
 class App extends React.Component {
@@ -40,9 +41,12 @@ class App extends React.Component {
 
       const patientProfilePane = document.getElementById('patientProfilePane')
       patientProfilePane.style.display = 'block'
-      if(!this.state.selectedPatient){
+      if(!this.state.selectedPatient) {
         patientProfilePane.style.display = 'none'
       }
+      this.setState({
+        profileIndex: 1
+      })
     })
 
       // const patientProfileTab = document.getElementById('patientProfileTab')
@@ -252,7 +256,7 @@ class App extends React.Component {
         menuItem: 'Detail View',
         render: () =>
           <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
-            <Metrics />
+            <DataBreakdown />
           </Tab.Pane>
       }
     ]

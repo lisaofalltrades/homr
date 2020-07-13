@@ -3,6 +3,7 @@ const funFaker = require('fun-faker')
 const MongoClient = require('mongodb').MongoClient
 const assert = require('assert')
 const _ = require('lodash')
+const mongoose = require('mongoose')
 
 // Database Name
 const dbName = 'homrDB'
@@ -32,7 +33,7 @@ MongoClient.connect(url, function (err, client) {
 
   // get access to the relevant collections
   const usersCollection = db.collection('users')
-  const patientsCollection = db.collection('posts')
+  const patientsCollection = db.collection('patients')
   const notesCollection = db.collection('notes')
 
   // clear db
@@ -59,6 +60,7 @@ MongoClient.connect(url, function (err, client) {
     const fullName = helpers.fullName(randomCharacter)
     const firstName = fullName[0]
     const lastName = fullName[fullName.length - 1]
+    
 
     const newUser = {
       email: helpers.userEmail(randomCharacter),
@@ -91,13 +93,15 @@ MongoClient.connect(url, function (err, client) {
     const fullName = helpers.fullName(randomCharacter)
     // add to patientsList array to track duplicates
     patientList.push(randomCharacter)
+    var newId2 = new mongoose.mongo.ObjectId();
 
     const newPatient = {
       firstName: fullName[0],
       lastName: fullName[fullName.length - 1],
       // birthPlace: states.helpers.randomZip(),
       medicalHistory: helpers.randomItem(conditionList
-      )
+      ),
+      user: newId2
     }
     patients.push(newPatient)
 

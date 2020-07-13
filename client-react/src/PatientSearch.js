@@ -159,16 +159,38 @@ export default class PatientSearch extends React.Component {
           </div>
           <br />
           <div id='patientList'>
-            <List celled>
+            <List selection celled>
               {( this.state.patients ).map((patient, i) => {
-                return (
-                  <List.Item as='Link'>
-                    <List.Content>
-                      <List.Header>{patient.lastName}, {patient.firstName}</List.Header>
-                        Date of Birth: {patient.dob} Red Flags: {patient.redFlags}
-                    </List.Content>
-                  </List.Item>
-                )
+                if(this.state.filter === 'lastName' ) {
+                  return (
+                    <List.Item>
+                      <List.Content>
+                        <List.Header>{patient.lastName}, {patient.firstName}</List.Header>
+                          Date of Birth: {patient.dob} Red Flags: {patient.redFlags}
+                      </List.Content>
+                    </List.Item>
+                  )
+                }
+                if(this.state.filter === 'firstName' ) {
+                  return (
+                    <List.Item>
+                      <List.Content>
+                        <List.Header>{patient.firstName} {patient.lastName}</List.Header>
+                          Date of Birth: {patient.dob} Red Flags: {patient.redFlags}
+                      </List.Content>
+                    </List.Item>
+                  )
+                }
+                // if(this.state.filter === 'mostRecent' ) {
+                //   return (
+                //     <List.Item>
+                //       <List.Content>
+                //         <List.Header>{patient.lastUpdated}: {patient.lastName}, {patient.firstName}</List.Header>
+                //           Date of Birth: {patient.dob} Red Flags: {patient.redFlags}
+                //       </List.Content>
+                //     </List.Item>
+                //   )
+                // }
               })}
             </List>
           </div>
