@@ -29,7 +29,8 @@ class App extends React.Component {
       admin: null,
       token: null,
       selectedPatient: '',
-      profileIndex: 0
+      profileIndex: 0,
+      currentUser: ''
     }
   }
 
@@ -92,7 +93,8 @@ class App extends React.Component {
           email: data.email,
           password: data.password,
           token: data.token,
-          role: data.role
+          role: data.role,
+          currentUser: data.currentUser
         }, () => { console.log(this.state) })
       })
   }
@@ -160,7 +162,8 @@ class App extends React.Component {
           password: data.password,
           role: data.role,
           token: data.token,
-          admin: true
+          admin: true,
+          currentUser: data.currentUser
         }, () => { console.log(this.state) })
       })
   }
@@ -194,15 +197,11 @@ class App extends React.Component {
       })
     })
       .then(response => response.json())
-      // .then(data => {
-      //   this.setState({
-      //     email: data.email,
-      //     password: data.password,
-      //     role: data.role,
-      //     token: data.token,
-      //     admin: true
-      //   }, () => { console.log(this.state) })
-      // })
+      .then(data => {
+        this.setState({
+          currentUser: data
+        }, () => { console.log(this.state) })
+      })
   }
 
   render () {
@@ -301,7 +300,7 @@ class App extends React.Component {
         menuItem: 'View Profile',
         render: () =>
           <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
-            <UserProfile />
+            <UserProfile profileData={this.state.currentUser} />
           </Tab.Pane>
       },
       {

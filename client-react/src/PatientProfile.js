@@ -121,7 +121,7 @@ export default class PatientProfile extends React.Component {
           </div>
         </div><br />
         <div id='editPatientInfo' style={{ display: 'none' }}>
-          <EditPatient token={this.props.token} />
+          <EditPatient token={this.props.token} selectedPatient={this.props.selectedPatient.id}/>
         </div><br />
       </div>
     )

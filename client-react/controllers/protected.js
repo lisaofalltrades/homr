@@ -54,13 +54,16 @@ router.post('/profileUpdate', [authenticate], (req, res) => {
     $set: objUpdate
   }
 
-  User.updateOne({ _id: req.user }, updates, (err, res) => {
+  User.updateOne({ _id: req.user }, updates, (err, user) => {
     if (err) return res.status(500).send(err)
     console.log('profile updated')
+    User.findOne({ _id: req.user._id }, (err, newuser) => {
+      if (err) return res.status(500).send(err)
+      res.send(newuser)
+    })
   })
 })
 
-// this is what Austen re wrote nothing else changed
 router.post('/patientAdd', [authenticate], (req, res) => {
   console.log(req.body)
   Patient.findOne({ firstName: req.body.firstName }, async (err, patientExists) => {
@@ -69,6 +72,35 @@ router.post('/patientAdd', [authenticate], (req, res) => {
     await Patient.register(req.body.photoID, req.body.firstName, req.body.lastName, req.body.dob, req.body.birthPlace, req.body.licenseNum, req.body.race, req.body.medicalHistory, req.body.notes, req.body.redFlags, req.user)
 
     res.send('post succesfull')
+  })
+})
+
+router.post('/patientEdit', [authenticate], (req, res) => {
+  const objUpdate = {}
+  console.log(req.body, 'req.body is')
+
+  if (req.body.firstName !== '') objUpdate.firstName = req.body.firstName
+  if (req.body.lastName !== '') objUpdate.lastName = req.body.lastName
+  if (req.body.dob !== '') objUpdate.dob = req.body.dob
+  if (req.body.birthPlace !== '') objUpdate.birthPlace = req.body.birthPlace
+  if (req.body.licenseNum !== '') objUpdate.licenseNum = req.body.licenseNum
+  if (req.body.race !== '') objUpdate.race = req.body.race
+
+  objUpdate.date = new Date()
+
+  console.log(objUpdate)
+  const updates = {
+    $set: objUpdate
+  }
+
+  Patient.updateOne({ _id: req.body.patientID }, updates, (err, user) => {
+    if (err) return res.status(500).send(err)
+    console.log('profile updated')
+    Patient.findOne({ _id: req.body.patientID }, (err, patientUpdate) => {
+      if (err) return res.status(500).send(err)
+      console.log(patientUpdate)
+      // res.send(patientUpdate)
+    })
   })
 })
 

@@ -4,6 +4,10 @@ const { Schema } = mongoose
 const { ObjectId } = Schema.Types
 
 const patientSchema = Schema({
+  date: {
+    type: Date,
+    required: false
+  },
   photoID: {
     type: String,
     required: false
@@ -53,6 +57,7 @@ const patientSchema = Schema({
 
 patientSchema.statics.register = async function (photoID, firstName, lastName, dob, birthPlace, licenseNum, race, medicalHistory, notes, redFlags, user) {
   const patient = new this()
+  patient.date = new Date()
   patient.photoID = photoID
   patient.firstName = firstName
   patient.lastName = lastName

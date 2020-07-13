@@ -94,7 +94,7 @@ export default class EditPatient extends React.Component {
 
   componentDidMount() {
     console.log(illnessOptions)
-
+    console.log(this.props, 'this is the props')
     // load patient from PatientProfile info
   }
 
@@ -117,6 +117,7 @@ export default class EditPatient extends React.Component {
         Authorization: `Bearer ${this.state.token}`
       },
       body: JSON.stringify({
+        patientID: this.props.selectedPatient._id,
         photoID: this.state.basicInfo.photoID,
         firstName: this.state.basicInfo.firstName,
         lastName: this.state.basicInfo.lastName,
@@ -125,8 +126,6 @@ export default class EditPatient extends React.Component {
         licenseNum: this.state.basicInfo.licenseNum,
         race: this.state.basicInfo.race,
         medicalHistory: this.state.medicalHistory,
-        notes: null,
-        redFlags: null
       })
     })
       .then(response => response.json())

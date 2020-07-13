@@ -16,9 +16,12 @@ router.post('/signUp', (req, res) => {
       _id: user._id
     }, 'PROCESS')
 
+    console.log(user, 'on sign up')
+
     res.send({
       token,
-      role: user.role
+      role: user.role,
+      currentUser: user
     })
     res.status(201).send(user.sanitize())
   })
@@ -37,9 +40,10 @@ router.post('/login', (req, res) => {
       token: token,
       admin: user.admin,
       role: user.role,
-      email: user.email
+      email: user.email,
+      currentUser: user
     })
-
+    console.log(user)
     console.log('logged in')
   })
 })
