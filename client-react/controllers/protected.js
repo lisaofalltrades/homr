@@ -118,7 +118,8 @@ router.post('/AddNote', [authenticate], (req, res) => {
         description: req.body.description,
         author: req.author._id
       }
-    }
+    },
+    $set: { date: new Date() }
   }
 
   console.log(newNote, 'this is the new note')
