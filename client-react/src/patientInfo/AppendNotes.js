@@ -1,15 +1,15 @@
 import React from 'react'
 import { Input, Accordion, Icon, Button, Form, Dropdown } from 'semantic-ui-react'
 
-export default function AppendNotes () {
+export default function AppendNotes (props) {
+  console.log(props)
   return (
     <div>
-      <h1>All Notes</h1>
-      <ul>
-        <li>Note A</li>
-        <li>Note B</li>
-        <li>Note C</li>
-      </ul>
+      {props.newNotes
+        ? <ul>
+          {props.newNotes.map(element => <li key={element}>{element.description}</li>)}
+        </ul>
+        : <p>none</p>}
     </div>
   )
 }

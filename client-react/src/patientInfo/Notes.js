@@ -1,4 +1,5 @@
 import React from 'react'
+import PatientProfile from '../PatientProfile'
 import { Input, Accordion, Icon, Button, Form, Dropdown } from 'semantic-ui-react'
 import AppendNotes from './AppendNotes'
 
@@ -12,12 +13,17 @@ class Notes extends React.Component {
       description: '',
       patient: props.patientId,
       token: props.token,
+      notes: [],
       options: [
         { key: 'i', text: 'Incident', value: 'incident' },
         { key: 'u', text: 'Update', value: 'update' }
       ]
     }
   }
+
+  // onHandleNoteChange () {
+  //   return (<PatientProfile newNotes={this.state.notes} />)
+  // }
 
   handleonChange (e, data) {
     this.setState({ [e.target.name]: e.target.value })
@@ -50,6 +56,8 @@ class Notes extends React.Component {
       })
     })
       .then(response => response.json())
+      .then(data => { this.setState({ notes: data.notes }, () => console.log(this.state, 'this is the data on return')) })
+      // this is where we ended on friday 7/10
   }
 
   render () {
@@ -60,6 +68,7 @@ class Notes extends React.Component {
     } = this.state
     return (
       <div>
+        <AppendNotes newNotes={this.state.notes} />
         <h1>Add A Note</h1>
         <Form>
           <Form.Group widths='equal'>
@@ -101,13 +110,13 @@ class Notes extends React.Component {
           />
 
           <Form.Button
-            onClick={this.handleNewNote.bind(this)}
+            // onClick={this.handleNewNote.bind(this)}
+            // onClick={() => { this.handleNewNote.bind(this); this.props.onhandleUpdateState() }}
+            onClick={() => { this.handleNewNote.bind(this)(); this.props.onhandleUpdateState() }}
           >
             Add Note
           </Form.Button>
         </Form>
-
-        {/* <AppendNotes /> */}
       </div>
     )
   }

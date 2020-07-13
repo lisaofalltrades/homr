@@ -91,26 +91,30 @@ router.post('/AddNote', [authenticate], (req, res) => {
 
   console.log(newNote, 'this is the new note')
   // Note.findOne({ patient: req.body.patient }
-  Note.findOne({ _id: req.user }, async (err, patientExists) => {
-    if (err) return res.status(500).send(err)
+  async function Notes () {
+    // if (err) return res.status(500).send(err)
     // if (patientExists) return res.status(201).send({ warning: 'Updating existing note' })
-    console.log(author, 'this is line 82')
-    // need to add patient it is going to
     await Note.register(req.body.date, req.body.category, req.body.address, req.body.description, req.patient, req.author)
 
     // await Patient.updateOne({ _id: req.patient }
-    await Patient.updateOne({ _id: req.body.patient }, newNote, (err, res) => {
+    Patient.updateOne({ _id: req.body.patient }, newNote, (err, patient) => {
       if (err) return res.status(500).send(err)
-      console.log('notes updated')
+      // res.send('post succesfull')
+      Patient.findOne({ _id: req.body.patient }, (err, patient) => {
+        if (err) return res.status(500).send(err)
+        // res.send('post succesfull')
+        console.log(patient, 'this is the patients data')
+        res.send(patient)
+      })
     })
-    res.send('post succesfull')
-  })
+  }
+  Notes()
 })
 
 router.post('/patientSearch', [authenticate], (req, res) => {
   console.log(req.body)
   if (req.body.searchValue) {
-    var query = { $or:[{ firstName:{ $regex: req.body.searchValue, $options: 'i' } } ,{ lastName:{ $regex: req.body.searchValue, $options: 'i' } }] }
+    var query = { $or: [{ firstName: { $regex: req.body.searchValue, $options: 'i' } }, { lastName: { $regex: req.body.searchValue, $options: 'i' } }] }
   }
 
   Patient.find(query, async (err, data) => {
