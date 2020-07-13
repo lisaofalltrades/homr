@@ -1,5 +1,5 @@
 import React from 'react'
-import { Header, Icon, Button, Form, Dropdown } from 'semantic-ui-react'
+import { Header, Button, Form, Dropdown } from 'semantic-ui-react'
 // import PatientProfile from './PatientSearch'
 
 const illnessList = [
@@ -153,7 +153,7 @@ export default class EditPatient extends React.Component {
   }
 
   render() {
-    const { activeIndex } = this.state
+    // const { activeIndex } = this.state
     return (
       <div>
         <Header as='h1'>Edit Patient</Header>

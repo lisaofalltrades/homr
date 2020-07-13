@@ -1,8 +1,7 @@
 import React from 'react'
 import { Search } from 'semantic-ui-react'
 import _ from 'lodash'
-import { Link, Redirect } from 'react-router-dom'
-import PatientProfile from './PatientProfile'
+import { Link } from 'react-router-dom'
 
 const initialState = { isLoading: false, results: [], value: '', patientId: [], selectedPatient: '',token: ''}
 
@@ -47,7 +46,7 @@ export default class PatientSearch extends React.Component {
 
           let sourceArray = []
           let idArray = []
-          console.log(data.data[0].user, 'this is the ObjectID of the patient')
+          // console.log(data.data[0].user, 'this is the ObjectID of the patient')
           
           
           data.data.forEach(el => console.log("EACH DATA", el.firstName) )
@@ -111,13 +110,4 @@ export default class PatientSearch extends React.Component {
         </div>
       )
     }
-  }
-  {/* <div>
-    <PatientProfile 
-        active={activeIndex === 1}
-        index={1}
-        selectedPatient={this.state.selectedPatient}
-        token={this.props.token}
-    />
-  </div>
-  } */}
+}

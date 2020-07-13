@@ -37,8 +37,8 @@ export default function Login (props) {
     {
       menuItem: 'Login',
       render: () =>
-        <Tab.Pane attached={false} style={{ 'background-color': 'silver', border: '1px solid black' }}>
-          <div style={{ 'text-align': 'center' }}>
+        <Tab.Pane attached={false} style={{ backgroundColor: 'silver', border: '1px solid black' }}>
+          <div style={{ textAlign: 'center' }}>
             <Header as='h1'>Login</Header>
             <form id='loginForm'>
               {/* <input id='email' type='email' placeholder='Email' /> */}
@@ -56,8 +56,8 @@ export default function Login (props) {
     {
       menuItem: 'Signup',
       render: () =>
-        <Tab.Pane attached={false} style={{ 'background-color': 'silver', border: '1px solid black' }}>
-          <div style={{ 'text-align': 'center' }}>
+        <Tab.Pane attached={false} style={{ backgroundColor: 'silver', border: '1px solid black' }}>
+          <div style={{ textAlign: 'center' }}>
             <Header as='h1'>Signup</Header>
             <form id='signupForm'>
               {/* <input id='email' type='email' placeholder='Email' /> */}
@@ -67,7 +67,7 @@ export default function Login (props) {
               <br /><br />
               <Input style={{ width: '18em' }} type='password' icon='lock' iconPosition='left' placeholder='Confirm Password' />
               <br /><br />
-              <Dropdown id='roles' style={{ width: '18em', 'margin': '0 auto', 'text-align': 'center' }} placeholder='Select Role' fluid selection options={roles} onChange={props.handleChange} />
+              <Dropdown id='roles' style={{ width: '18em', margin: '0 auto', textAlign: 'center' }} placeholder='Select Role' fluid selection options={roles} onChange={props.handleChange} />
               <br /><br />
               {/* <input id='password' type='password' placeholder='Password' /> */}
               <Button type='submit' content='Signup' icon='right arrow' labelPosition='right' onClick={props.handleSignup} style={{ border: '1px black solid' }} />

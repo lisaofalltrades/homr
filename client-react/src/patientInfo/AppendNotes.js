@@ -1,5 +1,5 @@
 import React from 'react'
-import { Input, Accordion, Icon, Button, Form, Dropdown } from 'semantic-ui-react'
+// import { Input, Accordion, Icon, Button, Form, Dropdown } from 'semantic-ui-react'
 
 export default function AppendNotes (props) {
   console.log(props)

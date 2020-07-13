@@ -1,6 +1,6 @@
 import React from 'react'
-import PatientProfile from '../PatientProfile'
-import { Input, Accordion, Icon, Button, Form, Dropdown } from 'semantic-ui-react'
+// import PatientProfile from '../PatientProfile'
+import { Form } from 'semantic-ui-react'
 import AppendNotes from './AppendNotes'
 
 class Notes extends React.Component {

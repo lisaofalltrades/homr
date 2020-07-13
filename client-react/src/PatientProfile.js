@@ -1,9 +1,9 @@
 import React from 'react'
 import { Header, List, Icon, Button } from 'semantic-ui-react'
 import Notes from './patientInfo/Notes'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 import EditPatient from './EditPatient'
-import AppendNotes from './patientInfo/AppendNotes'
+// import AppendNotes from './patientInfo/AppendNotes'
 
 
 export default class PatientProfile extends React.Component {

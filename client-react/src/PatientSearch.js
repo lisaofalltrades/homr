@@ -1,6 +1,6 @@
 import React from 'react'
 import { List, Icon, Header, Button, Divider, Grid, Segment, PaginationProps, Pagination } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 import SearchPatients from './Search'
 import AddPatient from './AddPatient'
 // import _ from 'lodash'
@@ -13,7 +13,7 @@ export default class PatientSearch extends React.Component {
       patientsData: [],
       patients: [],
       begin: 0,
-      end: 4,
+      end: 10,
       activePage: 1,
       filter: 'lastName'
     }
@@ -67,13 +67,17 @@ export default class PatientSearch extends React.Component {
   }
 
   handlePageChange(event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) {
-    console.log(data.activePage)
-    this.setState({activePage: data.activePage});
-    this.setState({begin: this.state.activePage * 10 - 10});
-    this.setState({end: this.state.activePage * 10});
-    this.setState({
-      patients: this.state.patientsData.slice(this.state.begin, this.state.end)
-    });
+    console.log(data.activePage, 'this is data.activePage')
+    this.setState({activePage: data.activePage}, () => {
+      this.setState({
+        begin: this.state.activePage * 10 - 10,
+        end: this.state.activePage * 10
+      }, () => {
+        this.setState({
+          patients: this.state.patientsData.slice(this.state.begin, this.state.end)
+        })
+      })
+    })
   }
 
   loadPatients () {
@@ -171,12 +175,12 @@ export default class PatientSearch extends React.Component {
           <br />
           <div id='listPaginator'>
             <Pagination
-              boundaryRange={0}
-              activePage={1}
-              siblingRange={6}
+              boundaryRange={10}
+              siblingRange={5}
+              activePage={this.state.activePage}
               defaultActivePage={1}
               onPageChange={this.handlePageChange.bind(this)}
-              totalPages={Math.ceil(this.state.patients.length / 10)}
+              totalPages={Math.ceil((this.state.patients.length + 1) / 10)}
               />
           </div>
         </div>

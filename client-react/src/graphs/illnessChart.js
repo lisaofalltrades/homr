@@ -1,5 +1,6 @@
 import React from 'react'
-import { Pie, Doughnut } from 'react-chartjs-2'
+import { Pie } from 'react-chartjs-2'
+// import { Doughnut } from 'react-chartjs-2'
 
 const state = {
   labels: ['alcoholism', 'cardiac', 'epiglottitis',
