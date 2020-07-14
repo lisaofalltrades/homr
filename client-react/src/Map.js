@@ -65,7 +65,7 @@ export default function Map (props) {
   const { isLoaded, loadError } = useLoadScript({
     // googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY
     googleMapsApiKey: secret.key
-    // googleMapsApiKey: 'AIzaSyB-xKq23EmPRNzaz02b9oXigWjJbW3Ujy4'
+    // googleMapsApiKey: ''
   })
 
 
