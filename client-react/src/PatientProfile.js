@@ -10,7 +10,8 @@ export default class PatientProfile extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      placeholder: []
+      placeholder: [],
+      selectedPatient: null
     }
   }
 
@@ -28,6 +29,11 @@ export default class PatientProfile extends React.Component {
     setTimeout(this.setState({placeholder: []}), 800, console.log(this.state.placeholder))
     console.log('the leap of fame ran')
   }
+
+  onhandleRedFlagUpdate = (patientVal) => {
+    console.log(patientVal, 'before setting state')
+    this.setState({ selectedPatient: patientVal }, () => (console.log(patientVal, 'This is handle red flag update')))
+  }
   
   render () {
     return (
@@ -41,10 +47,11 @@ export default class PatientProfile extends React.Component {
                   <div style={{ 'background-color': 'red', height: '4em', 'border-radius': '6px', padding: '3px' }}>
                     <List.Header><Icon name='flag' />Red Flags</List.Header>
                     <List.Description>
-                      {this.props.selectedPatient.id.redFlags
-                        ? <ul>
-                          {this.props.selectedPatient.id.redFlags.map(element => <li key={element}>{element}</li>)}
-                        </ul> : <p>None</p>}
+                      {this.state.selectedPatient === null ? 'none' :
+                      
+                        <ul>
+                          {this.state.selectedPatient.redFlags.map(element => <li key={element}>{element}</li>)}
+                        </ul>}
                     </List.Description>
                   </div>
                 </List.Content>
@@ -117,7 +124,7 @@ export default class PatientProfile extends React.Component {
             </List>
           </div>
           <div>
-            <Notes token={this.props.token} patientId={this.props.selectedPatient.id} onhandleUpdateState={this.onhandleUpdateState}/>
+            <Notes token={this.props.token} patientId={this.props.selectedPatient.id} onhandleUpdateState={this.onhandleUpdateState} onhandleRedFlagUpdate={this.onhandleRedFlagUpdate}/>
           </div>
         </div><br />
         <div id='editPatientInfo' style={{ display: 'none' }}>
