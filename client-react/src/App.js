@@ -248,7 +248,7 @@ class App extends React.Component {
         menuItem: 'Chart View',
         render: () =>
           <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
-            <Metrics />
+            <Metrics token={this.state.token} />
           </Tab.Pane>
       },
       {
@@ -319,6 +319,7 @@ class App extends React.Component {
         </Route>
         <Route path='/'>
           {this.state.token ? <Tab panes={panes} style={{ width: '900px', margin: '0 auto' }} /> : <Redirect to='/login' />}
+          {/* <Tab panes={panes} style={{ width: '900px', margin: '0 auto' }} /> */}
         </Route>
       </Switch>
     )
