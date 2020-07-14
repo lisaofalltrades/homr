@@ -61,11 +61,18 @@ MongoClient.connect(url, function (err, client) {
     const firstName = fullName[0]
     const lastName = fullName[fullName.length - 1]
 
+    const roles = ['fire_chief', 'city_rep', 'charity_rep']
+    const role = roles[Math.floor(Math.random() * roles.length)]
+
+    const address = states.helpers.randomAddress()[0]
+
     const newUser = {
       email: helpers.userEmail(randomCharacter),
       firstName,
       lastName,
-      password: '123'
+      password: '123',
+      role: role,
+      district: Math.floor(Math.random() * 20) // 20 districts
     }
     users.push(newUser)
 
@@ -123,13 +130,16 @@ MongoClient.connect(url, function (err, client) {
     // random note category
     const categories = ['Incident', 'Update']
     const category = categories[Math.floor(Math.random() * categories.length)]
+    const addressObj = states.helpers.randomAddress()
+    const address = addressObj[0]
+    // const coor = addressObj[1]
 
     const newNote = {
       date: date,
       category: category,
       author: _.sample(users),
       patient: _.sample(patients),
-      address: states.helpers.randomAddress()[0]
+      address: address
     }
 
     notes.push(newNote)
