@@ -17,6 +17,7 @@ import Metrics from './Metrics'
 import UserProfile from './UserProfile'
 import PatientProfile from './PatientProfile'
 import DataBreakdown from './DataBreakdown'
+import AddTeam from './AddTeam'
 // import { response } from 'express'
 
 class App extends React.Component {
@@ -308,6 +309,13 @@ class App extends React.Component {
         render: () =>
           <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
             <Settings role={this.state.role} handleProfile={this.handleProfile.bind(this)} />
+          </Tab.Pane>
+      },
+      {
+        menuItem: 'Add Teammates',
+        render: () =>
+          <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
+            <AddTeam />
           </Tab.Pane>
       }
     ]
