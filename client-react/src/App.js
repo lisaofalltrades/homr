@@ -114,8 +114,26 @@ class App extends React.Component {
           token: data.token,
           role: data.role,
           currentUser: data.currentUser
-        }, () => { console.log(this.state) })
+        }, () => { 
+          fetch('/notes', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${this.state.token}`
+            }
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log('Data res from all notes', data)
+              this.setState({
+                notes: data
+              })
+            console.log('Incident Notes only', this.state.notes)
+          })
+         })
       })
+      
+        
   }
 
   handleLogout = () => {
