@@ -1,5 +1,5 @@
 import React from 'react'
-import IncidentsByDistrict from './graphs/incidentsByDistrict'
+import Incidents from './graphs/incidents'
 import IllnessChart from './graphs/illnessChart'
 
 export default class Metrics extends React.Component {
@@ -14,7 +14,7 @@ export default class Metrics extends React.Component {
     return (
       <div>
         <h1>Dashboard</h1>
-        <IncidentsByDistrict />
+        <Incidents token={this.state.token} />
         <IllnessChart token={this.state.token} />
       </div>
     )

@@ -10,6 +10,11 @@ export default class DataBreakdown extends React.Component {
     }]
   }
 
+  componentDidMount () {
+    this.props.onhandleGetNotes.bind(this)(this.props.token)
+    console.log('notes from databreatdown', this.props.notes)
+  }
+
   render () {
     return (
       <div>

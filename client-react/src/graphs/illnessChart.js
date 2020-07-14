@@ -58,7 +58,7 @@ export default class App extends React.Component {
             const datasets = this.state.datasets[0].data
             datasets.push(count)
           }
-          console.log('state after illnessDict', this.state)
+          // console.log('state after illnessDict', this.state)
         })
       })
   }

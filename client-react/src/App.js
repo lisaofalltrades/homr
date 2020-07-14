@@ -31,11 +31,28 @@ class App extends React.Component {
       token: null,
       selectedPatient: '',
       profileIndex: 0,
-      currentUser: ''
+      currentUser: '',
+      notes: []
     }
   }
-
-  
+  onhandleGetNotes(token) {
+    console.log('Query all notes')
+    fetch('/notes', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Data res from all notes', data)
+          this.setState({
+            notes: data
+          })
+        console.log('Incident Notes only', this.state.notes)
+      })
+  }
 
   onhandlePatientSelect = (patientVal) => {
     console.log(patientVal, 'this is the passed data')
@@ -257,7 +274,7 @@ class App extends React.Component {
         menuItem: 'Detail View',
         render: () =>
           <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
-            <DataBreakdown />
+            <DataBreakdown onhandleGetNotes={this.onhandleGetNotes} token={this.state.token} notes={this.state.notes}/>
           </Tab.Pane>
       }
     ]
@@ -267,7 +284,7 @@ class App extends React.Component {
         menuItem: 'View Map',
         render: () =>
           <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
-            <Map />
+            <Map onhandleGetNotes={this.onhandleGetNotes} token={this.state.token} notes={this.state.notes}/>
           </Tab.Pane>
       },
       {
