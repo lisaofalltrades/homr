@@ -60,7 +60,6 @@ MongoClient.connect(url, function (err, client) {
     const fullName = helpers.fullName(randomCharacter)
     const firstName = fullName[0]
     const lastName = fullName[fullName.length - 1]
-    
 
     const newUser = {
       email: helpers.userEmail(randomCharacter),
@@ -93,7 +92,7 @@ MongoClient.connect(url, function (err, client) {
     const fullName = helpers.fullName(randomCharacter)
     // add to patientsList array to track duplicates
     patientList.push(randomCharacter)
-    var newId2 = new mongoose.mongo.ObjectId();
+    var newId2 = new mongoose.mongo.ObjectId()
 
     const newPatient = {
       firstName: fullName[0],
@@ -130,7 +129,7 @@ MongoClient.connect(url, function (err, client) {
       category: category,
       author: _.sample(users),
       patient: _.sample(patients),
-      address: states.helpers.randomAddress()
+      address: states.helpers.randomAddress()[0]
     }
 
     notes.push(newNote)
