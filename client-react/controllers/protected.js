@@ -178,4 +178,12 @@ router.post('/allPatients', [authenticate], (req, res) => {
   })
 })
 
+router.post('/noteLocations', [authenticate], (req, res) => {
+  Note.find((err, data) => {
+    if (err) return res.status(500).send(err)
+    console.log(data, 'this is the map data')
+    res.send(data)
+  })
+})
+
 module.exports = router

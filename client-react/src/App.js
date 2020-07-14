@@ -267,7 +267,7 @@ class App extends React.Component {
         menuItem: 'View Map',
         render: () =>
           <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
-            <Map />
+            <Map/>
           </Tab.Pane>
       },
       {

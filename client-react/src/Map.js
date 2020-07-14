@@ -53,10 +53,35 @@ function Locate ({ panTo }) {
 }
 
 export default function Map () {
+
+  // function locations () {
+  //   fetch('/noteLocations', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization: `Bearer ${props.token}`
+  //     }
+  //   })
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       let cords = []
+
+  //       for (let i = 0; i < data.length; i++) {
+  //         if (data.cords){
+
+  //         }
+  //       }
+  //       console.log(data, 'this is the data')
+
+  //     })
+  // }
+  // locations()
+
   const { isLoaded, loadError } = useLoadScript({
     // googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY
     googleMapsApiKey: secret.key
   })
+
 
   // this is the state of this component
   const [markers, setMarkers] = React.useState([])
