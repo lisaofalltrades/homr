@@ -178,4 +178,18 @@ router.post('/allPatients', [authenticate], (req, res) => {
   })
 })
 
+router.post('/notes', [authenticate], (req, res) => {
+  // query all notes where category = incident
+  Note.find({ category: 'Incident' }, async (err, data) => {
+    if (err) return res.status(500).send(err)
+    if (data) {
+      res.send({
+        data
+      })
+    } else {
+      res.send(console.log('No results found'))
+    }
+  })
+})
+
 module.exports = router
