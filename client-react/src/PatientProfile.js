@@ -15,6 +15,10 @@ export default class PatientProfile extends React.Component {
     }
   }
 
+  componentDidMount() {
+    console.log(this.props.selectedPatient, 'take a look at this')
+  }
+
   handleEditScreen = () => {
     let viewPatientInfoDiv = document.getElementById('viewPatientInfo')
     let editPatientInfoDiv = document.getElementById('editPatientInfo')
@@ -25,7 +29,7 @@ export default class PatientProfile extends React.Component {
   
   onhandleUpdateState = () => {
     console.log(this.props, 'this is the test ')
-    this.props.selectedPatient.id.notes = null
+    this.props.selectedPatient.patient.notes = null
     setTimeout(this.setState({placeholder: []}), 800, console.log(this.state.placeholder))
     console.log('the leap of fame ran')
   }
@@ -38,7 +42,7 @@ export default class PatientProfile extends React.Component {
   render () {
     return (
       <div style={{ 'text-align': 'left' }}>
-        <Header as='h1'>{this.props.selectedPatient.id.firstName}</Header>
+        <Header as='h1'>{this.props.selectedPatient.patient.firstName}</Header>
         <div id='viewPatientInfo' style={{ display: 'block' }}>
           <div>
             <List>
@@ -48,9 +52,8 @@ export default class PatientProfile extends React.Component {
                     <List.Header><Icon name='flag' />Red Flags</List.Header>
                     <List.Description>
                       {this.state.selectedPatient === null ? 'none' :
-                      
                         <ul>
-                          {this.state.selectedPatient.redFlags.map(element => <li key={element}>{element}</li>)}
+                          {this.state.selectedPatient.patinet.redFlags.map(element => <li key={element}>{element}</li>)}
                         </ul>}
                     </List.Description>
                   </div>
@@ -63,7 +66,7 @@ export default class PatientProfile extends React.Component {
                 <List.Content>
                   <List.Header>Full Name</List.Header>
                   <List.Description>
-                    {this.props.selectedPatient.id.firstName} {this.props.selectedPatient.id.lastName}
+                    {this.props.selectedPatient.patient.firstName} {this.props.selectedPatient.patient.lastName}
                   </List.Description>
                 </List.Content>
               </List.Item>
@@ -71,7 +74,7 @@ export default class PatientProfile extends React.Component {
                 <List.Content>
                   <List.Header>Date of Birth</List.Header>
                   <List.Description>
-                    {this.props.selectedPatient.id.dob}
+                    {this.props.selectedPatient.patient.dob}
                   </List.Description>
                 </List.Content>
               </List.Item>
@@ -79,7 +82,7 @@ export default class PatientProfile extends React.Component {
                 <List.Content>
                   <List.Header>Birthplace</List.Header>
                   <List.Description>
-                    {this.props.selectedPatient.id.birthPlace}
+                    {this.props.selectedPatient.patient.birthPlace}
                   </List.Description>
                 </List.Content>
               </List.Item>
@@ -87,7 +90,7 @@ export default class PatientProfile extends React.Component {
                 <List.Content>
                   <List.Header>License Number</List.Header>
                   <List.Description>
-                    {this.props.selectedPatient.id.licenseNum}
+                    {this.props.selectedPatient.patient.licenseNum}
                   </List.Description>
                 </List.Content>
               </List.Item>
@@ -95,7 +98,7 @@ export default class PatientProfile extends React.Component {
                 <List.Content>
                   <List.Header>Ethnicity</List.Header>
                   <List.Description>
-                    {this.props.selectedPatient.id.race}
+                    {this.props.selectedPatient.patient.race}
                   </List.Description>
                 </List.Content>
               </List.Item>
@@ -104,7 +107,7 @@ export default class PatientProfile extends React.Component {
                   <List.Header>Medical History</List.Header>
                   <List.Description>
                     <ul>
-                      {this.props.selectedPatient.id.medicalHistory.map(element => <li key={element}>{element}</li>)}
+                      {this.props.selectedPatient.patient.medicalHistory.map(element => <li key={element}>{element}</li>)}
                     </ul>
                   </List.Description>
                 </List.Content>
@@ -113,9 +116,9 @@ export default class PatientProfile extends React.Component {
                 <List.Content>
                   <List.Header>Notes</List.Header>
                   <List.Description>
-                    {this.props.selectedPatient.id.notes
+                    {this.props.selectedPatient.patient.notes
                       ? <ul>
-                        {this.props.selectedPatient.id.notes.map(element => <li key={element}>{element.description}</li>)}
+                        {this.props.selectedPatient.patient.notes.map(element => <li key={element}>{element.description}</li>)}
                       </ul>
                       : null }
                   </List.Description>
@@ -124,11 +127,11 @@ export default class PatientProfile extends React.Component {
             </List>
           </div>
           <div>
-            <Notes token={this.props.token} patientId={this.props.selectedPatient.id} onhandleUpdateState={this.onhandleUpdateState} onhandleRedFlagUpdate={this.onhandleRedFlagUpdate}/>
+            <Notes token={this.props.token} patientId={this.props.selectedPatient.patient} onhandleUpdateState={this.onhandleUpdateState} onhandleRedFlagUpdate={this.onhandleRedFlagUpdate}/>
           </div>
         </div><br />
         <div id='editPatientInfo' style={{ display: 'none' }}>
-          <EditPatient token={this.props.token} selectedPatient={this.props.selectedPatient.id}/>
+          <EditPatient token={this.props.token} selectedPatient={this.props.selectedPatient.patient}/>
         </div><br />
       </div>
     )

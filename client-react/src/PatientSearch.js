@@ -164,7 +164,7 @@ export default class PatientSearch extends React.Component {
                 if(this.state.filter === 'lastName' ) {
                   return (
                     <List.Item>
-                      <List.Content>
+                      <List.Content onClick={() => {this.props.onhandlePatientSelect({patient})}}>
                         <List.Header>{patient.lastName}, {patient.firstName}</List.Header>
                           Date of Birth: {patient.dob} Red Flags: {patient.redFlags}
                       </List.Content>
