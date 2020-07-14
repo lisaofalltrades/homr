@@ -35,9 +35,10 @@ class App extends React.Component {
     }
   }
 
- 
+  
 
   onhandlePatientSelect = (patientVal) => {
+    console.log(patientVal, 'this is the passed data')
     this.setState({ selectedPatient: patientVal }, () => {
       console.log(this.state.selectedPatient,'you did it')
 

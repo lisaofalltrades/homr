@@ -55,7 +55,7 @@ export default class PatientSearch extends React.Component {
           data.data.forEach(el => {
             idArray.push({
               // id: el._id
-              id:el
+              patient:el
             })
             sourceArray.push({
               title: el.lastName,
