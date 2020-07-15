@@ -77,14 +77,17 @@ MongoClient.connect(url, function (err, client) {
       status: 'active',
       admin: true
     }
+    // for development, everyone gets a district
+    const district = Math.floor(Math.random() * 20)
+    newUser.district = district.toString(8)
 
-    // add a district if role = fire_chief
-    if (newUser.role === 'fire_chief') {
-      // assign a district between 1-20
-      const district = Math.floor(Math.random() * 20)
-      // converting a number to a string with base 8
-      newUser.district = district.toString(8)
-    }
+    // // add a district if role = fire_chief
+    // if (newUser.role === 'fire_chief') {
+    //   // assign a district between 1-20
+    //   const district = Math.floor(Math.random() * 20)
+    //   // converting a number to a string with base 8
+    //   newUser.district = district.toString(8)
+    // }
 
     users.push(newUser)
     // console.log(`User#${i} has been added: `, newUser.email)
