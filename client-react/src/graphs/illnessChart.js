@@ -9,23 +9,12 @@ export default class App extends React.Component {
       token: this.props.token,
       patients: [],
       labels: [],
+      notes: this.props.notes,
       datasets: [
         {
           label: 'Issues',
-          backgroundColor: [
-            '#B21F00',
-            '#C9DE00',
-            '#2FDE00',
-            '#00A6B4',
-            '#6800B4'
-          ],
-          hoverBackgroundColor: [
-            '#501800',
-            '#4B5000',
-            '#175000',
-            '#003350',
-            '#35014F'
-          ],
+          backgroundColor: [],
+          hoverBackgroundColor: [],
           data: []
         }
       ]
@@ -48,9 +37,9 @@ export default class App extends React.Component {
           patients: data.data
         }, () => {
           const illnessDict = {}
-          this.state.patients.forEach(note => {
+          this.state.patients.forEach(patient => {
             // console.log('each note in illnessChart', note.medicalHistory)
-            illnessDict[note.medicalHistory] = (illnessDict[note.medicalHistory] || 0) + 1
+            illnessDict[patient.medicalHistory] = (illnessDict[patient.medicalHistory] || 0) + 1
           })
 
           for (const [illness, count] of Object.entries(illnessDict)) {
@@ -58,42 +47,51 @@ export default class App extends React.Component {
             const datasets = this.state.datasets[0].data
             datasets.push(count)
           }
-          // console.log('state after illnessDict', this.state)
+          console.log('state after illnessDict', this.state)
+        })
+      })
+      .then(() => {
+        this.setState({
+          labels: this.state.labels
         })
       })
   }
 
   getRandomColor (labels) {
+    console.log('Picking a color.')
+    console.log('label length: ', labels.length)
     var colorList = []
     var letters = '0123456789ABCDEF'.split('')
 
-    for (var i = 0; i < labels; i++) {
+    for (var i = 0; i < labels.length; i++) {
       var color = '#'
       for (var j = 0; j < 6; j++) {
         color += letters[Math.floor(Math.random() * 16)]
       }
       colorList.push(color)
     }
-    // console.log(colorList)
+    console.log(colorList)
     return colorList
   }
 
   render () {
-    const state = {
+    const pieState = {
       labels: this.state.labels,
       datasets: [
         {
           label: 'Issues',
-          backgroundColor: this.getRandomColor(this.state.labels.length),
-          hoverBackgroundColor: this.getRandomColor(this.state.labels.length),
+          backgroundColor: this.getRandomColor.bind(this)(this.state.labels),
+          hoverBackgroundColor: this.getRandomColor.bind(this)(this.state.labels),
           data: this.state.datasets[0].data
         }
       ]
     }
+    // console.log('state inside render()', pieState)
+
     return (
       <div>
         <Pie
-          data={state}
+          data={pieState}
           options={{
             title: {
               display: true,

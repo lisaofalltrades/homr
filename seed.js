@@ -65,7 +65,8 @@ const portlandAdd = [
 // define # of entries
 const numOfUsers = 5
 const numOfPatients = 10
-const numOfNotes = 15
+const numOfNotes = 50
+
 // Use connect method to connect to the server
 MongoClient.connect(url, function (err, client) {
   assert.strictEqual(null, err)
@@ -98,6 +99,7 @@ MongoClient.connect(url, function (err, client) {
     const role = roles[Math.floor(Math.random() * roles.length)]
     const address = states.helpers.randomAddress()[0]
     // const zip = address[1].match(/\d+/)[0]
+
     const newUser = {
       email: helpers.userEmail(randomCharacter),
       firstName,
@@ -155,6 +157,7 @@ MongoClient.connect(url, function (err, client) {
     const address = addressObj[0]
     const cords = addressObj[1]
     const randomQuote = helpers.randomItem(quotes)
+
     const newNote = {
       date: date,
       category: category,
@@ -168,17 +171,20 @@ MongoClient.connect(url, function (err, client) {
     // console.log(`# Note#${i} has been added`)
     // console.log(newNote)
   }
+
   // notes loop for portland addresses
   for (let i = 0; i < portlandAdd.length; i += 1) {
     // current timestamp
     const today = new Date()
     const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()
+
     const category = categories[Math.floor(Math.random() * categories.length)]
     const addressObj = portlandAdd[Math.floor(Math.random() * portlandAdd.length)]
     console.log(addressObj)
     const address = addressObj[0]
     const cords = addressObj[1]
     const randomQuote = helpers.randomItem(quotes)
+
     const newNote = {
       date: date,
       category: category,
@@ -188,7 +194,9 @@ MongoClient.connect(url, function (err, client) {
       cords: cords,
       description: randomQuote
     }
+
     notes.push(newNote)
+
     // console.log(`# Note#${i} has been added`)
     // console.log(newNote)
   }
