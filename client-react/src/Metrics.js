@@ -6,7 +6,8 @@ export default class Metrics extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      token: this.props.token
+      token: this.props.token,
+      notes: null
     }
   }
 
@@ -14,7 +15,7 @@ export default class Metrics extends React.Component {
     return (
       <div>
         <h1>Dashboard</h1>
-        <Incidents token={this.state.token} />
+        <Incidents token={this.state.token} notes={this.state.notes} />
         <IllnessChart token={this.state.token} />
       </div>
     )

@@ -4,15 +4,26 @@ import { Grid, Header, Button, Icon, Statistic } from 'semantic-ui-react'
 export default class DataBreakdown extends React.Component {
   constructor (props) {
     super(props)
-    this.state = [{
+    this.state = {
       districtList: [],
       incidentList: []
-    }]
+    }
   }
 
   componentDidMount () {
     this.props.onhandleGetNotes.bind(this)(this.props.token)
-    console.log('notes from databreatdown', this.props.notes)
+    console.log('notes from databreakdown', this.props.notes)
+
+    const distIncidentCount = {}
+
+    this.props.notes.data.forEach(note => {
+      distIncidentCount[note.author.district] = (distIncidentCount[note.author.district] || 0) + 1
+    })
+
+    for (const [district, count] of Object.entries(distIncidentCount)) {
+      this.state.districtList.push(district)
+      this.state.incidentList.push(count)
+    }
   }
 
   render () {
@@ -20,7 +31,40 @@ export default class DataBreakdown extends React.Component {
       <div>
         <Header as='h2'>Incidents by District</Header>
         <Grid columns={2} selection celled='internally' divided>
-          <Grid.Row>
+          {this.state.districtList.map((district, i) => {
+            this.state.incidentList.map((incident, j) => {
+              return (<Grid.Row>
+                <Grid.Column width={2} key={i}>
+                  <Statistic size='mini'>
+                    <Statistic.Label>District</Statistic.Label>
+                    <Statistic.Value>{district}</Statistic.Value>
+                  </Statistic>
+                </Grid.Column>
+                <Grid.Column width={14}>
+                  <Statistic.Group size='mini' widths='four'>
+                    <Statistic key={j}>
+                      <Statistic.Value>{incident}</Statistic.Value>
+                      <Statistic.Label>Incidents Total</Statistic.Label>
+                    </Statistic>
+                    <Statistic>
+                      <Statistic.Value>15</Statistic.Value>
+                      <Statistic.Label>Last Month</Statistic.Label>
+                    </Statistic>
+                    <Statistic>
+                      <Statistic.Value>64</Statistic.Value>
+                      <Statistic.Label>Last Quarter</Statistic.Label>
+                    </Statistic>
+                    <Statistic>
+                      <Statistic.Value>-12</Statistic.Value>
+                      <Statistic.Label>Year Over Year</Statistic.Label>
+                    </Statistic>
+                  </Statistic.Group>
+                </Grid.Column>
+                      </Grid.Row>)
+            })
+          })
+
+          /* { <Grid.Row>
             <Grid.Column width={2}>
               <Statistic size='mini'>
                 <Statistic.Label>District</Statistic.Label>
@@ -47,8 +91,9 @@ export default class DataBreakdown extends React.Component {
                 </Statistic>
               </Statistic.Group>
             </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
+          </Grid.Row> row ends */}
+
+          {/* <Grid.Row>
             <Grid.Column width={2}>
               <Statistic size='mini'>
                 <Statistic.Label>District</Statistic.Label>
@@ -103,7 +148,7 @@ export default class DataBreakdown extends React.Component {
                 </Statistic>
               </Statistic.Group>
             </Grid.Column>
-          </Grid.Row>
+          </Grid.Row> */}
         </Grid>
       </div>
     )

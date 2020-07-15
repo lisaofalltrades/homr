@@ -36,6 +36,7 @@ class App extends React.Component {
       notes: []
     }
   }
+  
   onhandleGetNotes(token) {
     console.log('Query all notes')
     fetch('/notes', {
@@ -47,18 +48,14 @@ class App extends React.Component {
     })
       .then(response => response.json())
       .then(data => {
-        console.log('Data res from all notes', data)
           this.setState({
             notes: data
           })
-        console.log('Incident Notes only', this.state.notes)
       })
   }
 
   onhandlePatientSelect = (patientVal) => {
-    console.log(patientVal, 'this is the passed data')
     this.setState({ selectedPatient: patientVal }, () => {
-      console.log(this.state.selectedPatient,'you did it')
 
       const patientProfilePane = document.getElementById('patientProfilePane')
       patientProfilePane.style.display = 'block'
@@ -80,7 +77,6 @@ class App extends React.Component {
 
   handleLogin (evt) {
     evt.preventDefault()
-    console.log('Login prevent D')
     const email = document.getElementById('email').value
     const password = document.getElementById('password').value
     this.setState({
@@ -98,7 +94,6 @@ class App extends React.Component {
     })
       .then(response => response.json())
       .then(data => {
-        console.log('data', data)
         if (data.errorMsg) { alert('Invalid login credentials') }
         if (data.role !== 'general') {
           this.setState({
@@ -125,11 +120,9 @@ class App extends React.Component {
           })
           .then(response => response.json())
           .then(data => {
-            console.log('Data res from all notes', data)
               this.setState({
                 notes: data
               })
-            console.log('Incident Notes only', this.state.notes)
           })
          })
       })
@@ -146,7 +139,7 @@ class App extends React.Component {
       token: null,
       selectedPatient: '',
       profileIndex: 0
-    }, () => console.log(this.state, 'it ran'))
+    })
   }
 
   handleChange (evt) {
@@ -168,7 +161,6 @@ class App extends React.Component {
       }
     ]
     const role = evt.target.innerText
-    console.log(role)
     let finalId = ''
     ids.forEach(element => {
       if (role === element.key) {
@@ -212,11 +204,9 @@ class App extends React.Component {
           })
           .then(response => response.json())
           .then(data => {
-            console.log('Data res from all notes', data)
               this.setState({
                 notes: data
               })
-            console.log('Incident Notes only', this.state.notes)
           })
         })
       })
@@ -224,7 +214,6 @@ class App extends React.Component {
 
   handleProfile (evt) {
     evt.preventDefault()
-    console.log('it worked')
     const Fname = document.getElementById('Fname').value
     const Lname = document.getElementById('Lname').value
     const job_title = document.getElementById('job_title').value
@@ -254,7 +243,7 @@ class App extends React.Component {
       .then(data => {
         this.setState({
           currentUser: data
-        }, () => { console.log(this.state) })
+        })
       })
   }
 
@@ -302,7 +291,7 @@ class App extends React.Component {
         menuItem: 'Chart View',
         render: () =>
           <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
-            <Metrics token={this.state.token} />
+            <Metrics token={this.state.token} notes={this.state.notes} />
           </Tab.Pane>
       },
       {
