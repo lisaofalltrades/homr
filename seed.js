@@ -132,14 +132,15 @@ MongoClient.connect(url, function (err, client) {
     const category = categories[Math.floor(Math.random() * categories.length)]
     const addressObj = states.helpers.randomAddress()
     const address = addressObj[0]
-    // const coor = addressObj[1]
+    const coor = addressObj[1]
 
     const newNote = {
       date: date,
       category: category,
       author: _.sample(users),
       patient: _.sample(patients),
-      address: address
+      address: address,
+      cords: coor
     }
 
     notes.push(newNote)

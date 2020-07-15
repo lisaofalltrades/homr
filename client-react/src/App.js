@@ -302,7 +302,7 @@ class App extends React.Component {
         menuItem: 'View Map',
         render: () =>
           <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
-            <Map onhandleGetNotes={this.onhandleGetNotes} token={this.state.token} notes={this.state.notes}/>
+            <Map token={this.state.token} notes={this.state.notes}/>
           </Tab.Pane>
       },
       {

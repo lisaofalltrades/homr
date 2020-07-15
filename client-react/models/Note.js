@@ -30,10 +30,14 @@ const noteSchema = Schema({
     type: ObjectId,
     required: false,
     ref: 'User'
+  },
+  cords: {
+    type: String,
+    required: false
   }
 })
 
-noteSchema.statics.register = async function (date, category, address, description, patient, author) {
+noteSchema.statics.register = async function (date, category, address, description, patient, author, cords) {
   const note = new this()
   note.date = date
   note.category = category
@@ -41,6 +45,7 @@ noteSchema.statics.register = async function (date, category, address, descripti
   note.description = description
   note.patient = patient
   note.author = author
+  note.cords = cords
 
   await note.save()
 

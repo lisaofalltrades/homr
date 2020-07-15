@@ -130,7 +130,7 @@ router.post('/AddNote', [authenticate], (req, res) => {
   async function Notes () {
     // if (err) return res.status(500).send(err)
     // if (patientExists) return res.status(201).send({ warning: 'Updating existing note' })
-    await Note.register(req.body.date, req.body.category, req.body.address, req.body.description, req.patient, req.author)
+    await Note.register(req.body.date, req.body.category, req.body.address, req.body.description, req.patient, req.author, req.cords)
 
     // await Patient.updateOne({ _id: req.patient }
     Patient.updateOne({ _id: req.body.patient }, newNote, (err, patient) => {
