@@ -75,6 +75,19 @@ router.post('/patientAdd', [authenticate], (req, res) => {
   })
 })
 
+router.post('/patientLookup', [authenticate], (req, res) => {
+  Patient.find({ _id: req.body.patientID }, async (err, data) => {
+    if (err) return res.status(500).send(err)
+    if (data) {
+      res.send({
+        data
+      })
+    } else {
+      res.send(console.log('No results found'))
+    }
+  })
+})
+
 router.post('/patientEdit', [authenticate], (req, res) => {
   const objUpdate = {}
   console.log(req.body, 'req.body is')

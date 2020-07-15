@@ -69,8 +69,7 @@ class Notes extends React.Component {
       })
     })
       .then(response => response.json())
-      .then(data => { this.setState({ notes: data.notes, redFlags: data.redFlags }, () => { this.props.onhandleRedFlagUpdate(this.state) }) })
-      // this is where we ended on friday 7/10
+      .then(data => { this.setState({ notes: data.notes, redFlags: data.redFlags }, () => { this.props.onhandleRedFlagUpdate(this.state.redFlags) }) })
   }
 
   render () {

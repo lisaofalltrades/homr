@@ -11,7 +11,9 @@ export default class PatientProfile extends React.Component {
     super(props)
     this.state = {
       placeholder: [],
-      selectedPatient: null
+      patientID: this.props.selectedPatient.patient._id,
+      redFlags: this.props.selectedPatient.patient.redFlags,
+      token: this.props.token
     }
   }
 
@@ -34,27 +36,47 @@ export default class PatientProfile extends React.Component {
     console.log('the leap of fame ran')
   }
 
-  onhandleRedFlagUpdate = (patientVal) => {
-    console.log(patientVal, 'before setting state')
-    this.setState({ selectedPatient: patientVal }, () => (console.log(patientVal, 'This is handle red flag update')))
+  onhandleRedFlagUpdate = () => {
+    fetch('/patientLookup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.state.token}`
+      },
+      body: JSON.stringify({
+        patientID: this.state.patientID
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data.data, 'this is data.data')
+        console.log(data.data[0].redFlags, 'this is data.data.redFlags')
+        this.setState({
+          redFlags: data.data[0].redFlags
+        }, this.setState({
+          placeholder: []
+        }, console.log(this.state, 'line 50, redFlags check')))
+      })
   }
   
   render () {
     return (
       <div style={{ 'text-align': 'left' }}>
-        <Header as='h1'>{this.props.selectedPatient.patient.firstName}</Header>
+        <Header as='h1'>{this.props.selectedPatient.patient.firstName} {this.props.selectedPatient.patient.lastName}</Header>
         <div id='viewPatientInfo' style={{ display: 'block' }}>
           <div>
             <List>
               <List.Item>
                 <List.Content>
-                  <div style={{ 'background-color': 'red', height: '4em', 'border-radius': '6px', padding: '3px' }}>
+                  <div style={{ backgroundColor: 'red', height: '4em', borderRadius: '6px', padding: '3px' }}>
                     <List.Header><Icon name='flag' />Red Flags</List.Header>
                     <List.Description>
-                      {this.state.selectedPatient === null ? 'none' :
-                        <ul>
-                          {this.state.selectedPatient.patinet.redFlags.map(element => <li key={element}>{element}</li>)}
-                        </ul>}
+                      {this.state.redFlags
+                        ?  <ul style={{ paddingLeft: '5px', marginTop: '2px' }}>
+                            {this.state.redFlags.map(element => <li key={element} style={{ display: 'inline', marginLeft: '5px' }}><Icon name='caret right' />{element}</li>)}
+                          </ul>
+                        : 'None'
+                      }
                     </List.Description>
                   </div>
                 </List.Content>
@@ -106,8 +128,8 @@ export default class PatientProfile extends React.Component {
                 <List.Content>
                   <List.Header>Medical History</List.Header>
                   <List.Description>
-                    <ul>
-                      {this.props.selectedPatient.patient.medicalHistory.map(element => <li key={element}>{element}</li>)}
+                    <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
+                      {this.props.selectedPatient.patient.medicalHistory.map(element => <li key={element}><Icon name='caret right' />{element}</li>)}
                     </ul>
                   </List.Description>
                 </List.Content>
@@ -117,8 +139,8 @@ export default class PatientProfile extends React.Component {
                   <List.Header>Notes</List.Header>
                   <List.Description>
                     {this.props.selectedPatient.patient.notes
-                      ? <ul>
-                        {this.props.selectedPatient.patient.notes.map(element => <li key={element}>{element.description}</li>)}
+                      ? <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
+                        {this.props.selectedPatient.patient.notes.map(element => <li key={element}><Icon name='caret right' />{element.description}</li>)}
                       </ul>
                       : null }
                   </List.Description>

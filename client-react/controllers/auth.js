@@ -6,6 +6,9 @@ const User = require('../models/User')
 const express = require('express')
 const router = express.Router()
 
+//generate-password
+const generator = require('generate-password')
+
 router.post('/signUp', (req, res) => {
   User.findOne({ email: req.body.email }, async (err, userExists) => {
     if (err) return res.status(500).send(err)
@@ -45,6 +48,37 @@ router.post('/login', (req, res) => {
     })
     console.log(user)
     console.log('logged in')
+  })
+})
+
+router.post('/inviteUsers', (req, res) => {
+  req.body.forms.forEach(newUser => {
+    User.findOne({ email: newUser }, async (err, userExists) => {
+      if (err) return res.status(500).send(err)
+      if (userExists) return res.status(400).send({ errorMessage: 'User already exists.' })
+
+      const password = generator.generate({
+        length: 8,
+        numbers: true
+      })
+      const role = 'Fireman'
+      const admin = false
+
+      const user = await User.signUp(newUser, password, role, admin)
+
+      const token = jwt.sign({
+        _id: user._id
+      }, 'PROCESS')
+
+      console.log(user, 'on sign up')
+
+      // res.send({
+      //   token,
+      //   role: user.role,
+      //   currentUser: user
+      // })
+      // res.status(201).send(user.sanitize())
+    })
   })
 })
 
