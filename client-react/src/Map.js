@@ -27,7 +27,8 @@ const center = {
 const options = {
   styles: mapStyles,
   disabledDefaultUI: true,
-  zoomControl: true
+  zoomControl: true,
+  fullscreenControl: false
 }
 
 // this is a locate component that will auto populate the map to your current location when pressed
@@ -94,7 +95,7 @@ export default function Map (props) {
   const mapRef = React.useRef()
 
   const onMapLoad = React.useCallback((map) => {
-    // mapRef.current = map
+    mapRef.current = map
   }, [])
 
   // this react hook uses creates a callback that you can use insted of writing it every time you want to use it
@@ -116,7 +117,7 @@ export default function Map (props) {
         zoom={8}
         center={center}
         options={options}
-        onClick={onMapClick}
+        // onClick={onMapClick}
         onLoad={onMapLoad}
       >
         {markers.map((marker) => (
