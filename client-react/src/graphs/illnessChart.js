@@ -22,7 +22,6 @@ export default class App extends React.Component {
   }
 
   componentDidMount () {
-    // console.log('fetching all patients for illness chart')
     fetch('/allPatients', {
       method: 'POST',
       headers: {
@@ -32,7 +31,6 @@ export default class App extends React.Component {
     })
       .then(response => response.json())
       .then(data => {
-        // console.log('res data', data)
         this.setState({
           patients: data.data
         }, () => {
@@ -47,7 +45,6 @@ export default class App extends React.Component {
             const datasets = this.state.datasets[0].data
             datasets.push(count)
           }
-          console.log('state after illnessDict', this.state)
         })
       })
       .then(() => {
@@ -58,8 +55,6 @@ export default class App extends React.Component {
   }
 
   getRandomColor (labels) {
-    console.log('Picking a color.')
-    console.log('label length: ', labels.length)
     var colorList = []
     var letters = '0123456789ABCDEF'.split('')
 
@@ -70,7 +65,6 @@ export default class App extends React.Component {
       }
       colorList.push(color)
     }
-    console.log(colorList)
     return colorList
   }
 
@@ -79,14 +73,13 @@ export default class App extends React.Component {
       labels: this.state.labels,
       datasets: [
         {
-          label: 'Issues',
+          label: 'Health Issues',
           backgroundColor: this.getRandomColor.bind(this)(this.state.labels),
           hoverBackgroundColor: this.getRandomColor.bind(this)(this.state.labels),
           data: this.state.datasets[0].data
         }
       ]
     }
-    // console.log('state inside render()', pieState)
 
     return (
       <div>
