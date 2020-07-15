@@ -32,7 +32,7 @@ const noteSchema = Schema({
     ref: 'User'
   },
   cords: {
-    type: String,
+    type: Object,
     required: false
   }
 })
