@@ -100,11 +100,8 @@ MongoClient.connect(url, function (err, client) {
     const roles = ['fire_chief', 'city_rep', 'charity_rep']
     const role = roles[Math.floor(Math.random() * roles.length)]
     const address = states.helpers.randomAddress()[0]
-<<<<<<< HEAD
     // const zip = address[1].match(/\d+/)[0]
 
-=======
->>>>>>> bc6f13139327a8434be3ff090be0870d0056fda6
     const newUser = {
       email: helpers.userEmail(randomCharacter),
       firstName,
@@ -156,34 +153,21 @@ MongoClient.connect(url, function (err, client) {
     // current timestamp
     const today = new Date()
     const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()
-<<<<<<< HEAD
-
-=======
-    // random note category
-    const categories = ['Incident', 'Update']
->>>>>>> bc6f13139327a8434be3ff090be0870d0056fda6
     const category = categories[Math.floor(Math.random() * categories.length)]
     const addressObj = states.helpers.randomAddress()
     console.log(addressObj)
     const address = addressObj[0]
     const cords = addressObj[1]
-<<<<<<< HEAD
     const randomQuote = helpers.randomItem(quotes)
 
-=======
->>>>>>> bc6f13139327a8434be3ff090be0870d0056fda6
     const newNote = {
       date: date,
       category: category,
       author: _.sample(users),
       patient: _.sample(patients),
       address: address,
-<<<<<<< HEAD
       cords: cords,
       description: randomQuote
-=======
-      cords: cords
->>>>>>> bc6f13139327a8434be3ff090be0870d0056fda6
     }
     notes.push(newNote)
     // console.log(`# Note#${i} has been added`)
