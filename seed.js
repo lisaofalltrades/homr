@@ -17,13 +17,59 @@ const helpers = funFaker.helpers
 // let characters = funFaker.office.characters
 // characters = characters.concat(funFaker.hp.characters, funFaker.witcher.characters)
 const characters = [].concat(funFaker.hp.characters, funFaker.witcher.characters)
+const quotes = [].concat(funFaker.hp.quotes, funFaker.office.quotes)
 const conditionList = funFaker.medical.conditions
 const states = funFaker.states
+const categories = ['Incident', 'Update']
+
+// Portland Addresses
+const portlandAdd = [
+  [
+    '3504 SE 92nd Ave, Portland, OR 97266',
+    { lat: 45.496590, long: -122.566570 }
+  ],
+  [
+    '16211 SE Division St, Portland, OR 97236',
+    { lat: 45.504930, long: -122.496120 }
+  ],
+  [
+    '3432 SE 25th Ave, Portland, OR 97202',
+    { lat: 45.498470, long: -122.640320 }
+  ],
+  [
+    '4229 NE 122nd Ave, Portland, OR 97230',
+    { lat: 45.552910, long: -122.537260 }
+  ],
+  [
+    '2975 NE Hogan Dr, Gresham, OR 97030',
+    { lat: 45.518390, long: -122.412950 }
+  ],
+  [
+    '1135 NE Martin Luther King Jr Blvd, Portland, OR 97232',
+    { lat: 45.5311136, long: -122.6620034 }
+  ],
+  [
+    '1122 SE Hawthorne Blvd, Portland, OR 97214',
+    { lat: 45.5120579, long: -122.6539873 }
+  ],
+  [
+    '8218 NE Glisan St, Portland, OR 97220',
+    { lat: 45.518390, long: -122.412950 }
+  ],
+  [
+    '4200 SE 82nd Ave, Portland, OR 97266',
+    { lat: 45.5261283, long: -122.5786043 }
+  ],
+  [
+    '3527 SE 122nd Ave, Portland, OR 97236',
+    { lat: 45.4962466, long: -122.5391627 }
+  ]
+]
 
 // define # of entries
-const numOfUsers = 10
-const numOfPatients = 20
-const numOfNotes = 50
+const numOfUsers = 5
+const numOfPatients = 10
+const numOfNotes = 15
 
 // Use connect method to connect to the server
 MongoClient.connect(url, function (err, client) {
@@ -65,6 +111,7 @@ MongoClient.connect(url, function (err, client) {
     const role = roles[Math.floor(Math.random() * roles.length)]
 
     const address = states.helpers.randomAddress()[0]
+    // const zip = address[1].match(/\d+/)[0]
 
     const newUser = {
       email: helpers.userEmail(randomCharacter),
@@ -127,12 +174,12 @@ MongoClient.connect(url, function (err, client) {
     const today = new Date()
     const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()
 
-    // random note category
-    const categories = ['Incident', 'Update']
     const category = categories[Math.floor(Math.random() * categories.length)]
     const addressObj = states.helpers.randomAddress()
+    console.log(addressObj)
     const address = addressObj[0]
-    const coor = addressObj[1]
+    const cords = addressObj[1]
+    const randomQuote = helpers.randomItem(quotes)
 
     const newNote = {
       date: date,
@@ -140,7 +187,8 @@ MongoClient.connect(url, function (err, client) {
       author: _.sample(users),
       patient: _.sample(patients),
       address: address,
-      cords: coor
+      cords: cords,
+      description: randomQuote
     }
 
     notes.push(newNote)
@@ -148,6 +196,37 @@ MongoClient.connect(url, function (err, client) {
     // console.log(`# Note#${i} has been added`)
     // console.log(newNote)
   }
+
+  // notes loop for portland addresses
+  for (let i = 0; i < portlandAdd.length; i += 1) {
+    // current timestamp
+    const today = new Date()
+    const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()
+
+    const category = categories[Math.floor(Math.random() * categories.length)]
+    const addressObj = portlandAdd[Math.floor(Math.random() * portlandAdd.length)]
+    console.log(addressObj)
+    const address = addressObj[0]
+    const cords = addressObj[1]
+    const randomQuote = helpers.randomItem(quotes)
+
+    const newNote = {
+      date: date,
+      category: category,
+      author: _.sample(users),
+      patient: _.sample(patients),
+      address: address,
+      cords: cords,
+      description: randomQuote
+    }
+
+    notes.push(newNote)
+
+    // console.log(`# Note#${i} has been added`)
+    // console.log(newNote)
+  }
+  console.log(notes)
+  console.log(notes.length)
   // inject DB
   notesCollection.insertMany(notes)
 
