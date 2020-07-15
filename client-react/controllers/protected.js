@@ -2,11 +2,12 @@
 const jwt = require('jsonwebtoken')
 const User = require('../models/User')
 const Patient = require('../models/Patient')
-
+const Note = require('../models/Note')
 // server
 const express = require('express')
 const { Profiler } = require('react')
 const { db } = require('../models/User')
+// const { default: Notes } = require('../src/patientInfo/Notes')
 const router = express.Router()
 
 // provides a short authenticate to other get routes
@@ -21,6 +22,7 @@ const authenticate = (req, res, next) => {
       User.findOne({ _id: payload._id }, (err, userDoc) => { // change for deployment
         if (err) return res.status(500).send(err)
         req.user = userDoc
+        req.author = userDoc
         console.log('authenticate ran')
         return next()
       })
@@ -52,13 +54,16 @@ router.post('/profileUpdate', [authenticate], (req, res) => {
     $set: objUpdate
   }
 
-  User.updateOne({ _id: req.user }, updates, (err, res) => {
+  User.updateOne({ _id: req.user }, updates, (err, user) => {
     if (err) return res.status(500).send(err)
     console.log('profile updated')
+    User.findOne({ _id: req.user._id }, (err, newuser) => {
+      if (err) return res.status(500).send(err)
+      res.send(newuser)
+    })
   })
 })
 
-// this is what Austen re wrote nothing else changed
 router.post('/patientAdd', [authenticate], (req, res) => {
   console.log(req.body)
   Patient.findOne({ firstName: req.body.firstName }, async (err, patientExists) => {
@@ -67,6 +72,130 @@ router.post('/patientAdd', [authenticate], (req, res) => {
     await Patient.register(req.body.photoID, req.body.firstName, req.body.lastName, req.body.dob, req.body.birthPlace, req.body.licenseNum, req.body.race, req.body.medicalHistory, req.body.notes, req.body.redFlags, req.user)
 
     res.send('post succesfull')
+  })
+})
+
+router.post('/patientEdit', [authenticate], (req, res) => {
+  const objUpdate = {}
+  console.log(req.body, 'req.body is')
+
+  if (req.body.firstName !== '') objUpdate.firstName = req.body.firstName
+  if (req.body.lastName !== '') objUpdate.lastName = req.body.lastName
+  if (req.body.dob !== '') objUpdate.dob = req.body.dob
+  if (req.body.birthPlace !== '') objUpdate.birthPlace = req.body.birthPlace
+  if (req.body.licenseNum !== '') objUpdate.licenseNum = req.body.licenseNum
+  if (req.body.race !== '') objUpdate.race = req.body.race
+
+  objUpdate.date = new Date()
+
+  console.log(objUpdate)
+  const updates = {
+    $set: objUpdate
+  }
+
+  Patient.updateOne({ _id: req.body.patientID }, updates, (err, user) => {
+    if (err) return res.status(500).send(err)
+    console.log('profile updated')
+    Patient.findOne({ _id: req.body.patientID }, (err, patientUpdate) => {
+      if (err) return res.status(500).send(err)
+      console.log(patientUpdate)
+      // res.send(patientUpdate)
+    })
+  })
+})
+
+router.post('/AddNote', [authenticate], (req, res) => {
+  console.log(req.body, 'add note console log')
+  console.log(req.author, 'author')
+  const author = req.author
+
+  const newNote = {
+    $push: {
+      notes: {
+        date: req.body.date,
+        category: req.body.category,
+        address: req.body.address,
+        description: req.body.description,
+        author: req.author._id
+      }
+    },
+    $set: {
+      date: new Date(),
+      redFlags: req.body.redFlags
+    }
+  }
+
+  console.log(newNote, 'this is the new note')
+  // Note.findOne({ patient: req.body.patient }
+  async function Notes () {
+    // if (err) return res.status(500).send(err)
+    // if (patientExists) return res.status(201).send({ warning: 'Updating existing note' })
+    await Note.register(req.body.date, req.body.category, req.body.address, req.body.description, req.patient, req.author, req.cords)
+
+    // await Patient.updateOne({ _id: req.patient }
+    Patient.updateOne({ _id: req.body.patient }, newNote, (err, patient) => {
+      if (err) return res.status(500).send(err)
+      // res.send('post succesfull')
+      Patient.findOne({ _id: req.body.patient }, (err, patient) => {
+        if (err) return res.status(500).send(err)
+        // res.send('post succesfull')
+        console.log(patient, 'this is the patients data')
+        res.send(patient)
+      })
+    })
+  }
+  Notes()
+})
+
+router.post('/patientSearch', [authenticate], (req, res) => {
+  console.log(req.body)
+  if (req.body.searchValue) {
+    var query = { $or: [{ firstName: { $regex: req.body.searchValue, $options: 'i' } }, { lastName: { $regex: req.body.searchValue, $options: 'i' } }] }
+  }
+
+  Patient.find(query, async (err, data) => {
+    if (err) return res.status(500).send(err)
+    if (data) {
+      res.send({
+        data
+      })
+    } else {
+      res.send(console.log('No results found'))
+    }
+  })
+})
+
+router.post('/allPatients', [authenticate], (req, res) => {
+  Patient.find({}, async (err, data) => {
+    if (err) return res.status(500).send(err)
+    if (data) {
+      res.send({
+        data
+      })
+    } else {
+      res.send(console.log('No results found'))
+    }
+  })
+})
+
+router.post('/noteLocations', [authenticate], (req, res) => {
+  Note.find((err, data) => {
+    if (err) return res.status(500).send(err)
+    console.log(data, 'this is the map data')
+    res.send(data)
+  })
+})
+router.post('/notes', [authenticate], (req, res) => {
+  // query all notes where category = incident
+  Note.find({ category: 'Incident' }, async (err, data) => {
+    if (err) return res.status(500).send(err)
+    if (data) {
+      res.send({
+        data
+      })
+    } else {
+      res.send(console.log('No results found'))
+    }
   })
 })
 

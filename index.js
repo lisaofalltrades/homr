@@ -13,7 +13,6 @@ const http = require('http').createServer(app)
 const port = process.env.PORT || 8000
 // process.env.port is for heroku
 
-
 // middleware
 app.use(express.static(path.join(__dirname, 'client-react/build')))
 app.use(express.json())

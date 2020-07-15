@@ -1,19 +1,46 @@
 import React from 'react'
+import { Button, Form, Header } from 'semantic-ui-react'
 
 export default function (props) {
   return (
     <div>
-      <h1>Settings</h1>
-      <form id='profileForm'>
-        <input id='Fname' type='text' placeholder='First Name' /> <br />
-        <input id='Lname' type='text' placeholder='Last Name' /> <br />
-        <input id='job_title' type='text' placeholder='Job Title' /> <br />
-        <input id='city' type='text' placeholder='City' /> <br />
-        <input id='county' type='text' placeholder='County' /> <br />
-        {props.role === 'fire_chief' ? <input id='district' type='text' placeholder='District' /> : <span id='district' value='' />}
-        <br />
-        <button type='submit' onClick={props.handleProfile}>Update</button>
-      </form>
+      <Header as='h1'>User Profile</Header>
+      <Form id='profileForm'>
+        <Form.Field>
+          <label>First Name</label>
+          <input id='Fname' placeholder='First Name' />
+        </Form.Field>
+        <Form.Field>
+          <label>Last Name</label>
+          <input id='Lname' placeholder='Last Name' />
+        </Form.Field>
+        <Form.Field >
+          <label>Job Title</label>
+          <input id='job_title' placeholder='Job Title' />
+        </Form.Field>
+        <Form.Field>
+          <label>City</label>
+          <input id='city' placeholder='City' />
+        </Form.Field>
+        <Form.Field>
+          <label>County</label>
+          <input id='county' placeholder='County' />
+        </Form.Field>
+        {props.role === 'fire_chief'
+          ? <Form.Field>
+            <label>District</label>
+            <input id='district' placeholder='District' />
+            <span id='district' value='' />
+            </Form.Field>
+          : null
+        }
+        <Button type='submit' 
+          content='Update' 
+          icon='right arrow' 
+          labelPosition='right' 
+          onClick={props.handleProfile}
+          style={{ border: '1px black solid' }} />
+      </Form>
     </div>
   )
 }

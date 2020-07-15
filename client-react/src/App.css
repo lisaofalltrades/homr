@@ -1,3 +1,13 @@
+.patientView {
+  background-color: #f0f3fb;
+  padding: 20px;
+}
+.patientInfo {
+  background-color: #fff;
+  padding: 20px;
+  margin: 10px;
+}
+
 .App {
   text-align: center;
 }

@@ -1,18 +1,24 @@
 /* globals fetch */
 import Login from './Login'
-import Dashboard from './Dashboard'
-import Patients from './Patients'
 import Settings from './Settings'
 import React from 'react'
 import './App.css'
 import 'semantic-ui-css/semantic.min.css'
 import {
-  BrowserRouter as Router,
+  // BrowserRouter as Router,
   Switch,
   Route,
-  Link,
   Redirect
 } from 'react-router-dom'
+import { Tab, Menu } from 'semantic-ui-react'
+import Map from './Map'
+import PatientSearch from './PatientSearch'
+import Metrics from './Metrics'
+import UserProfile from './UserProfile'
+import PatientProfile from './PatientProfile'
+import DataBreakdown from './DataBreakdown'
+import AddTeam from './AddTeam'
+import ViewDetails from './ViewDetails'
 // import { response } from 'express'
 
 class App extends React.Component {
@@ -23,9 +29,54 @@ class App extends React.Component {
       password: '',
       role: null,
       admin: null,
-      token: null
+      token: null,
+      selectedPatient: '',
+      profileIndex: 0,
+      currentUser: '',
+      notes: []
     }
   }
+  onhandleGetNotes(token) {
+    console.log('Query all notes')
+    fetch('/notes', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Data res from all notes', data)
+          this.setState({
+            notes: data
+          })
+        console.log('Incident Notes only', this.state.notes)
+      })
+  }
+
+  onhandlePatientSelect = (patientVal) => {
+    console.log(patientVal, 'this is the passed data')
+    this.setState({ selectedPatient: patientVal }, () => {
+      console.log(this.state.selectedPatient,'you did it')
+
+      const patientProfilePane = document.getElementById('patientProfilePane')
+      patientProfilePane.style.display = 'block'
+      if(!this.state.selectedPatient) {
+        patientProfilePane.style.display = 'none'
+      }
+      this.setState({
+        profileIndex: 1
+      })
+    })
+
+      // const patientProfileTab = document.getElementById('patientProfileTab')
+    // console.log(panes[2])
+  // console.log(patientProfileTab)
+  // patientProfileTab.active = true
+  }
+
+  handleTabChange = (e, { activeIndex }) => this.setState({ profileIndex: activeIndex })
 
   handleLogin (evt) {
     evt.preventDefault()
@@ -62,9 +113,40 @@ class App extends React.Component {
           email: data.email,
           password: data.password,
           token: data.token,
-          role: data.role
-        }, () => { console.log(this.state) })
+          role: data.role,
+          currentUser: data.currentUser
+        }, () => { 
+          fetch('/notes', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${this.state.token}`
+            }
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log('Data res from all notes', data)
+              this.setState({
+                notes: data
+              })
+            console.log('Incident Notes only', this.state.notes)
+          })
+         })
       })
+      
+        
+  }
+
+  handleLogout = () => {
+    this.setState({
+      email: '',
+      password: '',
+      role: null,
+      admin: null,
+      token: null,
+      selectedPatient: '',
+      profileIndex: 0
+    }, () => console.log(this.state, 'it ran'))
   }
 
   handleChange (evt) {
@@ -118,8 +200,25 @@ class App extends React.Component {
           password: data.password,
           role: data.role,
           token: data.token,
-          admin: true
-        }, () => { console.log(this.state) })
+          admin: true,
+          currentUser: data.currentUser
+        }, () => { 
+          fetch('/notes', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${this.state.token}`
+            }
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log('Data res from all notes', data)
+              this.setState({
+                notes: data
+              })
+            console.log('Incident Notes only', this.state.notes)
+          })
+        })
       })
   }
 
@@ -152,65 +251,139 @@ class App extends React.Component {
       })
     })
       .then(response => response.json())
-      // .then(data => {
-      //   this.setState({
-      //     email: data.email,
-      //     password: data.password,
-      //     role: data.role,
-      //     token: data.token,
-      //     admin: true
-      //   }, () => { console.log(this.state) })
-      // })
-  }
-
-  handleLogout () {
-    this.setState({
-      email: '',
-      password: '',
-      role: null,
-      admin: null,
-      token: null
-    })
+      .then(data => {
+        this.setState({
+          currentUser: data
+        }, () => { console.log(this.state) })
+      })
   }
 
   render () {
+    const panes = [
+      {
+        menuItem: 'Dashboard',
+        render: () =>
+          <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
+            <Tab panes={subpanesDashboard} menu={{ secondary: true, pointing: true }} style={{ width: '100%', margin: '0 auto' }} />
+          </Tab.Pane>
+      },
+      {
+        menuItem: 'Patient Portal',
+        render: () =>
+          <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
+            <Tab panes={subpanesPatient} onTabChange={this.handleTabChange.bind(this)} activeIndex={this.state.profileIndex} menu={{ secondary: true, pointing: true }} style={{ width: '100%', margin: '0 auto' }} />
+          </Tab.Pane>
+      },
+      {
+        menuItem: 'Incidents',
+        render: () =>
+          <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
+            <Tab panes={subpanesIncidents} menu={{ secondary: true, pointing: true }} style={{ width: '100%', margin: '0 auto' }} />
+          </Tab.Pane>
+      },
+      {
+        menuItem: <Menu.Item key='profile' style={{ 'margin-left': 'auto' }}>My Profile</Menu.Item>,
+        render: () =>
+          <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black',   }}>
+            <Tab panes={subpanesProfile} menu={{ secondary: true, pointing: true }} style={{ width: '100%', margin: '0 auto' }} />
+          </Tab.Pane>
+      },
+      {
+        menuItem: <Menu.Item onClick={this.handleLogout} key='logout' style={{ 'margin-left': '2px' }}>Logout</Menu.Item>,
+        render: () =>
+          <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black',   }}>
+
+          </Tab.Pane>
+      }
+    ]
+
+    const subpanesDashboard = [
+      {
+        menuItem: 'Chart View',
+        render: () =>
+          <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
+            <Metrics token={this.state.token} />
+          </Tab.Pane>
+      },
+      {
+        menuItem: 'Detail View',
+        render: () =>
+          <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
+            <DataBreakdown onhandleGetNotes={this.onhandleGetNotes} token={this.state.token} notes={this.state.notes}/>
+          </Tab.Pane>
+      }
+    ]
+
+    const subpanesIncidents = [
+      {
+        menuItem: 'View Map',
+        render: () =>
+          <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
+            <Map token={this.state.token} notes={this.state.notes}/>
+          </Tab.Pane>
+      },
+      {
+        menuItem: 'View Details',
+        render: () =>
+          <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
+            Most Recent Incidents List
+            <ViewDetails token={this.state.token} notes={this.state.notes} />
+          </Tab.Pane>
+      }
+    ]
+
+    const subpanesPatient = [
+      {
+        menuItem: 'Patient Search',
+        render: () =>
+          <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
+            <PatientSearch token={this.state.token} onhandlePatientSelect={this.onhandlePatientSelect} />
+          </Tab.Pane>
+      },
+      {
+        menuItem: <Menu.Item key='profile' id='patientProfilePane' style={{ display: 'none' }}>Patient Profile</Menu.Item>,
+        render: () =>
+          <Tab.Pane id='patientProfileTab' attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
+            <PatientProfile token={this.state.token} selectedPatient={this.state.selectedPatient} />
+               {/* this is the last thing worked on 7/9/2020 */}
+          </Tab.Pane>
+      }
+    ]
+
+    const subpanesProfile = [
+      {
+        menuItem: 'View Profile',
+        render: () =>
+          <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
+            <UserProfile profileData={this.state.currentUser} />
+          </Tab.Pane>
+      },
+      {
+        menuItem: 'Edit Profile',
+        render: () =>
+          <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
+            <Settings role={this.state.role} handleProfile={this.handleProfile.bind(this)} />
+          </Tab.Pane>
+      },
+      {
+        menuItem: 'Add Teammates',
+        render: () =>
+          <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
+            <AddTeam />
+          </Tab.Pane>
+      }
+    ]
+
     return (
-      <Router>
-        <div>
-          <nav id='navBar'>
-            {this.state.token
-              ? <div>
-                <Link to='/'>Home</Link>
-                <Link to='/patientportal'>Patient Portal</Link>
-                <Link to='/logout' onClick={this.handleLogout.bind(this)}>Logout</Link>
-                <Link to='/settings'>Settings</Link>
-              </div>
-              : null}
-          </nav>
-        </div>
-        <div>
-          <Switch>
-            <Route path='/settings'>
-              {this.state.token ? <Settings role={this.state.role} handleProfile={this.handleProfile.bind(this)} /> : <Login handleLogin={this.handleLogin.bind(this)} />}
-            </Route>
-            <Route path='/logout'>
-              <Redirect to='/login' />
-            </Route>
-            <Route path='/patientportal'>
-              {this.state.token ? <Patients token={this.state.token} /> : <Login handleLogin={this.handleLogin.bind(this)} />}
-            </Route>
-            <Route path='/login'>
-              {this.state.token ? <Redirect to='/' /> : <Login handleLogin={this.handleLogin.bind(this)} handleSignup={this.handleSignup.bind(this)} handleChange={this.handleChange.bind(this)} />}
-            </Route>
-            {/* <Route path='/signUp'>
-              {this.state.token ? <Redirect to='/' /> : <Signup  />}
-            </Route> */}
-            <Route path='/'>
-              {this.state.token ? <Dashboard /> : <Redirect to='/login' />}
-            </Route>
-          </Switch>
-        </div>
-      </Router>
+      <Switch>
+        <Route path='/login'>
+          {this.state.token ? <Redirect to='/' /> : <Login handleLogin={this.handleLogin.bind(this)} handleSignup={this.handleSignup.bind(this)} handleChange={this.handleChange.bind(this)} />}
+        </Route>
+        <Route path='/'>
+          {this.state.token ? <Tab panes={panes} style={{ width: '900px', margin: '0 auto' }} /> : <Redirect to='/login' />}
+          {/* <Tab panes={panes} style={{ width: '900px', margin: '0 auto' }} /> */}
+        </Route>
+      </Switch>
     )
   }
 }

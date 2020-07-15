@@ -1,6 +1,7 @@
 #folders
 node_modules
-
+.env.local
+faker.js
 
 #misc
 .DS_Store
