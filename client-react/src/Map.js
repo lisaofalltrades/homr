@@ -62,13 +62,12 @@ export default function Map (props) {
     }
   }
   console.log(cords)
- 
+
   const { isLoaded, loadError } = useLoadScript({
-    // googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY
-    googleMapsApiKey: secret.key
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY || secret.key
+    // googleMapsApiKey: secret.key
     // googleMapsApiKey: ''
   })
-
 
   // this is the state of this component
   const [markers, setMarkers] = React.useState(cords)

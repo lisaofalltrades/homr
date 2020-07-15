@@ -18,6 +18,7 @@ import UserProfile from './UserProfile'
 import PatientProfile from './PatientProfile'
 import DataBreakdown from './DataBreakdown'
 import AddTeam from './AddTeam'
+import ViewDetails from './ViewDetails'
 // import { response } from 'express'
 
 class App extends React.Component {
@@ -201,7 +202,23 @@ class App extends React.Component {
           token: data.token,
           admin: true,
           currentUser: data.currentUser
-        }, () => { console.log(this.state) })
+        }, () => { 
+          fetch('/notes', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${this.state.token}`
+            }
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log('Data res from all notes', data)
+              this.setState({
+                notes: data
+              })
+            console.log('Incident Notes only', this.state.notes)
+          })
+        })
       })
   }
 
@@ -310,6 +327,7 @@ class App extends React.Component {
         render: () =>
           <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
             Most Recent Incidents List
+            <ViewDetails token={this.state.token} notes={this.state.notes} />
           </Tab.Pane>
       }
     ]

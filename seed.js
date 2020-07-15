@@ -19,7 +19,6 @@ const quotes = [].concat(funFaker.hp.quotes, funFaker.office.quotes)
 const conditionList = funFaker.medical.conditions
 const states = funFaker.states
 const categories = ['Incident', 'Update']
-
 // Portland Addresses
 const portlandAdd = [
   [
@@ -63,11 +62,10 @@ const portlandAdd = [
     { lat: 45.4962466, long: -122.5391627 }
   ]
 ]
-
 // define # of entries
 const numOfUsers = 5
 const numOfPatients = 10
-const numOfNotes = 15
+const numOfNotes = 50
 
 // Use connect method to connect to the server
 MongoClient.connect(url, function (err, client) {

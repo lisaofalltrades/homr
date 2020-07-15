@@ -47,7 +47,12 @@ export default class App extends React.Component {
             const datasets = this.state.datasets[0].data
             datasets.push(count)
           }
-          // console.log('state after illnessDict', this.state)
+          console.log('state after illnessDict', this.state)
+        })
+      })
+      .then(() => {
+        this.setState({
+          labels: this.state.labels
         })
       })
   }
@@ -75,13 +80,13 @@ export default class App extends React.Component {
       datasets: [
         {
           label: 'Issues',
-          backgroundColor: this.getRandomColor(this.state.labels),
-          hoverBackgroundColor: this.getRandomColor(this.state.labels),
+          backgroundColor: this.getRandomColor.bind(this)(this.state.labels),
+          hoverBackgroundColor: this.getRandomColor.bind(this)(this.state.labels),
           data: this.state.datasets[0].data
         }
       ]
     }
-    console.log('state inside render()', pieState)
+    // console.log('state inside render()', pieState)
 
     return (
       <div>
