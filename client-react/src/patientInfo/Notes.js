@@ -2,6 +2,8 @@ import React from 'react'
 // import PatientProfile from '../PatientProfile'
 import { Form } from 'semantic-ui-react'
 import AppendNotes from './AppendNotes'
+import secret from '../secrets'
+import Geocode from 'react-geocode'
 
 class Notes extends React.Component {
   constructor (props) {
@@ -15,6 +17,7 @@ class Notes extends React.Component {
       token: props.token,
       notes: [],
       redFlags: [],
+      cords: null,
       options: [
         { key: 'i', text: 'Incident', value: 'incident' },
         { key: 'u', text: 'Update', value: 'update' }
@@ -28,6 +31,32 @@ class Notes extends React.Component {
 
   handleonChange (e, data) {
     this.setState({ [e.target.name]: e.target.value })
+    // Geocode.setApiKey(secret.key)
+    // Geocode.fromAddress(this.state.address).then(
+    //   response => {
+    //     let location = response.results[0].geometry.location
+    //     console.log(location)
+    //     this.setState({ cords: location })
+    //   },
+    //   error => {
+    //     console.log(error)
+    //   }
+    // )
+  }
+
+  handleaddress (e, data) {
+    this.setState({ [e.target.name]: e.target.value })
+    Geocode.setApiKey(secret.key)
+    Geocode.fromAddress(e.target.value).then(
+      response => {
+        let location = response.results[0].geometry.location
+        console.log(location)
+        this.setState({ cords: location })
+      },
+      error => {
+        console.log(error)
+      }
+    )
   }
 
   handleRedFlag (e, data) {
@@ -49,6 +78,18 @@ class Notes extends React.Component {
     // const redFlags = document.getElementById('redFlags')
     console.log('Adding a new note')
     console.log('info', this.state.date, this.state.category, this.state.address, this.state.description, this.state.token, this.state.patient._id, this.state.patient.user, this.state.redFlags)
+
+    // Geocode.setApiKey(secret.key)
+    // Geocode.fromAddress(this.state.address).then(
+    //   response => {
+    //     let location = response.results[0].geometry.location
+    //     console.log(location)
+    //     this.setState({ cords: location })
+    //   },
+    //   error => {
+    //     console.log(error)
+    //   }
+    // )
     // this.setState({ redFlags: this.state.redFlags.concat(redFlags) }, () => ())
     // need to get the patient from the other component in order to align with that patient
     fetch('/AddNote', {
@@ -64,7 +105,8 @@ class Notes extends React.Component {
         description: this.state.description,
         patient: this.state.patient._id,
         author: this.state.patient.user,
-        redFlags: this.state.redFlags
+        redFlags: this.state.redFlags,
+        cords: this.state.cords
         // above is a work in progress
       })
     })
@@ -108,7 +150,7 @@ class Notes extends React.Component {
               id='address'
               name='address'
               value={address}
-              onChange={this.handleonChange.bind(this)}
+              onChange={this.handleaddress.bind(this)}
             />
 
           </Form.Group>

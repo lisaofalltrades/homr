@@ -129,7 +129,8 @@ router.post('/AddNote', [authenticate], (req, res) => {
         category: req.body.category,
         address: req.body.address,
         description: req.body.description,
-        author: req.author._id
+        author: req.author._id,
+        cords: req.body.cords
       }
     },
     $set: {
@@ -143,7 +144,8 @@ router.post('/AddNote', [authenticate], (req, res) => {
   async function Notes () {
     // if (err) return res.status(500).send(err)
     // if (patientExists) return res.status(201).send({ warning: 'Updating existing note' })
-    await Note.register(req.body.date, req.body.category, req.body.address, req.body.description, req.patient, req.author, req.cords)
+    console.log(req.body.cords, 'cords')
+    await Note.register(req.body.date, req.body.category, req.body.address, req.body.description, req.patient, req.author, req.body.cords)
 
     // await Patient.updateOne({ _id: req.patient }
     Patient.updateOne({ _id: req.body.patient }, newNote, (err, patient) => {
@@ -200,7 +202,7 @@ router.post('/noteLocations', [authenticate], (req, res) => {
 })
 router.post('/notes', [authenticate], (req, res) => {
   // query all notes where category = incident
-  Note.find({ category: 'Incident' }, async (err, data) => {
+  Note.find({ category: 'incident' }, async (err, data) => {
     if (err) return res.status(500).send(err)
     if (data) {
       res.send({
