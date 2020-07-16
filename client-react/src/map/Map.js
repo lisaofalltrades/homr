@@ -7,7 +7,7 @@ import {
 } from '@react-google-maps/api'
 import { formatRelative } from 'date-fns'
 import mapStyles from './mapstyles'
-// import secret from './secrets'
+import secret from '../secrets'
 
 // globals
 const mapContainerStyle = {
@@ -64,8 +64,8 @@ export default function Map (props) {
   console.log(cords)
 
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY
-    // googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY || secret.key
+    // googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY || secret.key
   })
 
   // this is the state of this component
