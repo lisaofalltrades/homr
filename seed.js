@@ -2,7 +2,7 @@
 const funFaker = require('fun-faker')
 const MongoClient = require('mongodb').MongoClient
 const assert = require('assert')
-const _ = require('lodash')
+// const _ = require('lodash')
 const mongoose = require('mongoose')
 // Database Name
 const dbName = 'homrDB'
@@ -161,8 +161,10 @@ MongoClient.connect(url, function (err, client) {
     const newNote = {
       date: date,
       category: category,
-      author: _.sample(users),
-      patient: _.sample(patients),
+      author: users[Math.floor(Math.random() * users.length)],
+      patient: patients[Math.floor(Math.random() * patients.length)],
+      // author: _.sample(users),
+      // patient: _.sample(patients),
       address: address,
       cords: cords,
       description: randomQuote
@@ -188,8 +190,8 @@ MongoClient.connect(url, function (err, client) {
     const newNote = {
       date: date,
       category: category,
-      author: _.sample(users),
-      patient: _.sample(patients),
+      author: users[Math.floor(Math.random() * users.length)],
+      patient: patients[Math.floor(Math.random() * patients.length)],
       address: address,
       cords: cords,
       description: randomQuote

@@ -1,6 +1,9 @@
 {
   "name": "homr",
   "version": "1.0.0",
+  "engines": {
+    "node": "12.x"
+  },
   "description": "Central portal for the city, non-profit agencies, and the fire stations to track patient care in the homeless population.",
   "main": "index.js",
   "scripts": {
