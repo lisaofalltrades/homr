@@ -1,6 +1,5 @@
 import React from 'react'
 import { Header, Button, Form, Dropdown } from 'semantic-ui-react'
-// import PatientProfile from './PatientSearch'
 
 const illnessList = [
   'alcoholism',

@@ -31,7 +31,7 @@ export default function Login (props) {
               <br /><br />
               <Input id='password' style={{ width: '18em' }} type='password' icon='lock' iconPosition='left' placeholder='Password' />
               <br /><br />
-              <Button animated type='submit' onClick={props.handleLogin} style={{ border: '1px black solid', backgroundColor: '#98c9e4' }}>
+              <Button animated type='submit' onClick={props.handleLogin} style={{ border: '1px black solid', backgroundColor: '#89c2e0' }}>
                 <Button.Content visible>Login</Button.Content>
                 <Button.Content hidden>
                   <Icon name='arrow right' />
@@ -58,7 +58,7 @@ export default function Login (props) {
               <Dropdown id='roles' style={{ width: '18em', margin: '0 auto', textAlign: 'center' }} placeholder='Select Role' fluid selection options={roles} onChange={props.handleChange} />
               <br /><br />
 
-              <Button animated type='submit' onClick={props.handleSignup} style={{ border: '1px black solid', backgroundColor: '#98c9e4' }}>
+              <Button animated type='submit' onClick={props.handleSignup} style={{ border: '1px black solid', backgroundColor: '#89c2e0' }}>
                 <Button.Content visible>Sign Up</Button.Content>
                 <Button.Content hidden>
                   <Icon name='arrow right' />

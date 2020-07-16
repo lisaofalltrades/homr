@@ -8,6 +8,11 @@
   margin: 10px;
 }
 
+.btnColor {
+  background-color: #89c2e0;
+  border: '1px black solid';
+}
+
 .App {
   text-align: center;
 }

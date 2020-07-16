@@ -1,6 +1,6 @@
 /* globals fetch */
-import Login from './Login'
-import Settings from './Settings'
+import Login from './authentication/Login'
+import Settings from './user/Settings'
 import React from 'react'
 import './App.css'
 import 'semantic-ui-css/semantic.min.css'
@@ -11,14 +11,14 @@ import {
   Redirect
 } from 'react-router-dom'
 import { Tab, Menu } from 'semantic-ui-react'
-import Map from './Map'
-import PatientSearch from './PatientSearch'
-import Metrics from './Metrics'
-import UserProfile from './UserProfile'
-import PatientProfile from './PatientProfile'
-import DataBreakdown from './DataBreakdown'
-import AddTeam from './AddTeam'
-import ViewDetails from './ViewDetails'
+import Map from './map/Map'
+import PatientSearch from './patient/PatientSearch'
+import Metrics from './metrics/Metrics'
+import UserProfile from './user/UserProfile'
+import PatientProfile from './patient/PatientProfile'
+import DataBreakdown from './metrics/DataBreakdown'
+import AddTeam from './user/AddTeam'
+import ViewDetails from './metrics/IncidentDetails'
 // import { response } from 'express'
 
 class App extends React.Component {

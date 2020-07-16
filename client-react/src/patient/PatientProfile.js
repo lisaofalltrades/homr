@@ -1,6 +1,6 @@
 import React from 'react'
 import { Header, List, Icon, Button } from 'semantic-ui-react'
-import Notes from './patientInfo/Notes'
+import Notes from './Notes'
 // import { Link } from 'react-router-dom'
 import EditPatient from './EditPatient'
 // import AppendNotes from './patientInfo/AppendNotes'
