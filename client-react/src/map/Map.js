@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   GoogleMap,
   useLoadScript,
@@ -54,24 +54,37 @@ function Locate ({ panTo }) {
 }
 
 export default function Map (props) {
-  console.log(props.notes.data)
-  const cords = [] // this is a list of all the cords that are in the notes
-  for (let i = 0; i < props.notes.data.length; i++) {
-    if (props.notes.data[i].cords) {
-      cords.push(props.notes.data[i])
-    }
-  }
-  console.log(cords)
+
+  // this is the state of this component
+  const [markers, setMarkers] = React.useState([])
+  // the set state below makes it so you have access to the current one you click on. in this instance you can grab the lat long of that click
+  const [selected, setSelected] = React.useState(null)
+
+  useEffect(() => {
+    fetch('/notes', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${props.token}`
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        const cords = [] // this is a list of all the cords that are in the notes
+        for (let i = 0; i < data.data.length; i++) {
+          if (data.data[i].cords) {
+            cords.push(data.data[i])
+          }
+        }
+        console.log(cords)
+        setMarkers(cords)
+      })
+  }, [])
 
   const { isLoaded, loadError } = useLoadScript({
     // googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY || secret.key
   })
-
-  // this is the state of this component
-  const [markers, setMarkers] = React.useState(cords)
-  // the set state below makes it so you have access to the current one you click on. in this instance you can grab the lat long of that click
-  const [selected, setSelected] = React.useState(null)
 
   // setMarkers(cords)
   console.log(markers)
