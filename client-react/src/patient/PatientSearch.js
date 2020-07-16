@@ -130,12 +130,11 @@ export default class PatientSearch extends React.Component {
     return (
       <div>
       <div id='searchPatient'>
-        <div style={{ 'text-align': 'left' }}>
-          <Header as='h1'>Patient View</Header>
+          <div style={{ 'text-align': 'left',' background- color': '#fffff' }}>
           <Segment placeholder>
             <Grid columns={2} stackable textAlign='center'>
               <Grid.Column verticalAlign='middle'>
-                <Header as='h2'>Search for a patient:</Header>
+                <Header as='h2'>Search for a patient</Header>
                 <SearchPatients onhandlePatientSelect={this.props.onhandlePatientSelect} token={this.state.token} />
               </Grid.Column>
 
@@ -152,9 +151,9 @@ export default class PatientSearch extends React.Component {
           <div id='patientFilter'>
           <Header as='h3'>Display patients by:</Header>
           <Button.Group>
-            <Button onClick={this.handleLastNameFilter.bind(this)} content='Last Name' active />
-            <Button onClick={this.handleFirstNameFilter.bind(this)} content='First Name' />
-            <Button onClick={this.handleRecentFilter.bind(this)} content='Most Recent' />
+            <Button primary basic onClick={this.handleLastNameFilter.bind(this)} content='Last Name' />
+            <Button secondary basic className='patientBtn' onClick={this.handleFirstNameFilter.bind(this)} content='First Name' />
+            <Button secondary basic className='patientBtn' onClick={this.handleRecentFilter.bind(this)} content='Most Recent' />
           </Button.Group>
           </div>
           <br />
