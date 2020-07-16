@@ -122,7 +122,7 @@ class App extends React.Component {
           .then(data => {
               this.setState({
                 notes: data
-              })
+              }, () => console.log(this.state))
           })
          })
       })
