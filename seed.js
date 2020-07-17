@@ -1,5 +1,15 @@
 // require modules
 const funFaker = require('fun-faker')
+const MongoClient = require('mongodb').MongoClient
+const assert = require('assert')
+// const _ = require('lodash')
+const mongoose = require('mongoose')
+
+// Database Name
+const dbName = 'homrDB'
+const hostname = 'localhost'
+// Connection URL
+const url = `mongodb://${hostname}/${dbName}`
 
 // require helpers & faker themes
 const helpers = funFaker.helpers
@@ -7,15 +17,28 @@ const characters = [].concat(funFaker.hp.characters, funFaker.witcher.characters
 const quotes = [].concat(funFaker.hp.quotes, funFaker.office.quotes)
 const conditionList = funFaker.medical.conditions
 const states = funFaker.states
-const categories = ['incident', 'Update']
+const categories = ['incident', 'update']
 
 // portland addreses
 const portlandAdd = require('./seed/portland.js').addresses
 
 // define # of entries
-const numOfUsers = 5
-const numOfPatients = 10
-const numOfNotes = 10
+const numOfUsers = 10
+const numOfPatients = 50
+const numOfNotes = 100
+
+// Use connect method to connect to the server
+MongoClient.connect(url, function (err, client) {
+  assert.strictEqual(null, err)
+  const db = client.db(dbName)
+  // get access to the relevant collections
+  const usersCollection = db.collection('users')
+  const patientsCollection = db.collection('patients')
+  const notesCollection = db.collection('notes')
+  // clear db
+  usersCollection.deleteMany({})
+  patientsCollection.deleteMany({})
+  notesCollection.deleteMany({})
 
   /**********************
           USERS
@@ -40,6 +63,7 @@ const numOfNotes = 10
     const role = roles[Math.floor(Math.random() * roles.length)]
 
     const addressObj = states.helpers.randomAddress()
+    console.log(addressObj)
     const city = addressObj.city
 
     const newUser = {
@@ -57,9 +81,19 @@ const numOfNotes = 10
     const district = Math.floor(Math.random() * 20)
     newUser.district = district.toString(8)
 
+    // // add a district if role = fire_chief
+    // if (newUser.role === 'fire_chief') {
+    //   // assign a district between 1-20
+    //   const district = Math.floor(Math.random() * 20)
+    //   // converting a number to a string with base 8
+    //   newUser.district = district.toString(8)
+    // }
+
     users.push(newUser)
     // console.log(`User#${i} has been added: `, newUser.email)
   }
+  console.log('fire chiefs: ', users)
+  usersCollection.insertMany(users)
 
   /**********************
           PATIENTS
@@ -81,22 +115,25 @@ const numOfNotes = 10
     const fullName = helpers.fullName(randomCharacter)
     // add to patientsList array to track duplicates
     patientList.push(randomCharacter)
-    // var newId2 = new mongoose.mongo.ObjectId()
+    var newId2 = new mongoose.mongo.ObjectId()
 
     const addressObj = states.helpers.randomAddress()
     console.log(addressObj)
     const birthPlace = addressObj.city + ', ' + addressObj.state
+    const randomIllness = helpers.randomItem(conditionList
+    )
 
     const newPatient = {
       firstName: fullName[0],
       lastName: fullName[fullName.length - 1],
       birthPlace: birthPlace,
-      medicalHistory: helpers.randomItem(conditionList
-      ),
-      user: users[Math.floor(Math.random() * users.length)]
+      medicalHistory: [randomIllness],
+      user: newId2
     }
     patients.push(newPatient)
   }
+  console.log('PATIENTS', patients)
+  patientsCollection.insertMany(patients)
 
   /**********************
           NOTES
@@ -112,7 +149,7 @@ const numOfNotes = 10
     const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()
     const category = categories[Math.floor(Math.random() * categories.length)]
     const addressObj = states.helpers.randomAddress()
-    console.log('Address Object in notes loop', addressObj)
+    console.log(addressObj)
     const address = addressObj.fullAddress
     const cords = addressObj.coordinates
     const randomQuote = helpers.randomItem(quotes)
@@ -122,12 +159,16 @@ const numOfNotes = 10
       category: category,
       author: users[Math.floor(Math.random() * users.length)],
       patient: patients[Math.floor(Math.random() * patients.length)],
+      // author: _.sample(users),
+      // patient: _.sample(patients),
       address: address,
       cords: cords,
       description: randomQuote
     }
 
     notes.push(newNote)
+    // console.log(`# Note#${i} has been added`)
+    // console.log(newNote)
   }
 
   // notes loop for portland addresses
@@ -155,45 +196,19 @@ const numOfNotes = 10
     }
 
     notes.push(newNote)
+
+    // console.log(`# Note#${i} has been added`)
+    // console.log(newNote)
   }
+  // console.log(notes)
+  // console.log(notes.length)
 
-// console.log('*'.repeat(20))
-// console.log('\nUsers :)\n')
-// for (let i = 0; i < users.length; i += 1) {
-//   console.log(users[i])
-// }
+  // inject DB
+  notesCollection.insertMany(notes)
 
-// console.log('*'.repeat(20))
-// console.log('\nPatients :)\n')
-// for (let i = 0; i < patients.length; i += 1) {
-//   console.log(patients[i])
-// }
+  console.log('*'.repeat(20))
+  console.log('\nDatabase seeded! :)\n')
+  console.log('*'.repeat(20))
 
-// console.log('*'.repeat(20))
-// console.log('\nNotes :)\n')
-// for (let i = 0; i < notes.length; i += 1) {
-//   console.log(notes[i])
-// }
-
-/* mongo_uri
-'mongodb://heroku_906kqvg2:8t1anstopporkf4orjml2qviqo@ds155418.mlab.com:55418/heroku_906kqvg2'
-
-'mongodb://user:pass@host:port/db'
-
-mongo host: port/db -u user -p pass yourSeedFile.js
-
-'mongo ds155418.mlab.com:55418/heroku_906kqvg2 -u user -p pass yourSeedFile.js'
-
-    res.send({
-      // token: token,
-      admin: user.admin,
-      role: user.role,
-      email: user.email,
-      currentUser: user,
-      district: user.district
-    })
-    console.log('Found author')
-    console.log(user)
-  })
+  client.close()
 })
-*/
