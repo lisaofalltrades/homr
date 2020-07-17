@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Header, Button } from 'semantic-ui-react'
+import { Form, Header, Button, Message } from 'semantic-ui-react'
 
 export default class AddTeam extends React.Component {
   constructor (props) {
@@ -8,7 +8,8 @@ export default class AddTeam extends React.Component {
       formFields: [],
       formStore: [],
       counter: 2,
-      token: this.props.token
+      token: this.props.token,
+      success: false
     }
   }
 
@@ -24,6 +25,7 @@ export default class AddTeam extends React.Component {
 
   handleFormSubmit () {
     var addTeamForm = document.getElementById('addTeamForm').elements
+    const TeamForm = document.getElementById('addTeamForm')
     const fieldFormArray = []
 
     for (let i = 0; i < (addTeamForm.length - 2); i++) {
@@ -44,6 +46,7 @@ export default class AddTeam extends React.Component {
         })
       })
         .then(response => response.json())
+        .then(() => { this.setState({ success: true }, () => TeamForm.reset()) })
     })
   }
 
@@ -51,7 +54,7 @@ export default class AddTeam extends React.Component {
     return (
       <div>
         <Header as='h2'>Add Teammates</Header>
-        <Form id='addTeamForm' onSubmit={this.handleFormSubmit.bind(this)}>
+        <Form success id='addTeamForm' onSubmit={this.handleFormSubmit.bind(this)}>
           <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
             <li><Form.Input fluid id='add1' label='Teammate' placeholder='Email' /></li>
             {this.state.formFields.map(field => {
@@ -60,6 +63,13 @@ export default class AddTeam extends React.Component {
               )
             })}
           </ul>
+          {this.state.success
+            ? <Message
+              success
+              header='Success'
+              content='Inventation sent successfully'
+            />
+            : null}
           <Button type='button' circular color='green' icon='user plus' onClick={this.handleAddField.bind(this)} />
           <Button content='Send Invites' labelPosition='right' icon='right arrow' type='submit' />
         </Form>

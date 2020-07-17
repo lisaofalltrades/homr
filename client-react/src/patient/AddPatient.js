@@ -112,12 +112,14 @@ export default class AddPatient extends React.Component {
   handleAddPatient(evt) {
     evt.preventDefault()
     console.log('hello')
-    const firstName = document.getElementById('firstName').value
-    const lastName = document.getElementById('lastName').value
-    const dob = document.getElementById('dob').value
-    const birthPlace = document.getElementById('birthPlace').value
-    const licenseNum = document.getElementById('licenseNum').value
-    const race = document.getElementById('race').value
+    let firstName = document.getElementById('firstName').value
+    let lastName = document.getElementById('lastName').value
+    let dob = document.getElementById('dob').value
+    let birthPlace = document.getElementById('birthPlace').value
+    let licenseNum = document.getElementById('licenseNum').value
+    let race = document.getElementById('race').value
+
+    const forminfo = document.getElementById('basicInfo')
     console.log(firstName)
     
     this.setState({
@@ -149,8 +151,16 @@ export default class AddPatient extends React.Component {
         redFlags: []
       })
     })
-      .then(response => response.json())})
-
+      .then(response => response.json())
+      // .then(
+      //   firstName = '',
+      //   lastName = '',
+      //   dob = '',
+      //   birthPlace = '',
+      //   licenseNum = '',
+      //   race = ''
+      // )
+    })
   }
 
   // handleSetState(evt) {
