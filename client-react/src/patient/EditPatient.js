@@ -95,6 +95,7 @@ export default class EditPatient extends React.Component {
   componentDidMount() {
     console.log(illnessOptions)
     console.log(this.props, 'this is the props')
+    console.log(this.state)
     // load patient from PatientProfile info
   }
 
@@ -110,6 +111,8 @@ export default class EditPatient extends React.Component {
   }
 
   handleEditPatient() {
+    let editForm = document.getElementById('basicInfo')
+    editForm.reset()
     fetch('/patientEdit', {
       method: 'POST',
       headers: {
@@ -129,6 +132,7 @@ export default class EditPatient extends React.Component {
       })
     })
       .then(response => response.json())
+      .then((data => console.log(data, 'this is the data')))
   }
 
   handleSetState(evt) {
@@ -152,7 +156,6 @@ export default class EditPatient extends React.Component {
   }
 
   render() {
-    // const { activeIndex } = this.state
     return (
       <div>
         <Header as='h1'>Edit Patient</Header>
@@ -200,8 +203,11 @@ export default class EditPatient extends React.Component {
           content='Edit Patient' 
           icon='right arrow' 
           labelPosition='right' 
-          onClick={this.handleEditPatient.bind(this)}
+          onClick={() => {this.handleSetState.bind(this); this.handleEditPatient.bind(this)()}}
           style={{ border: '1px black solid' }} />
   </div>
   )}
 }
+
+// look at
+// ; this.props.onhandlePatientSelect(this.props.selectedPatient)

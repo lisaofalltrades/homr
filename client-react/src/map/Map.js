@@ -151,7 +151,7 @@ export default function Map (props) {
             }}
           >
             <div>
-              <h2>Incident</h2>
+          <h2>Incident</h2>
               {/* takes two dates and spits out a nicly formated date time */}
               <p>Placed on {selected.date}</p>
               <p>Address {selected.address}</p>

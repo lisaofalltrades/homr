@@ -207,7 +207,7 @@ export default class PatientSearch extends React.Component {
         </div>
       </div>
         <div id='addPatient' style={{display: 'none'}}>
-          <AddPatient token={this.state.token} />
+          <AddPatient token={this.state.token} onhandlePatientSelect={this.props.onhandlePatientSelect}/>
         </div>
       </div>
     ) 
