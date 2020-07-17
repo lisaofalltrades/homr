@@ -78,7 +78,7 @@ MongoClient.connect(url, function (err, client) {
       admin: true
     }
     // for development, everyone gets a district
-    const district = Math.floor(Math.random() * 20)
+    const district = (Math.floor(Math.random() * 20) + 1)
     newUser.district = district.toString(8)
 
     // // add a district if role = fire_chief
