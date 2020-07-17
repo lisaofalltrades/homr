@@ -1,5 +1,7 @@
 import React from 'react'
-import { Header, Button, Form, Dropdown } from 'semantic-ui-react'
+import { Header, Button, Form, Dropdown, Message } from 'semantic-ui-react'
+import { differenceInCalendarWeeksWithOptions } from 'date-fns/fp'
+import { first } from 'lodash'
 
 const illnessList = [
   'alcoholism',
@@ -86,6 +88,7 @@ export default class AddPatient extends React.Component {
         licenseNum: '',
         race: ''
       },
+      success: false,
       medicalHistory: [],
       notes: []
     }
@@ -110,8 +113,8 @@ export default class AddPatient extends React.Component {
   }
 
   handleAddPatient(evt) {
-    evt.preventDefault()
-    console.log('hello')
+    // evt.preventDefault()
+    console.log(evt)
     let firstName = document.getElementById('firstName').value
     let lastName = document.getElementById('lastName').value
     let dob = document.getElementById('dob').value
@@ -130,8 +133,11 @@ export default class AddPatient extends React.Component {
         birthPlace: birthPlace,
         licenseNum: licenseNum,
         race: race
-      }
+      },
+      success: true
     }, () => {    
+      forminfo.reset()
+
       fetch('/patientAdd', {
         method: 'POST',
         headers: {
@@ -152,37 +158,9 @@ export default class AddPatient extends React.Component {
       })
     })
       .then(response => response.json())
-      // .then(
-      //   firstName = '',
-      //   lastName = '',
-      //   dob = '',
-      //   birthPlace = '',
-      //   licenseNum = '',
-      //   race = ''
-      // )
     })
   }
 
-  // handleSetState(evt) {
-  //   // evt.preventDefault()
-  //   const firstName = document.getElementById('firstName').value
-  //   const lastName = document.getElementById('lastName').value
-  //   const dob = document.getElementById('dob').value
-  //   const birthPlace = document.getElementById('birthPlace').value
-  //   const licenseNum = document.getElementById('licenseNum').value
-  //   const race = document.getElementById('race').value
-  //   console.log(firstName)
-  //   this.setState({
-  //     basicInfo:{
-  //       firstName: firstName,
-  //       lastName: lastName,
-  //       dob: dob,
-  //       birthPlace: birthPlace,
-  //       licenseNum: licenseNum,
-  //       race: race
-  //     }
-  //   }, () => {console.log(this.state, 'line 141')})
-  // }
 
   render() {
     return (
@@ -228,12 +206,20 @@ export default class AddPatient extends React.Component {
           <Dropdown name='medicalHistory' id='illnessList' placeholder='Add Illness' fluid multiple search selection options={illnessOptions} onChange={this.handleChange.bind(this)} 
           />
         {/* <Button type='submit' content='Add' icon='right arrow' labelPosition='right' onClick={props.handleAddIllness} style={{ border: '1px black solid' }} /> */}
+        {this.state.success
+            ? <Message
+              success
+              header='Success'
+              content='Patient added successfully'
+            />
+            : null}
         </div><br />
         <Button type='submit' 
           content='Add Patient' 
           icon='right arrow' 
           labelPosition='right' 
           onClick={this.handleAddPatient.bind(this)}
+          success
           style={{ border: '1px black solid' }} />
   </div>
   )}

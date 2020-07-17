@@ -5,16 +5,26 @@ export default function AppendNotes (props) {
   console.log(props)
   return (
     <div>
-      {props.newNotes
-        ? <ul className='notesContainer'>
-          {props.newNotes.map(element =>
-            <li key={element}>
-              <div>{element.date}</div>
-              <div>{element.category}</div>
-              <div>{element.description}</div>
-            </li>)}
-        </ul>
-        : <p>none</p>}
+      {props.newNotes.length > 0
+        ? <table class='ui table'>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Category</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {props.newNotes.map(element =>
+              <tr>
+                <th>{element.date}</th>
+                <th>{element.category}</th>
+                <th>{element.description}</th>
+              </tr>)}
+
+          </tbody>
+        </table>
+        : null}
     </div>
   )
 }

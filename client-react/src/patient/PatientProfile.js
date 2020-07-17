@@ -62,9 +62,9 @@ export default class PatientProfile extends React.Component {
   render () {
     return (
       <div style={{ 'text-align': 'left' }}>
-        <Header as='h1'>{this.props.selectedPatient.patient.firstName} {this.props.selectedPatient.patient.lastName}</Header>
         <div id='viewPatientInfo' style={{ display: 'block' }}>
           <div>
+            <Header as='h1'>{this.props.selectedPatient.patient.firstName} {this.props.selectedPatient.patient.lastName}</Header>
             <List>
               <List.Item>
                 <List.Content>
@@ -81,9 +81,7 @@ export default class PatientProfile extends React.Component {
                   </div>
                 </List.Content>
               </List.Item>
-              <List.Item>
-                <Button onClick={this.handleEditScreen} content='EditPatient' />
-              </List.Item>
+            
               <List.Item>
                 <List.Content>
                   <List.Header>Full Name</List.Header>
@@ -134,6 +132,7 @@ export default class PatientProfile extends React.Component {
                   </List.Description>
                 </List.Content>
               </List.Item>
+              <Button onClick={this.handleEditScreen} content='EditPatient' />
             </List>
                 
             {this.props.selectedPatient.patient.notes
@@ -165,10 +164,11 @@ export default class PatientProfile extends React.Component {
 
           <div>
             <Notes token={this.props.token} patientId={this.props.selectedPatient.patient} onhandleUpdateState={this.onhandleUpdateState} onhandleRedFlagUpdate={this.onhandleRedFlagUpdate}/>
+         
           </div>
         </div><br />
         <div id='editPatientInfo' style={{ display: 'none' }}>
-          <EditPatient token={this.props.token} selectedPatient={this.props.selectedPatient.patient}/>
+          <EditPatient onhandlePatientSelect={this.props.onhandlePatientSelect} token={this.props.token} selectedPatient={this.props.selectedPatient}/>
         </div><br />
       </div>
     )
