@@ -1,6 +1,6 @@
 /* globals fetch */
 import Login from './authentication/Login'
-import Settings from './user/Settings'
+import Settings from './user/EditProfile'
 import React from 'react'
 import './App.css'
 import 'semantic-ui-css/semantic.min.css'
@@ -351,7 +351,7 @@ class App extends React.Component {
         menuItem: 'Edit Profile',
         render: () =>
           <Tab.Pane attached style={{ backgroundColor: '#f0f3fb', border: '1px solid black' }}>
-            <Settings role={this.state.role} handleProfile={this.handleProfile.bind(this)} />
+            <Settings profileData={this.state.currentUser} handleProfile={this.handleProfile.bind(this)} />
           </Tab.Pane>
       },
       {

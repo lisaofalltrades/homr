@@ -3,7 +3,7 @@ import { Header, List } from 'semantic-ui-react'
 
 
 export default function UserProfile (props) {
-  console.log(props, 'here is the props')
+  console.log(props, 'Props from User Profile')
 //   profileData:
 // admin: true
 // city: "Portland"
