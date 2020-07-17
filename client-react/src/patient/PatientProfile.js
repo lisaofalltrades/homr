@@ -1,4 +1,4 @@
-import React from 'react'
+Patientimport React from 'react'
 import { Header, List, Icon, Button } from 'semantic-ui-react'
 import Notes from './Notes'
 // import { Link } from 'react-router-dom'
