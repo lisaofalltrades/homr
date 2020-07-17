@@ -81,9 +81,16 @@ export default class App extends React.Component {
             legend: {
               display: false,
               position: 'right'
+            },
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true
+                }
+              }]
             }
           }}
-        /> : null}
+                                                  /> : null}
 
       </div>
     )
