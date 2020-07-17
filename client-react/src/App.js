@@ -1,6 +1,6 @@
 /* globals fetch */
-import Login from './Login'
-import Settings from './Settings'
+import Login from './authentication/Login'
+import Settings from './user/Settings'
 import React from 'react'
 import './App.css'
 import 'semantic-ui-css/semantic.min.css'
@@ -11,14 +11,14 @@ import {
   Redirect
 } from 'react-router-dom'
 import { Tab, Menu } from 'semantic-ui-react'
-import Map from './Map'
-import PatientSearch from './PatientSearch'
-import Metrics from './Metrics'
-import UserProfile from './UserProfile'
-import PatientProfile from './PatientProfile'
-import DataBreakdown from './DataBreakdown'
-import AddTeam from './AddTeam'
-import ViewDetails from './ViewDetails'
+import Map from './map/Map'
+import PatientSearch from './patient/PatientSearch'
+import Metrics from './metrics/Metrics'
+import UserProfile from './user/UserProfile'
+import PatientProfile from './patient/PatientProfile'
+import DataBreakdown from './metrics/DataBreakdown'
+import AddTeam from './user/AddTeam'
+import ViewDetails from './metrics/IncidentDetails'
 // import { response } from 'express'
 
 class App extends React.Component {
@@ -252,35 +252,35 @@ class App extends React.Component {
       {
         menuItem: 'Dashboard',
         render: () =>
-          <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
+          <Tab.Pane attached style={{ backgroundColor: '#f0f3fb', border: '1px solid black' }}>
             <Tab panes={subpanesDashboard} menu={{ secondary: true, pointing: true }} style={{ width: '100%', margin: '0 auto' }} />
           </Tab.Pane>
       },
       {
         menuItem: 'Patient Portal',
         render: () =>
-          <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
+          <Tab.Pane attached style={{ backgroundColor: '#f0f3fb', border: '1px solid black' }}>
             <Tab panes={subpanesPatient} onTabChange={this.handleTabChange.bind(this)} activeIndex={this.state.profileIndex} menu={{ secondary: true, pointing: true }} style={{ width: '100%', margin: '0 auto' }} />
           </Tab.Pane>
       },
       {
         menuItem: 'Incidents',
         render: () =>
-          <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
+          <Tab.Pane attached style={{ backgroundColor: '#f0f3fb', border: '1px solid black' }}>
             <Tab panes={subpanesIncidents} menu={{ secondary: true, pointing: true }} style={{ width: '100%', margin: '0 auto' }} />
           </Tab.Pane>
       },
       {
-        menuItem: <Menu.Item key='profile' style={{ 'margin-left': 'auto' }}>My Profile</Menu.Item>,
+        menuItem: <Menu.Item key='profile' style={{ 'margin-left': 'auto' }}>Settings</Menu.Item>,
         render: () =>
-          <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black',   }}>
+          <Tab.Pane attached style={{ backgroundColor: '#f0f3fb', border: '1px solid black',   }}>
             <Tab panes={subpanesProfile} menu={{ secondary: true, pointing: true }} style={{ width: '100%', margin: '0 auto' }} />
           </Tab.Pane>
       },
       {
         menuItem: <Menu.Item onClick={this.handleLogout} key='logout' style={{ 'margin-left': '2px' }}>Logout</Menu.Item>,
         render: () =>
-          <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black',   }}>
+          <Tab.Pane attached style={{ backgroundColor: '#f0f3fb', border: '1px solid black',   }}>
 
           </Tab.Pane>
       }
@@ -288,16 +288,16 @@ class App extends React.Component {
 
     const subpanesDashboard = [
       {
-        menuItem: 'Chart View',
+        menuItem: 'Summary',
         render: () =>
-          <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
+          <Tab.Pane attached style={{ backgroundColor: '#f0f3fb', border: '1px solid black' }}>
             <Metrics token={this.state.token} notes={this.state.notes} />
           </Tab.Pane>
       },
       {
-        menuItem: 'Detail View',
+        menuItem: 'Details',
         render: () =>
-          <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
+          <Tab.Pane attached style={{ backgroundColor: '#f0f3fb', border: '1px solid black' }}>
             <DataBreakdown onhandleGetNotes={this.onhandleGetNotes} token={this.state.token} notes={this.state.notes}/>
           </Tab.Pane>
       }
@@ -307,14 +307,14 @@ class App extends React.Component {
       {
         menuItem: 'View Map',
         render: () =>
-          <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
+          <Tab.Pane attached style={{ backgroundColor: '#f0f3fb', border: '1px solid black' }}>
             <Map token={this.state.token} notes={this.state.notes}/>
           </Tab.Pane>
       },
       {
         menuItem: 'View Details',
         render: () =>
-          <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
+          <Tab.Pane attached style={{ backgroundColor: '#f0f3fb', border: '1px solid black' }}>
             Most Recent Incidents List
             <ViewDetails token={this.state.token} notes={this.state.notes} />
           </Tab.Pane>
@@ -325,14 +325,14 @@ class App extends React.Component {
       {
         menuItem: 'Patient Search',
         render: () =>
-          <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
+          <Tab.Pane attached style={{ backgroundColor: '#f0f3fb', border: '1px solid black' }}>
             <PatientSearch token={this.state.token} onhandlePatientSelect={this.onhandlePatientSelect} />
           </Tab.Pane>
       },
       {
         menuItem: <Menu.Item key='profile' id='patientProfilePane' style={{ display: 'none' }}>Patient Profile</Menu.Item>,
         render: () =>
-          <Tab.Pane id='patientProfileTab' attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
+          <Tab.Pane id='patientProfileTab' attached style={{ backgroundColor: '#f0f3fb', border: '1px solid black' }}>
             <PatientProfile token={this.state.token} selectedPatient={this.state.selectedPatient} />
                {/* this is the last thing worked on 7/9/2020 */}
           </Tab.Pane>
@@ -343,21 +343,21 @@ class App extends React.Component {
       {
         menuItem: 'View Profile',
         render: () =>
-          <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
+          <Tab.Pane attached style={{ backgroundColor: '#f0f3fb', border: '1px solid black' }}>
             <UserProfile profileData={this.state.currentUser} />
           </Tab.Pane>
       },
       {
         menuItem: 'Edit Profile',
         render: () =>
-          <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
+          <Tab.Pane attached style={{ backgroundColor: '#f0f3fb', border: '1px solid black' }}>
             <Settings role={this.state.role} handleProfile={this.handleProfile.bind(this)} />
           </Tab.Pane>
       },
       {
         menuItem: 'Add Teammates',
         render: () =>
-          <Tab.Pane attached style={{ backgroundColor: 'silver', border: '1px solid black' }}>
+          <Tab.Pane attached style={{ backgroundColor: '#f0f3fb', border: '1px solid black' }}>
             <AddTeam />
           </Tab.Pane>
       }

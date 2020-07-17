@@ -6,13 +6,26 @@ export default class ViewDetails extends React.Component {
     super(props)
     this.state = {
       token: this.props.token,
-      notes: null
+      notes: []
     }
   }
 
   componentDidMount () {
     console.log(this.props.notes, 'props.notes')
     console.log(this.props.notes.data, 'props.notes.data')
+    fetch('/notes', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.state.token}`
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          notes: data.data
+        }, () => { console.log(this.state, 'line 27') })
+      })
     // this.setState({
     //   notes: Object.entries(this.props.notes)
     // }, console.log(typeof this.state.notes))
@@ -29,10 +42,11 @@ export default class ViewDetails extends React.Component {
   // Location/address
   // note content
   render () {
+    console.log(this.state.notes)
     return (
       <div>
         <h1>Dashboard</h1>
-        {this.props.notes.data.map(element =>
+        {this.state.notes.map(element =>
           <div key={element} id='viewPatientInfo' style={{ display: 'block' }}>
             <div>
               <List>
@@ -55,8 +69,8 @@ export default class ViewDetails extends React.Component {
                 <List.Item>
                   <List.Content>
                     <List.Header>Patient</List.Header>
-                    <List.Description>
-                      {element.patient.firstName} {element.patient.lastName}
+                    <List.Description> hi
+                      {/* {element.patient.firstName} {element.patient.lastName} */}
                     </List.Description>
                   </List.Content>
                 </List.Item>

@@ -68,8 +68,10 @@ export default class App extends React.Component {
 
     return (
       <div>
-        <Bar
+        {this.state.datasets[0].data.length > 0 ? <Bar
+          id='incidentChart'
           data={barState}
+          redraw
           options={{
             title: {
               display: true,
@@ -81,7 +83,8 @@ export default class App extends React.Component {
               position: 'right'
             }
           }}
-        />
+        /> : null}
+
       </div>
     )
   }

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Header, List, Icon, Button } from 'semantic-ui-react'
-import Notes from './patientInfo/Notes'
+import Notes from './Notes'
 // import { Link } from 'react-router-dom'
 import EditPatient from './EditPatient'
 // import AppendNotes from './patientInfo/AppendNotes'
@@ -68,12 +68,12 @@ export default class PatientProfile extends React.Component {
             <List>
               <List.Item>
                 <List.Content>
-                  <div style={{ backgroundColor: 'red', height: '4em', borderRadius: '6px', padding: '3px' }}>
-                    <List.Header><Icon name='flag' />Red Flags</List.Header>
+                  <div style={{ height: '4em', borderRadius: '6px', padding: '3px' }}>
+                    {/* <List.Header><Icon name='flag' />Red Flags</List.Header> */}
                     <List.Description>
                       {this.state.redFlags
                         ?  <ul style={{ paddingLeft: '5px', marginTop: '2px' }}>
-                            {this.state.redFlags.map(element => <li key={element} style={{ display: 'inline', marginLeft: '5px' }}><Icon name='caret right' />{element}</li>)}
+                          {this.state.redFlags.map(element => <li key={element} className='flags'><Icon name='exclamation' />{element}</li>)}
                           </ul>
                         : 'None'
                       }
@@ -134,20 +134,35 @@ export default class PatientProfile extends React.Component {
                   </List.Description>
                 </List.Content>
               </List.Item>
-              <List.Item>
-                <List.Content>
-                  <List.Header>Notes</List.Header>
-                  <List.Description>
-                    {this.props.selectedPatient.patient.notes
-                      ? <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
-                        {this.props.selectedPatient.patient.notes.map(element => <li key={element}><Icon name='caret right' />{element.description}</li>)}
-                      </ul>
-                      : null }
-                  </List.Description>
-                </List.Content>
-              </List.Item>
             </List>
+                
+            {this.props.selectedPatient.patient.notes
+                ?
+              <div>
+                <Header>Patient Notes</Header>
+                <table class="ui table">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Category</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {this.props.selectedPatient.patient.notes.map(element =>
+                      <tr>
+                        <th>{element.date}</th>
+                        <th>{element.category}</th>
+                        <th>{element.description}</th>
+                      </tr>)
+                    }
+
+                  </tbody>
+                </table> 
+              </div> : null}
+              
           </div>
+
           <div>
             <Notes token={this.props.token} patientId={this.props.selectedPatient.patient} onhandleUpdateState={this.onhandleUpdateState} onhandleRedFlagUpdate={this.onhandleRedFlagUpdate}/>
           </div>

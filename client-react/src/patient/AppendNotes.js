@@ -6,8 +6,13 @@ export default function AppendNotes (props) {
   return (
     <div>
       {props.newNotes
-        ? <ul>
-          {props.newNotes.map(element => <li key={element}>{element.description}</li>)}
+        ? <ul className='notesContainer'>
+          {props.newNotes.map(element =>
+            <li key={element}>
+              <div>{element.date}</div>
+              <div>{element.category}</div>
+              <div>{element.description}</div>
+            </li>)}
         </ul>
         : <p>none</p>}
     </div>

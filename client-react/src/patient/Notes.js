@@ -2,7 +2,7 @@ import React from 'react'
 // import PatientProfile from '../PatientProfile'
 import { Form } from 'semantic-ui-react'
 import AppendNotes from './AppendNotes'
-// import secret from '../secrets'
+import secret from '../secrets'
 import Geocode from 'react-geocode'
 
 class Notes extends React.Component {
@@ -46,7 +46,7 @@ class Notes extends React.Component {
 
   handleaddress (e, data) {
     this.setState({ [e.target.name]: e.target.value })
-    Geocode.setApiKey(process.env.REACT_APP_GOOGLE_MAPS_API_KEY)
+    Geocode.setApiKey(process.env.REACT_APP_GOOGLE_MAPS_API_KEY || secret.key)
     // Geocode.setApiKey(secret.key)
     Geocode.fromAddress(e.target.value).then(
       response => {

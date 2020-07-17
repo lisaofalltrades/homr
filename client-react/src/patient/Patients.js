@@ -1,7 +1,7 @@
 import React from 'react'
 import { Accordion, Icon, Button, Form, Dropdown } from 'semantic-ui-react'
-import SearchPatients from './Search'
-import PatientProfile from './PatientSearch'
+import SearchPatients from './patient/Search'
+import PatientProfile from '../patient/PatientSearch'
 
 // Patient Portal
 // -Patient Search

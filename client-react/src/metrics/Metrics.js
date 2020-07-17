@@ -1,6 +1,6 @@
 import React from 'react'
-import Incidents from './graphs/incidents'
-import IllnessChart from './graphs/illnessChart'
+import Incidents from '../graphs/incidents'
+import IllnessChart from '../graphs/illnessChart'
 
 export default class Metrics extends React.Component {
   constructor (props) {

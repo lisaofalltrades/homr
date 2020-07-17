@@ -8,6 +8,49 @@
   margin: 10px;
 }
 
+.btnColor {
+  background-color: #89c2e0;
+  border: '1px black solid';
+}
+/* Patient CSS */
+.patientBtn:not(:hover){
+  background-color: #f0f3fb;
+}
+
+.patientBtn:hover{
+  background-color: #89c2e0;
+}
+
+.patientBtn:active{
+  background-color: #89c2e0;
+}
+
+.flags {
+  display: inline;
+  margin-left: 5px;
+  border-radius: 10px;
+  background-color: #ff6666;
+  padding: 12px;
+}
+.notesContainer {
+  list-style-type: none;
+  padding-left: 0px;
+}
+/* notes table */
+table, td, th {  
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  padding: 15px;
+}
+
 .App {
   text-align: center;
 }

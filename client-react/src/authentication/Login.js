@@ -1,20 +1,5 @@
-// import React from 'react'
-
-// export default function Login (props) {
-//   return (
-//     <div>
-//       <h1>Login</h1>
-//       <form id='loginForm'>
-//         <input id='email' type='email' placeholder='Email' />
-//         <br />
-//         <input id='password' type='password' placeholder='Password' />
-//         <button type='submit' onClick={props.handleLogin}>Submit</button>
-//       </form>
-//     </div>
-//   )
-// }
 import React from 'react'
-import { Input, Button, Header, Tab, Dropdown } from 'semantic-ui-react'
+import { Input, Button, Header, Tab, Dropdown, Icon } from 'semantic-ui-react'
 export default function Login (props) {
   const roles = [
     {
@@ -37,7 +22,7 @@ export default function Login (props) {
     {
       menuItem: 'Login',
       render: () =>
-        <Tab.Pane attached={false} style={{ backgroundColor: 'silver', border: '1px solid black' }}>
+        <Tab.Pane attached={false} style={{ backgroundColor: '#e5e5e5', border: '1px solid black' }}>
           <div style={{ textAlign: 'center' }}>
             <Header as='h1'>Login</Header>
             <form id='loginForm'>
@@ -46,9 +31,12 @@ export default function Login (props) {
               <br /><br />
               <Input id='password' style={{ width: '18em' }} type='password' icon='lock' iconPosition='left' placeholder='Password' />
               <br /><br />
-              {/* <input id='password' type='password' placeholder='Password' /> */}
-              <Button type='submit' content='Login' icon='right arrow' labelPosition='right' onClick={props.handleLogin} style={{ border: '1px black solid' }} />
-              {/* <button type='submit' onClick={props.handleLogin}>Submit</button> */}
+              <Button animated type='submit' onClick={props.handleLogin} style={{ border: '1px black solid', backgroundColor: '#89c2e0' }}>
+                <Button.Content visible>Login</Button.Content>
+                <Button.Content hidden>
+                  <Icon name='arrow right' />
+                </Button.Content>
+              </Button>
             </form>
           </div>
         </Tab.Pane>
@@ -56,7 +44,7 @@ export default function Login (props) {
     {
       menuItem: 'Signup',
       render: () =>
-        <Tab.Pane attached={false} style={{ backgroundColor: 'silver', border: '1px solid black' }}>
+        <Tab.Pane attached={false} style={{ backgroundColor: '#e5e5e5', border: '1px solid black' }}>
           <div style={{ textAlign: 'center' }}>
             <Header as='h1'>Signup</Header>
             <form id='signupForm'>
@@ -69,9 +57,14 @@ export default function Login (props) {
               <br /><br />
               <Dropdown id='roles' style={{ width: '18em', margin: '0 auto', textAlign: 'center' }} placeholder='Select Role' fluid selection options={roles} onChange={props.handleChange} />
               <br /><br />
-              {/* <input id='password' type='password' placeholder='Password' /> */}
-              <Button type='submit' content='Signup' icon='right arrow' labelPosition='right' onClick={props.handleSignup} style={{ border: '1px black solid' }} />
-              {/* <button type='submit' onClick={props.handleLogin}>Submit</button> */}
+
+              <Button animated type='submit' onClick={props.handleSignup} style={{ border: '1px black solid', backgroundColor: '#89c2e0' }}>
+                <Button.Content visible>Sign Up</Button.Content>
+                <Button.Content hidden>
+                  <Icon name='arrow right' />
+                </Button.Content>
+              </Button>
+
             </form>
           </div>
         </Tab.Pane>

@@ -17,7 +17,7 @@ const characters = [].concat(funFaker.hp.characters, funFaker.witcher.characters
 const quotes = [].concat(funFaker.hp.quotes, funFaker.office.quotes)
 const conditionList = funFaker.medical.conditions
 const states = funFaker.states
-const categories = ['incident', 'Update']
+const categories = ['incident', 'update']
 
 // portland addreses
 const portlandAdd = require('./seed/portland.js').addresses
