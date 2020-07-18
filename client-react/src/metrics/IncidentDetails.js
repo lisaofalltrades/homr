@@ -22,8 +22,11 @@ export default class ViewDetails extends React.Component {
     })
       .then(response => response.json())
       .then(data => {
+        console.log(data.data, 'this is the data.data')
+        const sortedIncidents = data.data.slice().sort((a, b) => b.date - a.date)
+        console.log(sortedIncidents)
         this.setState({
-          notes: data.data
+          notes: sortedIncidents
         }, () => { console.log(this.state, 'line 27') })
       })
     // this.setState({

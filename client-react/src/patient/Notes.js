@@ -49,6 +49,7 @@ class Notes extends React.Component {
     this.setState({ [e.target.name]: e.target.value })
     Geocode.setApiKey(process.env.REACT_APP_GOOGLE_MAPS_API_KEY)
     // Geocode.setApiKey(secret.key)
+
     Geocode.fromAddress(e.target.value).then(
       response => {
         const location = response.results[0].geometry.location
