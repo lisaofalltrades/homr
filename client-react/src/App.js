@@ -1,6 +1,6 @@
 /* globals fetch */
 import Login from './authentication/Login'
-import Settings from './user/Settings'
+import Settings from './user/EditProfile'
 import React from 'react'
 import './App.css'
 import 'semantic-ui-css/semantic.min.css'
@@ -32,6 +32,7 @@ class App extends React.Component {
       token: null,
       selectedPatient: '',
       profileIndex: 0,
+      settingsIndex: 0,
       currentUser: '',
       notes: []
     }
@@ -73,7 +74,7 @@ class App extends React.Component {
   // patientProfileTab.active = true
   }
 
-  handleTabChange = (e, { activeIndex }) => this.setState({ profileIndex: activeIndex })
+  handleTabChange = (e, { activeIndex }) => this.setState({ profileIndex: activeIndex, settingsIndex: activeIndex })
 
   handleLogin (evt) {
     evt.preventDefault()
@@ -221,6 +222,10 @@ class App extends React.Component {
     const county = document.getElementById('county').value
     const district = document.getElementById('district').value
 
+    const profile = document.getElementById('profileForm')
+
+    
+
     fetch('/profileUpdate', {
       method: 'POST',
       headers: {
@@ -242,7 +247,11 @@ class App extends React.Component {
       .then(response => response.json())
       .then(data => {
         this.setState({
-          currentUser: data
+          currentUser: data,
+          settingsIndex: 0
+          
+        }, () => {
+          profile.reset()
         })
       })
   }
@@ -274,7 +283,7 @@ class App extends React.Component {
         menuItem: <Menu.Item key='profile' style={{ 'margin-left': 'auto' }}>Settings</Menu.Item>,
         render: () =>
           <Tab.Pane attached style={{ backgroundColor: '#f0f3fb', border: '1px solid black',   }}>
-            <Tab panes={subpanesProfile} menu={{ secondary: true, pointing: true }} style={{ width: '100%', margin: '0 auto' }} />
+            <Tab panes={subpanesProfile} menu={{ secondary: true, pointing: true }} style={{ width: '100%', margin: '0 auto' }} onTabChange={this.handleTabChange.bind(this)} activeIndex={this.state.settingsIndex}/>
           </Tab.Pane>
       },
       {
@@ -333,8 +342,7 @@ class App extends React.Component {
         menuItem: <Menu.Item key='profile' id='patientProfilePane' style={{ display: 'none' }}>Patient Profile</Menu.Item>,
         render: () =>
           <Tab.Pane id='patientProfileTab' attached style={{ backgroundColor: '#f0f3fb', border: '1px solid black' }}>
-            <PatientProfile token={this.state.token} selectedPatient={this.state.selectedPatient} />
-               {/* this is the last thing worked on 7/9/2020 */}
+            <PatientProfile onhandlePatientSelect={this.onhandlePatientSelect} token={this.state.token} selectedPatient={this.state.selectedPatient} />
           </Tab.Pane>
       }
     ]
@@ -351,7 +359,7 @@ class App extends React.Component {
         menuItem: 'Edit Profile',
         render: () =>
           <Tab.Pane attached style={{ backgroundColor: '#f0f3fb', border: '1px solid black' }}>
-            <Settings role={this.state.role} handleProfile={this.handleProfile.bind(this)} />
+            <Settings profileData={this.state.currentUser} handleProfile={this.handleProfile.bind(this)} />
           </Tab.Pane>
       },
       {

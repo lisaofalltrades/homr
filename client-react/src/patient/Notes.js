@@ -1,8 +1,8 @@
 import React from 'react'
 // import PatientProfile from '../PatientProfile'
-import { Form } from 'semantic-ui-react'
+import { Form, Message } from 'semantic-ui-react'
 import AppendNotes from './AppendNotes'
-import secret from '../secrets'
+// import secret from '../secrets'
 import Geocode from 'react-geocode'
 
 class Notes extends React.Component {
@@ -18,6 +18,7 @@ class Notes extends React.Component {
       notes: [],
       redFlags: [],
       cords: null,
+      success: false,
       options: [
         { key: 'i', text: 'Incident', value: 'incident' },
         { key: 'u', text: 'Update', value: 'update' }
@@ -46,7 +47,7 @@ class Notes extends React.Component {
 
   handleaddress (e, data) {
     this.setState({ [e.target.name]: e.target.value })
-    Geocode.setApiKey(process.env.REACT_APP_GOOGLE_MAPS_API_KEY || secret.key)
+    Geocode.setApiKey(process.env.REACT_APP_GOOGLE_MAPS_API_KEY)
     // Geocode.setApiKey(secret.key)
     Geocode.fromAddress(e.target.value).then(
       response => {
@@ -79,7 +80,7 @@ class Notes extends React.Component {
     // const redFlags = document.getElementById('redFlags')
     console.log('Adding a new note')
     console.log('info', this.state.date, this.state.category, this.state.address, this.state.description, this.state.token, this.state.patient._id, this.state.patient.user, this.state.redFlags)
-
+    const notesForm = document.getElementById('notesForm')
     // Geocode.setApiKey(secret.key)
     // Geocode.fromAddress(this.state.address).then(
     //   response => {
@@ -113,6 +114,15 @@ class Notes extends React.Component {
     })
       .then(response => response.json())
       .then(data => { this.setState({ notes: data.notes, redFlags: data.redFlags }, () => { this.props.onhandleRedFlagUpdate(this.state.redFlags) }) })
+      .then(() => {
+        console.log('the last then')
+        this.setState({
+          date: '',
+          address: '',
+          description: '',
+          success: true
+        }, notesForm.reset())
+      })
   }
 
   render () {
@@ -125,7 +135,7 @@ class Notes extends React.Component {
       <div>
         <AppendNotes newNotes={this.state.notes} />
         <h1>Add A Note</h1>
-        <Form>
+        <Form id='notesForm'>
           <Form.Group widths='equal'>
             {/* <Form.Input fluid  placeholder='Date' id='date' /> */}
             <Form.Input
@@ -175,8 +185,16 @@ class Notes extends React.Component {
           >
             Add Red Flag
           </Form.Button>
+          {this.state.success
+            ? <Message
+              success
+              header='Success'
+              content='Posted successfully'
+            />
+            : null}
 
           <Form.Button
+            type='submit'
             // onClick={this.handleNewNote.bind(this)}
             // onClick={() => { this.handleNewNote.bind(this); this.props.onhandleUpdateState() }}
             onClick={() => { this.handleNewNote.bind(this)(); this.props.onhandleUpdateState(); this.props.onhandleRedFlagUpdate() }}

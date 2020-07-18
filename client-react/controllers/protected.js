@@ -70,7 +70,7 @@ router.post('/patientAdd', [authenticate], (req, res) => {
     if (err) return res.status(500).send(err)
     if (patientExists) return res.status(400).send({ errorMessage: 'Patient already exists.' })
     await Patient.register(req.body.photoID, req.body.firstName, req.body.lastName, req.body.dob, req.body.birthPlace, req.body.licenseNum, req.body.race, req.body.medicalHistory, req.body.notes, req.body.redFlags, req.user)
-
+    
     res.send('post succesfull')
   })
 })

@@ -78,7 +78,7 @@ MongoClient.connect(url, function (err, client) {
       admin: true
     }
     // for development, everyone gets a district
-    const district = Math.floor(Math.random() * 20)
+    const district = (Math.floor(Math.random() * 20) + 1)
     newUser.district = district.toString(8)
 
     // // add a district if role = fire_chief
@@ -120,13 +120,14 @@ MongoClient.connect(url, function (err, client) {
     const addressObj = states.helpers.randomAddress()
     console.log(addressObj)
     const birthPlace = addressObj.city + ', ' + addressObj.state
+    const randomIllness = helpers.randomItem(conditionList
+    )
 
     const newPatient = {
       firstName: fullName[0],
       lastName: fullName[fullName.length - 1],
       birthPlace: birthPlace,
-      medicalHistory: helpers.randomItem(conditionList
-      ),
+      medicalHistory: [randomIllness],
       user: newId2
     }
     patients.push(newPatient)

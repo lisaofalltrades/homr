@@ -93,8 +93,10 @@ export default class EditPatient extends React.Component {
   }
 
   componentDidMount() {
-    console.log(illnessOptions)
-    console.log(this.props, 'this is the props')
+    // console.log(illnessOptions)
+    // console.log(this.props, 'Edit Patient Page: this is the props')
+    // console.log(this.props.selectedPatient.patient)
+    // console.log(this.state)
     // load patient from PatientProfile info
   }
 
@@ -102,14 +104,15 @@ export default class EditPatient extends React.Component {
     this.setState({
       [data.name]: data.value
     }, console.log(this.state))
-  
-
     // this.setState({medicalHistory: this.state.medicalHistory.concat(evt.target.innerText)})
     // this.setState({medicalHistory: {value}})
-    console.log(this.state.medicalHistory)
+    // console.log('State from medicalHistory')
+    // console.log(this.state.medicalHistory)
   }
 
   handleEditPatient() {
+    let editForm = document.getElementById('basicInfo')
+    editForm.reset()
     fetch('/patientEdit', {
       method: 'POST',
       headers: {
@@ -129,6 +132,7 @@ export default class EditPatient extends React.Component {
       })
     })
       .then(response => response.json())
+      .then((data => console.log(data, 'this is the data')))
   }
 
   handleSetState(evt) {
@@ -152,7 +156,8 @@ export default class EditPatient extends React.Component {
   }
 
   render() {
-    // const { activeIndex } = this.state
+    const patient = this.props.selectedPatient.patient
+
     return (
       <div>
         <Header as='h1'>Edit Patient</Header>
@@ -161,27 +166,27 @@ export default class EditPatient extends React.Component {
         <Form id='basicInfo'>
           <Form.Field>
             <label>First Name</label>
-            <input id='firstName' placeholder='First Name' />
+            {patient.firstName ? <input id='firstName' placeholder={patient.firstName} /> : <input id='firstName' placeholder='First Name' />}
           </Form.Field>
           <Form.Field>
             <label>Last Name</label>
-            <input id='lastName' placeholder='Last Name' />
+            {patient.lastName ? <input id='lastName' placeholder={patient.lastName} /> : <input id='lastName' placeholder='Last Name' />}
           </Form.Field>
           <Form.Field >
             <label>Date of Birth</label>
-            <input id='dob' placeholder='Date of Birth' />
+            {patient.dob ? <input id='dob' placeholder={patient.dob} /> : <input id='dob' placeholder='Date of Birth' />}
           </Form.Field>
           <Form.Field>
             <label>Birth Place</label>
-            <input id='birthPlace' placeholder='Birth Place' />
+            {patient.birthPlace ? <input id='birthPlace' placeholder={patient.birthPlace} /> : <input id='birthPlace' placeholder='Birth Place' />}
           </Form.Field>
           <Form.Field>
             <label>License Number</label>
-            <input  id='licenseNum' placeholder='License Number' />
+            {patient.licenseNum ? <input id='licenseNum' placeholder={patient.licenseNum} /> : <input id='licenseNum' placeholder='License Number' /> }
           </Form.Field>
           <Form.Field>
             <label>Race</label>
-            <input id='race' placeholder='Race' />
+            {patient.race ? <input id='race' placeholder={patient.race} /> : <input id='race' placeholder='Race' />}
           </Form.Field>
           <Button type='submit' 
           content='Save' 
@@ -193,15 +198,18 @@ export default class EditPatient extends React.Component {
         
         <Header as='h3'>Medical History</Header>
         <div>
-          <Dropdown name='medicalHistory' id='illnessList' placeholder='Add Illness' fluid multiple search selection options={illnessOptions} onChange={this.handleChange.bind(this)} />
-        {/* <Button type='submit' content='Add' icon='right arrow' labelPosition='right' onClick={props.handleAddIllness} style={{ border: '1px black solid' }} /> */}
+          {patient.medicalHistory ? <Dropdown name='medicalHistory' id='illnessList' placeholder={patient.medicalHistory} fluid multiple search selection options={illnessOptions} onChange={this.handleChange.bind(this)} /> : <Dropdown name='medicalHistory' id='illnessList' placeholder='Add Illness' fluid multiple search selection options={illnessOptions} onChange={this.handleChange.bind(this)} />}
+         
         </div><br />
         <Button type='submit' 
           content='Edit Patient' 
           icon='right arrow' 
           labelPosition='right' 
-          onClick={this.handleEditPatient.bind(this)}
+          onClick={() => {this.handleSetState.bind(this); this.handleEditPatient.bind(this)()}}
           style={{ border: '1px black solid' }} />
   </div>
   )}
 }
+
+// look at
+// ; this.props.onhandlePatientSelect(this.props.selectedPatient)
