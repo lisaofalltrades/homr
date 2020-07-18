@@ -7,7 +7,7 @@ import {
 } from '@react-google-maps/api'
 import { formatRelative } from 'date-fns'
 import mapStyles from './mapstyles'
-import secret from '../secrets'
+// import secret from '../secrets'
 
 // globals
 const mapContainerStyle = {
@@ -54,7 +54,6 @@ function Locate ({ panTo }) {
 }
 
 export default function Map (props) {
-
   // this is the state of this component
   const [markers, setMarkers] = React.useState([])
   // the set state below makes it so you have access to the current one you click on. in this instance you can grab the lat long of that click
@@ -82,8 +81,8 @@ export default function Map (props) {
   }, [])
 
   const { isLoaded, loadError } = useLoadScript({
-    // googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY || secret.key
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY
+    // googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY || secret.key
   })
 
   // setMarkers(cords)
@@ -151,7 +150,7 @@ export default function Map (props) {
             }}
           >
             <div>
-          <h2>Incident</h2>
+              <h2>Incident</h2>
               {/* takes two dates and spits out a nicly formated date time */}
               <p>Placed on {selected.date}</p>
               <p>Address {selected.address}</p>
