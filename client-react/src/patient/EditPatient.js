@@ -113,6 +113,7 @@ export default class EditPatient extends React.Component {
   handleEditPatient() {
     let editForm = document.getElementById('basicInfo')
     editForm.reset()
+    console.log(this.props, 'check this out ')
     fetch('/patientEdit', {
       method: 'POST',
       headers: {
@@ -120,7 +121,7 @@ export default class EditPatient extends React.Component {
         Authorization: `Bearer ${this.state.token}`
       },
       body: JSON.stringify({
-        patientID: this.props.selectedPatient._id,
+        patientID: this.props.selectedPatient.patient._id,
         photoID: this.state.basicInfo.photoID,
         firstName: this.state.basicInfo.firstName,
         lastName: this.state.basicInfo.lastName,

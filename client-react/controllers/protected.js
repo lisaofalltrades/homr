@@ -91,21 +91,22 @@ router.post('/patientLookup', [authenticate], (req, res) => {
 router.post('/patientEdit', [authenticate], (req, res) => {
   const objUpdate = {}
   console.log(req.body, 'req.body is')
-
   if (req.body.firstName !== '') objUpdate.firstName = req.body.firstName
   if (req.body.lastName !== '') objUpdate.lastName = req.body.lastName
   if (req.body.dob !== '') objUpdate.dob = req.body.dob
   if (req.body.birthPlace !== '') objUpdate.birthPlace = req.body.birthPlace
   if (req.body.licenseNum !== '') objUpdate.licenseNum = req.body.licenseNum
   if (req.body.race !== '') objUpdate.race = req.body.race
-
   objUpdate.date = new Date()
-
+  let medicalHistory = []
+  if (req.body.medicalHistory !== []) medicalHistory = req.body.medicalHistory
   console.log(objUpdate)
   const updates = {
-    $set: objUpdate
+    $set: objUpdate,
+    $push: {
+      medicalHistory: medicalHistory
+    }
   }
-
   Patient.updateOne({ _id: req.body.patientID }, updates, (err, user) => {
     if (err) return res.status(500).send(err)
     console.log('profile updated')
