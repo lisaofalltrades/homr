@@ -1,5 +1,5 @@
 import React from 'react'
-import { Header, Button, Form, Dropdown } from 'semantic-ui-react'
+import { Header, Button, Form, Dropdown, Message } from 'semantic-ui-react'
 // import PatientProfile from './PatientSearch'
 
 const illnessList = [
@@ -87,6 +87,7 @@ export default class EditPatient extends React.Component {
         licenseNum: '',
         race: ''
       },
+      success: false,
       medicalHistory: [],
       notes: []
     }
@@ -152,8 +153,9 @@ export default class EditPatient extends React.Component {
         birthPlace: birthPlace,
         licenseNum: licenseNum,
         race: race
-      }
-    }, () => {console.log(this.state, 'line 141')})
+      },
+      success: true
+    }, () => {this.handleEditPatient()})
   }
 
   render() {
@@ -206,8 +208,15 @@ export default class EditPatient extends React.Component {
           content='Edit Patient' 
           icon='right arrow' 
           labelPosition='right' 
-          onClick={() => {this.handleSetState.bind(this); this.handleEditPatient.bind(this)()}}
+          onClick={this.handleSetState.bind(this)}
           style={{ border: '1px black solid' }} />
+        {this.state.success
+        ? <Message
+          success
+          header='Success'
+          content='Inventation sent successfully'
+        />
+        : null}
   </div>
   )}
 }

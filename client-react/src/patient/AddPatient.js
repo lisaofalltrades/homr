@@ -158,6 +158,11 @@ export default class AddPatient extends React.Component {
       })
     })
       .then(response => response.json())
+      .then(data => {
+        if (data.errorMessage){
+          alert('Patient Already Exists. Please Search and Edit Patient')
+        }
+      })
     })
   }
 

@@ -65,7 +65,7 @@ class App extends React.Component {
       }
       this.setState({
         profileIndex: 1
-      })
+      }, console.log(this.state, 'this is the apps state'))
     })
 
       // const patientProfileTab = document.getElementById('patientProfileTab')
@@ -366,7 +366,7 @@ class App extends React.Component {
         menuItem: 'Add Teammates',
         render: () =>
           <Tab.Pane attached style={{ backgroundColor: '#f0f3fb', border: '1px solid black' }}>
-            <AddTeam />
+            <AddTeam password={this.state.password} email={this.state.email} />
           </Tab.Pane>
       }
     ]
