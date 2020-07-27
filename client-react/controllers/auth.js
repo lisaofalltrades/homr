@@ -1,5 +1,6 @@
 // modules
 const jwt = require('jsonwebtoken')
+const nodemailer = require('nodemailer')
 const User = require('../models/User')
 
 // server
@@ -44,6 +45,7 @@ router.post('/login', (req, res) => {
       admin: user.admin,
       role: user.role,
       email: user.email,
+      password: user.password,
       currentUser: user
     })
     console.log(user)
@@ -70,8 +72,10 @@ router.post('/inviteUsers', (req, res) => {
         _id: user._id
       }, 'PROCESS')
 
-      console.log(user, 'on sign up')
+      console.log(req.body, 'the is the body')
 
+
+      console.log(user, 'on sign up')
       // res.send({
       //   token,
       //   role: user.role,

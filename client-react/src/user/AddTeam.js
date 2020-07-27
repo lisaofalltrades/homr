@@ -42,7 +42,9 @@ export default class AddTeam extends React.Component {
           Authorization: `Bearer ${this.state.token}`
         },
         body: JSON.stringify({
-          forms: this.state.formStore
+          forms: this.state.formStore,
+          email: this.props.email,
+          password: this.props.password
         })
       })
         .then(response => response.json())

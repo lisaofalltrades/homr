@@ -65,8 +65,8 @@ router.post('/profileUpdate', [authenticate], (req, res) => {
 })
 
 router.post('/patientAdd', [authenticate], (req, res) => {
-  console.log(req.body)
-  Patient.findOne({ firstName: req.body.firstName }, async (err, patientExists) => {
+  console.log(req.body, 'line 68')
+  Patient.findOne({ firstName: req.body.firstName, lastName: req.body.lastName, dob: req.body.dob }, async (err, patientExists) => {
     if (err) return res.status(500).send(err)
     if (patientExists) return res.status(400).send({ errorMessage: 'Patient already exists.' })
     await Patient.register(req.body.photoID, req.body.firstName, req.body.lastName, req.body.dob, req.body.birthPlace, req.body.licenseNum, req.body.race, req.body.medicalHistory, req.body.notes, req.body.redFlags, req.user)
