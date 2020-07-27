@@ -123,10 +123,15 @@ MongoClient.connect(url, function (err, client) {
     const randomIllness = helpers.randomItem(conditionList
     )
 
+    // current timestamp
+    const today = new Date()
+    const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()
+
     const newPatient = {
       firstName: fullName[0],
       lastName: fullName[fullName.length - 1],
       birthPlace: birthPlace,
+      dob: date,
       medicalHistory: [randomIllness],
       user: newId2
     }

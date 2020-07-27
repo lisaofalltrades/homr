@@ -65,7 +65,7 @@ class App extends React.Component {
       }
       this.setState({
         profileIndex: 1
-      })
+      }, console.log(this.state, 'this is the apps state'))
     })
 
       // const patientProfileTab = document.getElementById('patientProfileTab')

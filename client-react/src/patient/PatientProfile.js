@@ -168,7 +168,7 @@ export default class PatientProfile extends React.Component {
           </div>
         </div><br />
         <div id='editPatientInfo' style={{ display: 'none' }}>
-          <EditPatient onhandlePatientSelect={this.props.onhandlePatientSelect} token={this.props.token} selectedPatient={this.props.selectedPatient}/>
+          <EditPatient onhandlePatientSelect={this.props.onhandlePatientSelect} token={this.props.token} selectedPatient={this.props.selectedPatient} onhandlePatientSelect={this.props.onhandlePatientSelect}/>
         </div><br />
       </div>
     )
